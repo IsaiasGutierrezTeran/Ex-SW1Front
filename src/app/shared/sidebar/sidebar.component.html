@@ -1,257 +1,123 @@
-<aside class="cre-sidebar" [class.collapsed]="collapsed()" aria-label="Navegación principal">
+<header class="topnav" (click)="$event.stopPropagation()" aria-label="Navegación principal">
+  <div class="topnav-inner">
 
-  <!-- ── Marca ──────────────────────────────────────────── -->
-  <header class="brand">
-    <span class="brand-mark" aria-hidden="true">
-      <lucide-icon [img]="icons.brand" [size]="20"></lucide-icon>
-    </span>
-    @if (!collapsed()) {
+    <!-- ── Marca ──────────────────────────────────────────── -->
+    <a class="topnav-brand" [routerLink]="brandLink()" (click)="onNavigate()">
+      <span class="brand-mark" aria-hidden="true">
+        <lucide-icon [img]="icons.brand" [size]="20"></lucide-icon>
+      </span>
       <span class="brand-text">
         <span class="brand-title">CRE</span>
         <span class="brand-subtitle">Gestión de Trámites</span>
       </span>
-    }
-  </header>
+    </a>
 
-  <!-- ── Navegación ─────────────────────────────────────── -->
-  <nav class="nav">
+    <!-- ── Hamburguesa (móvil) ────────────────────────────── -->
+    <button
+      type="button"
+      class="topnav-burger"
+      [class.open]="mobileOpen()"
+      (click)="toggleMobile()"
+      [attr.aria-expanded]="mobileOpen()"
+      aria-label="Abrir menú"
+    >
+      <span></span><span></span><span></span>
+    </button>
 
-    @if (!collapsed()) {
-      <!-- ── EXPANDED: vista con grupos desplegables ── -->
+    <!-- ── Menú de navegación ─────────────────────────────── -->
+    <nav class="topnav-menu" [class.open]="mobileOpen()">
 
       @if (role() === 'admin') {
-        <!-- Dashboard (standalone) -->
-        <a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-item" aria-label="Dashboard">
-          <span class="nav-icon"><lucide-icon [img]="icons.dashboard" [size]="18"></lucide-icon></span>
-          <span class="nav-label">Dashboard</span>
+        <a routerLink="/admin/dashboard" routerLinkActive="active" class="topnav-link" (click)="onNavigate()">
+          <lucide-icon [img]="icons.dashboard" [size]="17"></lucide-icon>
+          <span>Dashboard</span>
         </a>
 
-        <!-- Notificaciones (P1 §7) -->
-        <a routerLink="/notificaciones" routerLinkActive="active" class="nav-item" aria-label="Notificaciones">
-          <span class="nav-icon"><lucide-icon [img]="icons.campana" [size]="18"></lucide-icon></span>
-          <span class="nav-label">Notificaciones</span>
+        @for (m of menuGroups; track m.key) {
+          <div class="topnav-dd" [class.open]="openMenu() === m.key">
+            <button type="button" class="topnav-link topnav-dd-toggle" (click)="toggleMenu(m.key, $event)">
+              <lucide-icon [img]="m.group.icon" [size]="17"></lucide-icon>
+              <span>{{ m.group.label }}</span>
+              <lucide-icon class="caret" [class.rotated]="openMenu() === m.key" [img]="icons.chevronDown" [size]="14"></lucide-icon>
+            </button>
+            <div class="topnav-dd-panel">
+              @for (item of m.group.items; track item.link) {
+                <a [routerLink]="item.link" routerLinkActive="active" class="topnav-dd-item" (click)="onNavigate()">
+                  <lucide-icon [img]="item.icon" [size]="16"></lucide-icon>
+                  <span>{{ item.label }}</span>
+                </a>
+              }
+            </div>
+          </div>
+        }
+
+        <a routerLink="/notificaciones" routerLinkActive="active" class="topnav-link" (click)="onNavigate()">
+          <lucide-icon [img]="icons.campana" [size]="17"></lucide-icon>
+          <span>Notificaciones</span>
           @if (notif.noLeidas() > 0) {
-            <span class="badge rounded-pill text-bg-danger ms-auto">{{ notif.noLeidas() }}</span>
+            <span class="topnav-badge">{{ notif.noLeidas() }}</span>
           }
         </a>
-
-        <!-- Grupo Gestión -->
-        <div class="nav-group">
-          <button
-            type="button"
-            class="nav-group-header"
-            [class.open]="groupGestion.expanded()"
-            (click)="toggleGroup(groupGestion)"
-            aria-label="Gestión"
-          >
-            <span class="nav-icon"><lucide-icon [img]="groupGestion.icon" [size]="18"></lucide-icon></span>
-            <span class="nav-label">{{ groupGestion.label }}</span>
-            <lucide-icon
-              class="group-chevron"
-              [class.rotated]="groupGestion.expanded()"
-              [img]="icons.chevronDown"
-              [size]="14"
-            ></lucide-icon>
-          </button>
-          <div class="nav-group-items" [class.open]="groupGestion.expanded()">
-            @for (item of groupGestion.items; track item.link) {
-              <a [routerLink]="item.link" routerLinkActive="active" class="nav-item nav-sub-item" [attr.aria-label]="item.label">
-                <span class="nav-icon"><lucide-icon [img]="item.icon" [size]="16"></lucide-icon></span>
-                <span class="nav-label">{{ item.label }}</span>
-              </a>
-            }
-          </div>
-        </div>
-
-        <!-- Grupo Flujos -->
-        <div class="nav-group">
-          <button
-            type="button"
-            class="nav-group-header"
-            [class.open]="groupFlujos.expanded()"
-            (click)="toggleGroup(groupFlujos)"
-            aria-label="Flujos"
-          >
-            <span class="nav-icon"><lucide-icon [img]="groupFlujos.icon" [size]="18"></lucide-icon></span>
-            <span class="nav-label">{{ groupFlujos.label }}</span>
-            <lucide-icon
-              class="group-chevron"
-              [class.rotated]="groupFlujos.expanded()"
-              [img]="icons.chevronDown"
-              [size]="14"
-            ></lucide-icon>
-          </button>
-          <div class="nav-group-items" [class.open]="groupFlujos.expanded()">
-            @for (item of groupFlujos.items; track item.link) {
-              <a [routerLink]="item.link" routerLinkActive="active" class="nav-item nav-sub-item" [attr.aria-label]="item.label">
-                <span class="nav-icon"><lucide-icon [img]="item.icon" [size]="16"></lucide-icon></span>
-                <span class="nav-label">{{ item.label }}</span>
-              </a>
-            }
-          </div>
-        </div>
-
-        <!-- Grupo Análisis (C3) -->
-        <div class="nav-group">
-          <button
-            type="button"
-            class="nav-group-header"
-            [class.open]="groupAnalisis.expanded()"
-            (click)="toggleGroup(groupAnalisis)"
-            aria-label="Análisis"
-          >
-            <span class="nav-icon"><lucide-icon [img]="groupAnalisis.icon" [size]="18"></lucide-icon></span>
-            <span class="nav-label">{{ groupAnalisis.label }}</span>
-            <lucide-icon
-              class="group-chevron"
-              [class.rotated]="groupAnalisis.expanded()"
-              [img]="icons.chevronDown"
-              [size]="14"
-            ></lucide-icon>
-          </button>
-          <div class="nav-group-items" [class.open]="groupAnalisis.expanded()">
-            @for (item of groupAnalisis.items; track item.link) {
-              <a [routerLink]="item.link" routerLinkActive="active" class="nav-item nav-sub-item" [attr.aria-label]="item.label">
-                <span class="nav-icon"><lucide-icon [img]="item.icon" [size]="16"></lucide-icon></span>
-                <span class="nav-label">{{ item.label }}</span>
-              </a>
-            }
-          </div>
-        </div>
       }
 
       @if (role() === 'funcionario') {
-        <!-- "Mis Trámites" se removió: duplicaba endpoint con la Bandeja de
-             Entrada (ambas consumen GET /tramites/mis-pendientes). La Bandeja
-             es estrictamente superior — añade chip de riesgo IA (CU-43) y
-             orden por IA (CU-44). La ruta sigue accesible por URL directa. -->
-        <a routerLink="/funcionario/bandeja" routerLinkActive="active" class="nav-item" aria-label="Bandeja de Entrada">
-          <span class="nav-icon"><lucide-icon [img]="icons.bandeja" [size]="18"></lucide-icon></span>
-          <span class="nav-label">Bandeja de Entrada</span>
+        <a routerLink="/funcionario/bandeja" routerLinkActive="active" class="topnav-link" (click)="onNavigate()">
+          <lucide-icon [img]="icons.bandeja" [size]="17"></lucide-icon>
+          <span>Bandeja de Entrada</span>
         </a>
-
-        <!-- Notificaciones (P1 §7: aviso cuando un trámite llega a su área, SLA, riesgo) -->
-        <a routerLink="/notificaciones" routerLinkActive="active" class="nav-item" aria-label="Notificaciones">
-          <span class="nav-icon"><lucide-icon [img]="icons.campana" [size]="18"></lucide-icon></span>
-          <span class="nav-label">Notificaciones</span>
+        <a routerLink="/notificaciones" routerLinkActive="active" class="topnav-link" (click)="onNavigate()">
+          <lucide-icon [img]="icons.campana" [size]="17"></lucide-icon>
+          <span>Notificaciones</span>
           @if (notif.noLeidas() > 0) {
-            <span class="badge rounded-pill text-bg-danger ms-auto">{{ notif.noLeidas() }}</span>
+            <span class="topnav-badge">{{ notif.noLeidas() }}</span>
           }
         </a>
-
-        <!-- P1 §7 — diagramas que le compartieron para colaborar (editor) -->
-        <a routerLink="/funcionario/diagramas/compartidos" routerLinkActive="active" class="nav-item" aria-label="Compartidos conmigo">
-          <span class="nav-icon"><lucide-icon [img]="icons.compartidos" [size]="18"></lucide-icon></span>
-          <span class="nav-label">Compartidos conmigo</span>
+        <a routerLink="/funcionario/diagramas/compartidos" routerLinkActive="active" class="topnav-link" (click)="onNavigate()">
+          <lucide-icon [img]="icons.compartidos" [size]="17"></lucide-icon>
+          <span>Compartidos conmigo</span>
         </a>
       }
+    </nav>
 
-    } @else {
-      <!-- ── COLLAPSED: íconos planos, todos visibles ── -->
-      @for (item of visibleFlatItems(); track item.link) {
-        <a
-          [routerLink]="item.link"
-          routerLinkActive="active"
-          class="nav-item"
-          [attr.aria-label]="item.label"
-          [title]="item.label"
-        >
-          <span class="nav-icon"><lucide-icon [img]="item.icon" [size]="18"></lucide-icon></span>
-        </a>
-      }
-    }
-  </nav>
+    <!-- ── Lado derecho: tema + usuario ───────────────────── -->
+    <div class="topnav-right">
+      <button
+        type="button"
+        class="topnav-icon-btn"
+        (click)="theme.toggle()"
+        [title]="theme.mode() === 'dark' ? 'Modo claro' : 'Modo oscuro'"
+        aria-label="Cambiar tema"
+      >
+        <lucide-icon [img]="theme.mode() === 'dark' ? icons.sun : icons.moon" [size]="18"></lucide-icon>
+      </button>
 
-  <!-- ── Footer: usuario + acciones (desplegable) ────────── -->
-  <footer class="foot">
-
-    @if (!collapsed()) {
-      <!-- Sección de usuario desplegable -->
-      <div class="nav-group user-group">
-        <button
-          type="button"
-          class="nav-group-header user-group-header"
-          [class.open]="userExpanded()"
-          (click)="toggleUser()"
-          aria-label="Cuenta"
-        >
-          @if (auth.getUsuario(); as u) {
+      @if (auth.getUsuario(); as u) {
+        <div class="topnav-dd topnav-user" [class.open]="openMenu() === 'user'">
+          <button type="button" class="topnav-user-btn" (click)="toggleMenu('user', $event)">
             <span class="user-avatar" aria-hidden="true">{{ u.nombre.charAt(0) }}</span>
-            <div class="user-meta">
+            <span class="user-meta">
               <span class="user-name">{{ u.nombre }}</span>
               <span class="user-role">{{ u.rol }}</span>
-            </div>
-          }
-          <lucide-icon
-            class="group-chevron"
-            [class.rotated]="userExpanded()"
-            [img]="icons.chevronDown"
-            [size]="14"
-          ></lucide-icon>
-        </button>
-
-        <div class="nav-group-items" [class.open]="userExpanded()">
-          <button
-            type="button"
-            class="nav-item nav-sub-item foot-action-item"
-            (click)="theme.toggle()"
-            [title]="theme.mode() === 'dark' ? 'Modo claro' : 'Modo oscuro'"
-            aria-label="Cambiar tema"
-          >
-            <span class="nav-icon">
-              <lucide-icon [img]="theme.mode() === 'dark' ? icons.sun : icons.moon" [size]="16"></lucide-icon>
             </span>
-            <span class="nav-label">{{ theme.mode() === 'dark' ? 'Modo claro' : 'Modo oscuro' }}</span>
+            <lucide-icon class="caret" [class.rotated]="openMenu() === 'user'" [img]="icons.chevronDown" [size]="14"></lucide-icon>
           </button>
-
-          <button
-            type="button"
-            class="nav-item nav-sub-item foot-action-item danger"
-            (click)="auth.logout()"
-            aria-label="Cerrar sesión"
-          >
-            <span class="nav-icon"><lucide-icon [img]="icons.logout" [size]="16"></lucide-icon></span>
-            <span class="nav-label">Cerrar sesión</span>
-          </button>
-        </div>
-      </div>
-
-    } @else {
-      <!-- Collapsed footer: avatar + iconos de acción -->
-      @if (auth.getUsuario(); as u) {
-        <div class="user-card collapsed">
-          <span class="user-avatar" [title]="u.nombre + ' · ' + u.rol">{{ u.nombre.charAt(0) }}</span>
+          <div class="topnav-dd-panel topnav-dd-panel-right">
+            <button type="button" class="topnav-dd-item" (click)="theme.toggle()">
+              <lucide-icon [img]="theme.mode() === 'dark' ? icons.sun : icons.moon" [size]="16"></lucide-icon>
+              <span>{{ theme.mode() === 'dark' ? 'Modo claro' : 'Modo oscuro' }}</span>
+            </button>
+            <a routerLink="/notificaciones" class="topnav-dd-item" (click)="onNavigate()">
+              <lucide-icon [img]="icons.campana" [size]="16"></lucide-icon>
+              <span>Notificaciones</span>
+            </a>
+            <div class="topnav-dd-sep"></div>
+            <button type="button" class="topnav-dd-item danger" (click)="auth.logout()">
+              <lucide-icon [img]="icons.logout" [size]="16"></lucide-icon>
+              <span>Cerrar sesión</span>
+            </button>
+          </div>
         </div>
       }
-      <div class="foot-actions">
-        <button
-          type="button"
-          class="foot-btn"
-          (click)="theme.toggle()"
-          [title]="theme.mode() === 'dark' ? 'Modo claro' : 'Modo oscuro'"
-          aria-label="Cambiar tema"
-        >
-          <lucide-icon [img]="theme.mode() === 'dark' ? icons.sun : icons.moon" [size]="16"></lucide-icon>
-        </button>
-        <button
-          type="button"
-          class="foot-btn danger"
-          (click)="auth.logout()"
-          aria-label="Cerrar sesión"
-          title="Cerrar sesión"
-        >
-          <lucide-icon [img]="icons.logout" [size]="16"></lucide-icon>
-        </button>
-      </div>
-    }
-
-    <button
-      type="button"
-      class="collapse-btn"
-      (click)="toggle()"
-      [attr.aria-label]="collapsed() ? 'Expandir menú' : 'Colapsar menú'"
-    >
-      <lucide-icon [img]="collapsed() ? icons.chevronRight : icons.chevronLeft" [size]="14"></lucide-icon>
-    </button>
-  </footer>
-</aside>
+    </div>
+  </div>
+</header>

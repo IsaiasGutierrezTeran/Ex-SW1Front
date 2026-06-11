@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  HostListener,
   inject,
   PLATFORM_ID,
   signal,
@@ -149,6 +150,55 @@ export class SidebarComponent {
 
   // Sección usuario (tema + logout) también desplegable
   readonly userExpanded = signal(true);
+
+  // Desplegables de la barra superior (admin)
+  readonly menuGroups = [
+    { key: 'gestion',  group: this.groupGestion },
+    { key: 'flujos',   group: this.groupFlujos },
+    { key: 'analisis', group: this.groupAnalisis },
+  ];
+
+  // ── Barra superior: control de desplegables y menú móvil ────
+  /** Clave del menú abierto: 'gestion' | 'flujos' | 'analisis' | 'user' | null */
+  readonly openMenu = signal<string | null>(null);
+  readonly mobileOpen = signal(false);
+
+  /** Link de la marca según el rol. */
+  readonly brandLink = computed(() =>
+    this.role() === 'funcionario' ? '/funcionario/bandeja' : '/admin/dashboard',
+  );
+
+  toggleMenu(key: string, ev?: Event): void {
+    ev?.stopPropagation();
+    this.openMenu.update((cur) => (cur === key ? null : key));
+  }
+
+  closeMenus(): void {
+    this.openMenu.set(null);
+  }
+
+  toggleMobile(): void {
+    this.mobileOpen.update((v) => !v);
+    this.openMenu.set(null);
+  }
+
+  /** Al navegar (click en un enlace) cierra desplegables y el panel móvil. */
+  onNavigate(): void {
+    this.openMenu.set(null);
+    this.mobileOpen.set(false);
+  }
+
+  /** Click fuera de la barra → cierra cualquier desplegable abierto. */
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    if (this.openMenu() !== null) this.openMenu.set(null);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.openMenu.set(null);
+    this.mobileOpen.set(false);
+  }
 
   // Lista plana — usada solo en collapsed para mostrar todos los íconos
   readonly flatItems: NavItem[] = [

@@ -743,11 +743,7 @@ small, .small { color: inherit; }
   min-height: 100dvh;
 }
 .app-shell.with-sidebar {
-  padding-left: var(--cre-sidebar-w);
-  transition: padding-left 220ms cubic-bezier(0.32, 0.72, 0.4, 1);
-}
-app-sidebar:has(.cre-sidebar.collapsed) ~ .app-shell.with-sidebar {
-  padding-left: var(--cre-sidebar-w-collapsed);
+  padding-top: var(--cre-topbar-h);
 }
 .app-shell-inner {
   padding: 1.75rem 2rem;
@@ -755,10 +751,6 @@ app-sidebar:has(.cre-sidebar.collapsed) ~ .app-shell.with-sidebar {
   margin: 0 auto;
 }
 @media (max-width: 768px) {
-  .app-shell.with-sidebar,
-  app-sidebar:has(.cre-sidebar.collapsed) ~ .app-shell.with-sidebar {
-    padding-left: 0;
-  }
   .app-shell-inner { padding: 1rem; }
 }
 

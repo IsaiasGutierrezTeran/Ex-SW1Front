@@ -1,352 +1,378 @@
+/* ==========================================================================
+   Barra de navegación SUPERIOR (horizontal) con desplegables.
+   Reemplaza la antigua barra lateral. Usa tokens --cre-* (claro/oscuro).
+   ========================================================================== */
 :host {
-  display: contents;
+  display: block;
 }
 
-.cre-sidebar {
+.topnav {
   position: fixed;
-  inset: 0 auto 0 0;
-  width: var(--cre-sidebar-w);
-  background: var(--cre-bg-elev);
-  border-right: 1px solid var(--cre-border);
-  display: flex;
-  flex-direction: column;
-  z-index: 30;
-  transition: width 220ms cubic-bezier(0.32, 0.72, 0.4, 1);
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--cre-topbar-h);
+  z-index: 1030;
+  background: color-mix(in srgb, var(--cre-surface) 88%, transparent);
+  -webkit-backdrop-filter: saturate(160%) blur(12px);
+  backdrop-filter: saturate(160%) blur(12px);
+  border-bottom: 1px solid var(--cre-border);
   box-shadow: var(--cre-shadow-sm);
 }
-.cre-sidebar.collapsed {
-  width: var(--cre-sidebar-w-collapsed);
-}
 
-/* ── Brand ───────────────────────────────────────────────── */
-.brand {
+.topnav-inner {
+  height: 100%;
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.1rem;
-  border-bottom: 1px solid var(--cre-border);
-  min-height: var(--cre-topbar-h);
+  gap: 0.5rem;
+}
+
+/* ── Marca ─────────────────────────────────────────────── */
+.topnav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  color: var(--cre-text);
   flex-shrink: 0;
+  padding-right: 0.75rem;
+  margin-right: 0.25rem;
 }
 .brand-mark {
-  width: 36px;
-  height: 36px;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
   border-radius: var(--cre-radius-md);
-  background: linear-gradient(135deg, var(--cre-brand-600), var(--cre-energy-500));
+  background: var(--cre-gradient-brand);
   color: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow: var(--cre-shadow-md);
+  box-shadow: var(--cre-shadow-signal);
 }
 .brand-text {
   display: flex;
   flex-direction: column;
-  line-height: 1.1;
-  overflow: hidden;
+  line-height: 1.05;
 }
 .brand-title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--cre-text);
+  font-weight: 800;
+  font-size: 1.05rem;
   letter-spacing: -0.01em;
 }
 .brand-subtitle {
-  font-size: 0.7rem;
-  color: var(--cre-text-muted);
+  font-size: 0.66rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
+  color: var(--cre-text-subtle);
+  font-weight: 600;
 }
 
-/* ── Nav ─────────────────────────────────────────────────── */
-.nav {
-  flex: 1;
-  /* min-height: 0 es imprescindible: sin él, este flex item no se encoge por
-     debajo de su contenido y overflow-y NO hace scroll — el menú se desborda y
-     empuja los grupos de abajo fuera de vista en pantallas no muy altas. */
-  min-height: 0;
-  padding: 0.75rem 0.6rem;
-  display: flex;
-  flex-direction: column;
-  /* nowrap es CLAVE: la clase .nav colisiona con la de Bootstrap, que trae
-     flex-wrap:wrap. Con flex-direction:column eso hace que, al no caber en alto,
-     los grupos se envuelvan a una 2ª COLUMNA hacia la derecha (quedando ocultos
-     tras overflow-x:hidden). Forzamos nowrap para que el menú fluya/scrollee
-     siempre en vertical. */
-  flex-wrap: nowrap;
-  gap: 2px;
-  /* Solo scroll vertical: al activar overflow-y el navegador habilita también el
-     eje X, mostrando una barra horizontal indeseada. La forzamos a oculta para
-     que el menú solo crezca/scrollee hacia abajo. */
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-/* Ítem individual (link o botón plano) */
-.nav-item {
+/* ── Menú horizontal ───────────────────────────────────── */
+.topnav-menu {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.55rem 0.7rem;
-  border-radius: var(--cre-radius-md);
-  color: var(--cre-text-muted);
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-decoration: none;
-  transition: background 140ms ease, color 140ms ease;
-  position: relative;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  width: 100%;
-  text-align: left;
+  gap: 0.15rem;
 }
-.nav-item:hover {
-  background: var(--cre-bg-muted);
-  color: var(--cre-text);
-}
-.nav-item.active {
-  background: color-mix(in srgb, var(--cre-brand-500) 12%, transparent);
-  color: var(--cre-brand-700);
-}
-:root[data-theme='dark'] .nav-item.active {
-  color: var(--cre-brand-300);
-}
-.nav-item.active::before {
-  content: '';
-  position: absolute;
-  left: -0.6rem;
-  top: 8px;
-  bottom: 8px;
-  width: 3px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, var(--cre-brand-500), var(--cre-energy-500));
-}
-.nav-icon {
+
+.topnav-link {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 22px;
-  flex-shrink: 0;
-}
-.nav-label {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex: 1;
-}
-
-/* Sub-ítems (dentro de grupos) */
-.nav-sub-item {
-  padding-left: 2.2rem;
-  font-size: 0.825rem;
-}
-.nav-sub-item.active::before {
-  left: 0.6rem;
-}
-
-/* ── Grupos desplegables ─────────────────────────────────── */
-.nav-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.nav-group-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.55rem 0.7rem;
+  gap: 0.45rem;
+  padding: 0.5rem 0.8rem;
   border-radius: var(--cre-radius-md);
-  color: var(--cre-text-muted);
-  font-size: 0.875rem;
-  font-weight: 600;
-  border: none;
   background: transparent;
+  border: none;
+  color: var(--cre-text-muted);
+  font-weight: 600;
+  font-size: 0.9rem;
+  font-family: inherit;
+  text-decoration: none;
   cursor: pointer;
-  width: 100%;
-  text-align: left;
+  white-space: nowrap;
   transition: background 140ms ease, color 140ms ease;
 }
-.nav-group-header:hover {
+.topnav-link:hover {
   background: var(--cre-bg-muted);
   color: var(--cre-text);
 }
-.nav-group-header.open {
-  color: var(--cre-text);
+.topnav-link.active {
+  color: var(--cre-brand-600);
+  background: color-mix(in srgb, var(--cre-brand-500) 12%, transparent);
 }
-
-.group-chevron {
-  margin-left: auto;
-  flex-shrink: 0;
-  color: var(--cre-text-subtle);
-  transition: transform 220ms cubic-bezier(0.32, 0.72, 0.4, 1);
+.topnav-link .caret {
+  transition: transform 160ms ease;
+  opacity: 0.7;
 }
-.group-chevron.rotated {
+.topnav-link .caret.rotated {
   transform: rotate(180deg);
 }
 
-/* Contenedor animado de sub-ítems */
-.nav-group-items {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  overflow: hidden;
-  max-height: 0;
-  opacity: 0;
-  transition:
-    max-height 240ms cubic-bezier(0.32, 0.72, 0.4, 1),
-    opacity 180ms ease;
-}
-.nav-group-items.open {
-  max-height: 600px;
-  opacity: 1;
-}
-
-/* ── Collapsed: ítem centrado ────────────────────────────── */
-.cre-sidebar.collapsed .nav-item {
-  justify-content: center;
-  padding: 0.6rem;
-}
-.cre-sidebar.collapsed .nav-item.active::before {
-  left: 0;
-}
-
-/* ── Footer ──────────────────────────────────────────────── */
-.foot {
-  border-top: 1px solid var(--cre-border);
-  padding: 0.6rem 0.6rem 0.65rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+/* ── Desplegables ──────────────────────────────────────── */
+.topnav-dd {
   position: relative;
+}
+.topnav-dd-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 230px;
+  background: var(--cre-surface);
+  border: 1px solid var(--cre-border);
+  border-radius: var(--cre-radius-lg);
+  box-shadow: var(--cre-shadow-lg);
+  padding: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 150ms ease, transform 150ms ease, visibility 150ms;
+  z-index: 1040;
+}
+.topnav-dd-panel-right {
+  left: auto;
+  right: 0;
+}
+.topnav-dd.open > .topnav-dd-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.topnav-dd.open > .topnav-dd-toggle,
+.topnav-dd.open > .topnav-user-btn {
+  background: var(--cre-bg-muted);
+  color: var(--cre-text);
+}
+
+.topnav-dd-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--cre-radius-md);
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  color: var(--cre-text);
+  font-weight: 600;
+  font-size: 0.875rem;
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 130ms ease, color 130ms ease;
+}
+.topnav-dd-item lucide-icon {
+  color: var(--cre-text-subtle);
   flex-shrink: 0;
 }
-
-/* Grupo de usuario (desplegable en footer) */
-.user-group {
-  /* reutiliza .nav-group */
-}
-.user-group-header {
-  gap: 0.6rem;
-  padding: 0.45rem 0.7rem;
+.topnav-dd-item:hover {
   background: var(--cre-bg-muted);
-  border-radius: var(--cre-radius-md);
-  margin-bottom: 2px;
 }
-.user-group-header:hover {
-  background: color-mix(in srgb, var(--cre-brand-500) 8%, var(--cre-bg-muted) 92%);
+.topnav-dd-item.active {
+  background: color-mix(in srgb, var(--cre-brand-500) 12%, transparent);
+  color: var(--cre-brand-600);
+}
+.topnav-dd-item.active lucide-icon {
+  color: var(--cre-brand-600);
+}
+.topnav-dd-item.danger {
+  color: var(--cre-danger-600);
+}
+.topnav-dd-item.danger lucide-icon {
+  color: var(--cre-danger-500);
+}
+.topnav-dd-item.danger:hover {
+  background: color-mix(in srgb, var(--cre-danger-500) 12%, transparent);
+}
+.topnav-dd-sep {
+  height: 1px;
+  background: var(--cre-border);
+  margin: 0.3rem 0.2rem;
 }
 
-.user-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--cre-brand-500), var(--cre-brand-700));
+/* ── Badge de notificaciones ───────────────────────────── */
+.topnav-badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--cre-danger-500);
   color: #fff;
-  font-weight: 600;
-  font-size: 0.85rem;
-  display: inline-flex;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* ── Lado derecho ──────────────────────────────────────── */
+.topnav-right {
+  margin-left: auto;
+  display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+.topnav-icon-btn {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--cre-border);
+  color: var(--cre-text-muted);
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+.topnav-icon-btn:hover {
+  background: var(--cre-bg-muted);
+  color: var(--cre-text);
+  border-color: var(--cre-border-strong);
+}
+
+.topnav-user-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.3rem 0.6rem 0.3rem 0.35rem;
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid var(--cre-border);
+  color: var(--cre-text);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+.topnav-user-btn:hover {
+  background: var(--cre-bg-muted);
+  border-color: var(--cre-border-strong);
+}
+.user-avatar {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--cre-gradient-brand);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
   flex-shrink: 0;
 }
 .user-meta {
   display: flex;
   flex-direction: column;
-  line-height: 1.2;
-  overflow: hidden;
-  flex: 1;
+  line-height: 1.1;
+  text-align: left;
 }
 .user-name {
+  font-weight: 700;
   font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--cre-text);
-  white-space: nowrap;
+  max-width: 140px;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .user-role {
   font-size: 0.68rem;
-  color: var(--cre-text-muted);
+  color: var(--cre-text-subtle);
+}
+.topnav-user-btn .caret {
+  opacity: 0.7;
+  transition: transform 160ms ease;
+}
+.topnav-user-btn .caret.rotated {
+  transform: rotate(180deg);
 }
 
-/* Botones dentro del dropdown de usuario */
-.foot-action-item {
-  font-size: 0.825rem;
-}
-.foot-action-item.danger {
-  color: var(--cre-danger-600);
-}
-.foot-action-item.danger:hover {
-  background: color-mix(in srgb, var(--cre-danger-500) 10%, transparent);
-}
-
-/* Collapsed footer */
-.user-card.collapsed {
-  display: flex;
-  justify-content: center;
-  padding: 0.3rem 0 0.2rem;
-}
-.foot-actions {
-  display: flex;
+/* ── Hamburguesa (oculta en escritorio) ────────────────── */
+.topnav-burger {
+  display: none;
   flex-direction: column;
-  gap: 2px;
-  padding-top: 2px;
-}
-.foot-btn {
-  display: inline-flex;
-  align-items: center;
   justify-content: center;
-  padding: 0.5rem;
-  background: transparent;
-  border: none;
+  gap: 5px;
+  width: 42px;
+  height: 42px;
+  margin-left: auto;
+  border: 1px solid var(--cre-border);
   border-radius: var(--cre-radius-md);
-  color: var(--cre-text-muted);
+  background: transparent;
   cursor: pointer;
-  transition: background 140ms ease, color 140ms ease;
-  width: 100%;
+  padding: 0 10px;
 }
-.foot-btn:hover {
-  background: var(--cre-bg-muted);
-  color: var(--cre-text);
+.topnav-burger span {
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--cre-text);
+  transition: transform 200ms ease, opacity 200ms ease;
 }
-.foot-btn.danger:hover {
-  background: color-mix(in srgb, var(--cre-danger-500) 12%, transparent);
-  color: var(--cre-danger-600);
+.topnav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.topnav-burger.open span:nth-child(2) { opacity: 0; }
+.topnav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Responsive: menú colapsa en panel desplegable ─────── */
+@media (max-width: 992px) {
+  .topnav-burger { display: flex; }
+  .topnav-right { margin-left: 0; order: 3; }
+
+  .topnav-menu {
+    position: fixed;
+    top: var(--cre-topbar-h);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+    padding: 0.75rem 1rem 1rem;
+    background: var(--cre-surface);
+    border-bottom: 1px solid var(--cre-border);
+    box-shadow: var(--cre-shadow-lg);
+    max-height: calc(100dvh - var(--cre-topbar-h));
+    overflow-y: auto;
+    transform: translateY(-12px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 180ms ease, transform 180ms ease, visibility 180ms;
+  }
+  .topnav-menu.open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+  .topnav-link {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0.7rem 0.8rem;
+  }
+  /* En móvil los desplegables se muestran en cascada (relativo) */
+  .topnav-dd { width: 100%; }
+  .topnav-dd-toggle { width: 100%; }
+  .topnav-dd-panel {
+    position: static;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    padding: 0.1rem 0 0.2rem 1.6rem;
+    min-width: 0;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    display: none;
+  }
+  .topnav-dd.open > .topnav-dd-panel { display: flex; }
+  .topnav-dd-panel-right { right: auto; }
 }
 
-/* Botón colapsar/expandir */
-.collapse-btn {
-  position: absolute;
-  top: -14px;
-  right: -14px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--cre-surface);
-  border: 1px solid var(--cre-border-strong);
-  color: var(--cre-text-muted);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--cre-shadow-md);
-  transition: color 140ms ease, transform 140ms ease, border-color 140ms ease;
-}
-.collapse-btn:hover {
-  color: var(--cre-brand-600);
-  border-color: var(--cre-brand-300);
-  transform: scale(1.05);
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  .cre-sidebar {
-    transform: translateX(-100%);
-  }
-  .cre-sidebar.mobile-open {
-    transform: translateX(0);
-  }
+@media (max-width: 560px) {
+  .topnav-inner { padding: 0 0.9rem; }
+  .brand-subtitle { display: none; }
+  .user-meta { display: none; }
+  .topnav-user-btn { padding: 0.25rem; border-radius: 50%; }
+  .topnav-user-btn .caret { display: none; }
 }
