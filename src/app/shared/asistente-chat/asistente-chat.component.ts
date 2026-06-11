@@ -173,6 +173,15 @@ interface ChatMensaje {
         --ac-text: #0c1424;
         --ac-muted: #5a6b85;
       }
+      /* Modo oscuro: el chatbot toma superficies oscuras y texto claro */
+      :host-context([data-theme='dark']) {
+        --ac-surface: #0e1426;
+        --ac-body-bg: #0b1020;
+        --ac-bot-bg: #141d34;
+        --ac-bot-border: #243152;
+        --ac-text: #e8edf9;
+        --ac-muted: #9aa8c2;
+      }
 
       /* ── FAB con glow pulsante ───────────────────────────── */
       .ac-fab {

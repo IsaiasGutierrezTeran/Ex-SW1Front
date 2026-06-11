@@ -7,6 +7,12 @@
   --agente-bubble-user: #4f46e5;
   --agente-bubble-bot: #f1f5f9;
 }
+:host-context([data-theme='dark']) {
+  --agente-bg: #0e1426;
+  --agente-text: #e8edf9;
+  --agente-muted: #9aa8c2;
+  --agente-bubble-bot: #141d34;
+}
 
 .agente-fab {
   position: fixed;

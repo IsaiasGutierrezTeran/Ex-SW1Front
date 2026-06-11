@@ -149,7 +149,7 @@
                 diagrama esté publicado o activo.
               </p>
               @if (departamentosSinCalle().length === 0) {
-                <div class="cre-alert" style="background:#fff3cd;border:1px solid #ffe69c;color:#664d03;">
+                <div class="cre-alert cre-note-warn">
                   Todos los departamentos ya son calles de este diagrama.
                 </div>
               } @else {
@@ -197,7 +197,7 @@
             (click)="$event.stopPropagation()"
           >
             <div class="cre-card-body" style="padding:0">
-              <div style="background:var(--cre-primary,#3b5bdb);color:#fff;padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center">
+              <div style="background:var(--cre-brand-500);color:#fff;padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center">
                 <strong>Invitar Colaborador (CU-15)</strong>
                 <button type="button" class="cre-btn cre-btn-secondary cre-btn-sm" (click)="cerrarModalColab()" style="padding:2px 8px">×</button>
               </div>
@@ -405,7 +405,7 @@
         <div class="cre-alert cre-alert-success">{{ exito() }}</div>
       }
       @if (advertencia()) {
-        <div class="cre-alert" style="background:#fff3cd;border:1px solid #ffe69c;color:#664d03;">
+        <div class="cre-alert cre-note-warn">
           {{ advertencia() }}
         </div>
       }
@@ -427,7 +427,7 @@
         </div>
       } @else {
         @if (!editable()) {
-          <div style="background:#fff3cd;border:1px solid #ffe69c;color:#664d03;padding:.6rem 1rem;border-radius:6px;margin-bottom:.5rem;font-size:.9rem;">
+          <div class="cre-note-warn" style="padding:.6rem 1rem;border-radius:10px;margin-bottom:.5rem;font-size:.9rem;">
             @if (data.estado !== 'borrador') {
               🔒 Diagrama <strong>{{ data.estado }}</strong> — solo lectura. El estado del diagrama lo controla la política asociada (ponla en borrador para editar).
             } @else {

@@ -38,6 +38,9 @@
   --cre-energy-600: #0891b2;
   --cre-energy-700: #0e7490;
 
+  /* Alias de compatibilidad: componentes que referencian --cre-primary */
+  --cre-primary: #4f46e5;
+
   /* Alias semántico del acento (uso libre, additivo) */
   --cre-accent-400: #22d3ee;
   --cre-accent-500: #06b6d4;
@@ -354,6 +357,90 @@ h1, h2, h3, h4, h5, h6,
 small, .small { color: inherit; }
 /* Texto blanco forzado solo donde el fondo es realmente oscuro/de color */
 .text-white { color: #ffffff !important; }
+
+/* ==========================================================================
+   UTILIDADES DE BOOTSTRAP THEME-AWARE — cascada global, sin tocar el HTML.
+   Hace que bg-white/bg-light/text-dark/table-light/dropdowns/modales/alerts
+   respeten el tema claro/oscuro. Resuelve el grueso de los problemas de
+   contraste de TODAS las pantallas en una sola pasada.
+   ========================================================================== */
+.bg-white            { background-color: var(--cre-surface) !important; }
+.bg-light            { background-color: var(--cre-bg-muted) !important; }
+.bg-body             { background-color: var(--cre-bg) !important; }
+.bg-body-secondary   { background-color: var(--cre-bg-muted) !important; }
+.bg-body-tertiary    { background-color: var(--cre-surface-2) !important; }
+.text-dark, .text-black { color: var(--cre-text) !important; }
+.text-white-50       { color: color-mix(in srgb, var(--cre-text) 55%, transparent) !important; }
+.border, .border-top, .border-end, .border-bottom, .border-start,
+.border-light        { border-color: var(--cre-border) !important; }
+
+/* Cabeceras de tabla "light" → neutras y legibles en ambos modos */
+.table-light, .table-light > th, .table-light > td,
+.table > thead.table-light, .table > thead.table-light th {
+  background-color: transparent !important;
+  color: var(--cre-text-subtle) !important;
+  border-color: var(--cre-border-strong) !important;
+}
+
+/* Menús desplegables */
+.dropdown-menu { background-color: var(--cre-surface); border-color: var(--cre-border); color: var(--cre-text); box-shadow: var(--cre-shadow-lg); border-radius: var(--cre-radius-md); }
+.dropdown-item { color: var(--cre-text); }
+.dropdown-item:hover, .dropdown-item:focus { background-color: var(--cre-bg-muted); color: var(--cre-text); }
+.dropdown-item.active, .dropdown-item:active { background-color: var(--cre-brand-500); color: #fff; }
+.dropdown-divider { border-color: var(--cre-border); }
+.dropdown-header { color: var(--cre-text-subtle); }
+
+/* List groups */
+.list-group-item { background-color: var(--cre-surface); border-color: var(--cre-border); color: var(--cre-text); }
+.list-group-item-action:hover { background-color: var(--cre-bg-muted); }
+
+/* Modales / offcanvas */
+.modal-content { background-color: var(--cre-surface); border: 1px solid var(--cre-border); color: var(--cre-text); border-radius: var(--cre-radius-lg); }
+.modal-header, .modal-footer { border-color: var(--cre-border); }
+.offcanvas { background-color: var(--cre-surface); color: var(--cre-text); }
+.modal-backdrop.show { opacity: 0.55; }
+
+/* Tabs / paginación / acordeón / toast */
+.nav-tabs { border-color: var(--cre-border); }
+.nav-tabs .nav-link { color: var(--cre-text-muted); border-radius: var(--cre-radius-sm) var(--cre-radius-sm) 0 0; }
+.nav-tabs .nav-link:hover { border-color: var(--cre-border); color: var(--cre-text); }
+.nav-tabs .nav-link.active { background-color: var(--cre-surface); border-color: var(--cre-border) var(--cre-border) var(--cre-surface); color: var(--cre-text); }
+.page-link { background-color: var(--cre-surface); border-color: var(--cre-border); color: var(--cre-text); }
+.page-link:hover { background-color: var(--cre-bg-muted); color: var(--cre-text); }
+.page-item.active .page-link { background-color: var(--cre-brand-500); border-color: var(--cre-brand-500); color: #fff; }
+.accordion-item { background-color: var(--cre-surface); border-color: var(--cre-border); color: var(--cre-text); }
+.accordion-button { background-color: var(--cre-surface); color: var(--cre-text); }
+.accordion-button:not(.collapsed) { background-color: var(--cre-bg-muted); color: var(--cre-text); box-shadow: none; }
+.accordion-button::after { filter: var(--cre-accordion-icon-filter, none); }
+:root[data-theme='dark'] .accordion-button::after { filter: invert(0.85); }
+.toast { background-color: var(--cre-surface); border-color: var(--cre-border); color: var(--cre-text); }
+.toast-header { background-color: var(--cre-surface-2); color: var(--cre-text); border-color: var(--cre-border); }
+
+/* Alertas — tintado suave en ambos modos (Bootstrap las hace claras siempre) */
+.alert { border-radius: var(--cre-radius-md); border-width: 1px; }
+.alert-success { background: color-mix(in srgb, var(--cre-success-500) 13%, var(--cre-surface)); border-color: color-mix(in srgb, var(--cre-success-500) 30%, transparent); color: var(--cre-success-600); }
+.alert-danger  { background: color-mix(in srgb, var(--cre-danger-500) 13%, var(--cre-surface));  border-color: color-mix(in srgb, var(--cre-danger-500) 30%, transparent);  color: var(--cre-danger-600); }
+.alert-warning { background: color-mix(in srgb, var(--cre-warning-500) 15%, var(--cre-surface)); border-color: color-mix(in srgb, var(--cre-warning-500) 32%, transparent); color: #b45309; }
+.alert-info    { background: color-mix(in srgb, var(--cre-info-500) 13%, var(--cre-surface));    border-color: color-mix(in srgb, var(--cre-info-500) 30%, transparent);    color: #0e7490; }
+.alert-primary, .alert-secondary { background: var(--cre-bg-muted); border-color: var(--cre-border); color: var(--cre-text); }
+:root[data-theme='dark'] .alert-success { color: #34d399; }
+:root[data-theme='dark'] .alert-danger  { color: #fb7185; }
+:root[data-theme='dark'] .alert-warning { color: #fbbf24; }
+:root[data-theme='dark'] .alert-info    { color: #22d3ee; }
+
+/* Nota/aviso ámbar reutilizable (reemplaza estilos inline #fff3cd hardcodeados) */
+.cre-note-warn {
+  background: color-mix(in srgb, var(--cre-warning-500) 15%, var(--cre-surface)) !important;
+  border: 1px solid color-mix(in srgb, var(--cre-warning-500) 32%, transparent) !important;
+  color: #b45309 !important;
+  border-radius: var(--cre-radius-md);
+}
+:root[data-theme='dark'] .cre-note-warn { color: #fbbf24 !important; }
+
+/* Sombras adaptadas: en modo oscuro las sombras claras no se ven; usar tokens */
+:root[data-theme='dark'] .shadow-sm { box-shadow: var(--cre-shadow-sm) !important; }
+:root[data-theme='dark'] .shadow    { box-shadow: var(--cre-shadow-md) !important; }
+:root[data-theme='dark'] .shadow-lg { box-shadow: var(--cre-shadow-lg) !important; }
 .card-body { padding: 1.15rem 1.2rem; }
 .card-footer {
   background: var(--cre-surface-2) !important;

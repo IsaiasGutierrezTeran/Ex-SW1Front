@@ -118,7 +118,7 @@
   padding: 0.4rem 0.6rem;
   border: 1px solid var(--cre-border, #e9ecef);
   border-radius: 6px;
-  background: #fff;
+  background: var(--cre-surface);
   margin-top: 0.25rem;
 }
 
@@ -173,7 +173,7 @@
   align-items: center;
   gap: 0.55rem;
   padding: 0.45rem 0.55rem;
-  background: #fff;
+  background: var(--cre-surface);
   border: 1px solid var(--cre-border, #e9ecef);
   border-radius: 6px;
   cursor: grab;
@@ -218,14 +218,14 @@
   flex-direction: column;
   gap: 0.35rem;
   padding: 0.75rem;
-  background: #fff;
+  background: var(--cre-surface);
   border: 1.5px dashed var(--cre-border, #ced4da);
   border-radius: 8px;
   min-height: 360px;
   transition: background-color 0.12s ease, border-color 0.12s ease;
 }
 .fd-canvas--hover {
-  background: color-mix(in srgb, var(--cre-primary, #3b5bdb) 4%, #fff);
+  background: color-mix(in srgb, var(--cre-brand-500) 8%, var(--cre-surface));
   border-color: var(--cre-primary, #3b5bdb);
 }
 .fd-canvas-titulo {
@@ -260,9 +260,9 @@
   cursor: pointer;
   transition: border-color 0.12s ease, background-color 0.12s ease;
 }
-.fd-canvas-campo:hover { background: #fff; border-color: var(--cre-border, #e9ecef); }
+.fd-canvas-campo:hover { background: var(--cre-surface); border-color: var(--cre-border, #e9ecef); }
 .fd-canvas-campo--sel {
-  background: #fff;
+  background: var(--cre-surface);
   border-color: var(--cre-primary, #3b5bdb);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--cre-primary, #3b5bdb) 18%, transparent);
 }
@@ -279,7 +279,7 @@
 .fd-canvas-campo-tipo {
   font-weight: 600;
   color: var(--cre-text, #212529);
-  background: #fff;
+  background: var(--cre-surface);
   padding: 1px 6px;
   border-radius: 4px;
   border: 1px solid var(--cre-border, #e9ecef);
@@ -343,7 +343,7 @@
 .fd-icon-btn {
   width: 26px; height: 26px;
   border: 1px solid var(--cre-border, #ced4da);
-  background: #fff;
+  background: var(--cre-surface);
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.75rem;
