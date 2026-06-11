@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ReportesService } from '../../core/services/reportes.service';
 import { mensajeAmigable } from '../../core/utils/error-messages';
@@ -21,6 +21,22 @@ export class HistorialTramitesComponent {
   readonly filtroEstado = signal('');
   readonly filtroDesde = signal('');
   readonly filtroHasta = signal('');
+
+  // Búsqueda libre (client-side) por código, cliente o política
+  readonly busqueda = signal('');
+  readonly tramitesFiltrados = computed(() => {
+    const q = this.busqueda().trim().toLowerCase();
+    if (!q) return this.tramites();
+    return this.tramites().filter((t) =>
+      [t.codigo, t.clienteNombre, t.clienteId, t.politicaNombre, t.politicaId, t.estadoActual]
+        .filter((v) => v != null)
+        .some((v) => String(v).toLowerCase().includes(q)),
+    );
+  });
+
+  setBusqueda(ev: Event): void {
+    this.busqueda.set((ev.target as HTMLInputElement).value);
+  }
 
   readonly estados = [
     { valor: 'En curso',   label: 'En curso' },
