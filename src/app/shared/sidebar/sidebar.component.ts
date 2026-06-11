@@ -88,7 +88,7 @@ export class SidebarComponent {
     chevronRight: ChevronRight    as LucideIconData,
     chevronDown:  ChevronDown     as LucideIconData,
     logout:       LogOut          as LucideIconData,
-    brand:        Zap             as LucideIconData,
+    brand:        BookOpen        as LucideIconData,
     sun:          Sun             as LucideIconData,
     moon:         Moon            as LucideIconData,
     settings:     Settings        as LucideIconData,
