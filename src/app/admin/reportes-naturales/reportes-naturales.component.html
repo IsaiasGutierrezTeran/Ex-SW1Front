@@ -8,7 +8,6 @@
     </div>
   </div>
 
-  <!-- Caja de consulta -->
   <div class="card border-0 shadow-sm mb-3">
     <div class="card-body">
       <label for="consultaTxt" class="form-label fw-semibold">Tu consulta</label>
@@ -41,7 +40,6 @@
         }
       </div>
 
-      <!-- Dictar la consulta por voz (la transcripción cae en el campo de arriba) -->
       <div class="mt-2 d-flex align-items-center gap-2 flex-wrap">
         <span class="small text-muted">o díctala:</span>
         <app-grabador-voz (audioGrabado)="onAudioReporte($event)" />
@@ -72,7 +70,6 @@
     <div class="alert alert-danger" role="alert">{{ error() }}</div>
   }
 
-  <!-- Resultado -->
   @if (resultado(); as r) {
     <div class="card border-0 shadow-sm">
       <div class="card-header bg-white d-flex justify-content-between align-items-center">
@@ -95,7 +92,6 @@
         </div>
       </div>
 
-      <!-- Gráfico (reportes de conteo/agrupación) -->
       @if (esConteo() && chart().length) {
         <div class="card-body border-bottom">
           <h2 class="h6 text-muted mb-3">Gráfico</h2>
@@ -138,7 +134,6 @@
         </div>
       }
 
-      <!-- Pipeline generado por la IA (colapsable / muestra al final) -->
       <details class="card-footer bg-white small text-muted">
         <summary class="text-decoration-underline" style="cursor: pointer;">
           Pipeline MongoDB generado (auditoría)

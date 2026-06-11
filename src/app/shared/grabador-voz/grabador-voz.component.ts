@@ -10,16 +10,6 @@ import {
   signal,
 } from '@angular/core';
 
-/**
- * Widget reutilizable para grabar voz vía `MediaRecorder` (CU-39).
- *
- * - Pide permiso de micrófono al primer click en "Grabar".
- * - Emite el `Blob` por el output `(audioGrabado)` cuando termina.
- * - Bloqueado en SSR (sin `navigator.mediaDevices`).
- *
- * Uso:
- *   <app-grabador-voz (audioGrabado)="onAudio($event)" />
- */
 @Component({
   selector: 'app-grabador-voz',
   imports: [],
@@ -61,7 +51,6 @@ export class GrabadorVozComponent implements OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
 
-  /** Emite el blob de audio cuando termina la grabación. */
   readonly audioGrabado = output<Blob>();
 
   readonly estado = signal<'inactivo' | 'pidiendo-permiso' | 'grabando' | 'subiendo'>(
@@ -97,7 +86,6 @@ export class GrabadorVozComponent implements OnDestroy {
         if (ev.data && ev.data.size > 0) this.chunks.push(ev.data);
       };
       this.recorder.onstop = () => {
-        // Detener los tracks para liberar el micrófono / quitar el indicador del navegador
         stream.getTracks().forEach((t) => t.stop());
         if (this.chunks.length === 0) {
           this.estado.set('inactivo');
@@ -132,12 +120,9 @@ export class GrabadorVozComponent implements OnDestroy {
     }
     try {
       this.recorder?.stop();
-    } catch {
-      // ignore
-    }
+    } catch {}
   }
 
-  /** Llamado desde el padre cuando termina de procesar el upload. */
   liberar(): void {
     this.estado.set('inactivo');
     this.duracion.set(0);
@@ -157,8 +142,6 @@ export class GrabadorVozComponent implements OnDestroy {
     if (this.timerId) clearInterval(this.timerId);
     try {
       if (this.recorder?.state === 'recording') this.recorder.stop();
-    } catch {
-      // ignore
-    }
+    } catch {}
   }
 }

@@ -11,12 +11,6 @@ interface Promedio {
   muestras: number;
 }
 
-/**
- * P1 §7 — Dashboard de monitoreo en tiempo real del administrador:
- * trámites por estado (+activos/cerrados), tiempo promedio de atención por
- * departamento y por política, y departamentos con mayor carga.
- * (Los cuellos de botella tienen su propia vista en /admin/metricas.)
- */
 @Component({
   selector: 'app-dashboard',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,7 +31,6 @@ interface Promedio {
       }
 
       @if (data(); as d) {
-        <!-- Tarjetas de totales -->
         <div class="row g-3 mb-3">
           <div class="col-sm-4">
             <div class="card border-0 shadow-sm text-center">
@@ -66,7 +59,6 @@ interface Promedio {
         </div>
 
         <div class="row g-3">
-          <!-- Trámites por estado -->
           <div class="col-lg-6">
             <div class="card border-0 shadow-sm h-100">
               <div class="card-header bg-white fw-semibold">Trámites por estado</div>
@@ -86,7 +78,6 @@ interface Promedio {
             </div>
           </div>
 
-          <!-- Carga por departamento -->
           <div class="col-lg-6">
             <div class="card border-0 shadow-sm h-100">
               <div class="card-header bg-white fw-semibold">Carga actual por departamento</div>
@@ -106,7 +97,6 @@ interface Promedio {
             </div>
           </div>
 
-          <!-- Promedio por departamento -->
           <div class="col-lg-6">
             <div class="card border-0 shadow-sm h-100">
               <div class="card-header bg-white fw-semibold">Tiempo promedio por departamento (h)</div>
@@ -123,7 +113,6 @@ interface Promedio {
             </div>
           </div>
 
-          <!-- Promedio por política -->
           <div class="col-lg-6">
             <div class="card border-0 shadow-sm h-100">
               <div class="card-header bg-white fw-semibold">Tiempo promedio por política (h)</div>
@@ -166,7 +155,6 @@ export class DashboardComponent {
     });
   }
 
-  /** Normaliza una lista {nombre,total} a barras con % relativo al máximo. */
   barras(lista: Conteo[] | undefined): (Conteo & { pct: number })[] {
     const l = lista ?? [];
     const max = Math.max(1, ...l.map((x) => x.total));

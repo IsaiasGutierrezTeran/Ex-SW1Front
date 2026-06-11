@@ -49,7 +49,6 @@ import {
 } from './lane-helpers';
 import { defaultSize, registerCreShapes, shapeFromTipo } from './shapes';
 
-// Tipo opaco — no importamos X6 en top-level (SSR safe)
 type AnyGraph = unknown & {
   dispose(): void;
   fromJSON(data: unknown): void;
@@ -96,7 +95,6 @@ export interface EdgeCreatedPayload {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DiagramCanvasComponent {
-  // ── Inputs ─────────────────────────────────────────────
   readonly nodos = input<NodoDiagrama[]>([]);
   readonly transiciones = input<FlujoTransicion[]>([]);
   readonly swimlanes = input<string[]>(['ATC', 'TEC', 'LEG', 'OPE']);
@@ -105,7 +103,6 @@ export class DiagramCanvasComponent {
   readonly readonly = input<boolean>(false);
   readonly highlightNodoId = input<string | null>(null);
 
-  // ── Outputs ────────────────────────────────────────────
   readonly nodoCreated = output<NodoCreatedPayload>();
   readonly nodoMoved = output<NodoMovedPayload>();
   readonly edgeCreated = output<EdgeCreatedPayload>();
@@ -115,18 +112,12 @@ export class DiagramCanvasComponent {
   readonly createDepartamento = output<void>();
   readonly createActividad = output<void>();
 
-  // ── Refs ───────────────────────────────────────────────
   protected readonly canvasRef = viewChild.required<ElementRef<HTMLDivElement>>('canvas');
   protected readonly minimapRef = viewChild.required<ElementRef<HTMLDivElement>>('minimap');
 
-  // ── State ──────────────────────────────────────────────
   protected readonly ready = signal(false);
   protected readonly zoomLevel = signal(1);
   protected readonly paletteCollapsed = signal(false);
-  // Modos de cursor:
-  //   move    → mover nodos (cruz con flechas)
-  //   pan     → arrastrar el lienzo (mano)
-  //   connect → solo permite conectar enlaces entre nodos (puntero)
   protected readonly cursorMode = signal<'move' | 'pan' | 'connect'>('move');
   protected readonly contextMenu = signal<{
     x: number; y: number; backendId: string; cellType: 'node' | 'edge';
@@ -177,9 +168,6 @@ export class DiagramCanvasComponent {
       }
     });
 
-    // Redibuja las calles cuando cambia el input de swimlanes (p. ej. al agregar
-    // una calle a un diagrama existente). Hay que volver a colocar los nodos
-    // porque su X/calle se calcula a partir del índice de la swimlane.
     effect(() => {
       const _lanes = this.swimlanes();
       if (this.ready()) {
@@ -188,7 +176,6 @@ export class DiagramCanvasComponent {
       }
     });
 
-    // Sincroniza el modo del cursor con la configuración de panning de X6
     effect(() => {
       const mode = this.cursorMode();
       const g = this.graph as unknown as {
@@ -206,9 +193,6 @@ export class DiagramCanvasComponent {
     });
   }
 
-  // ────────────────────────────────────────────────────────
-  // Init
-  // ────────────────────────────────────────────────────────
   private async initGraph(): Promise<void> {
     const [{ Graph }, { MiniMap }, { Snapline }, { Selection }, { Keyboard }, { History }] =
       await Promise.all([
@@ -237,9 +221,7 @@ export class DiagramCanvasComponent {
           { color: '#cbd5e1', thickness: 1, factor: 4 },
         ],
       },
-      // Pan SOLO con botón derecho (la rueda queda libre para zoom)
       panning: { enabled: true, eventTypes: ['rightMouseDown'] },
-      // Zoom con la rueda del ratón sin necesidad de Ctrl
       mousewheel: {
         enabled: true,
         zoomAtMousePosition: true,
@@ -247,10 +229,7 @@ export class DiagramCanvasComponent {
         minScale: 0.4,
         maxScale: 3,
       },
-      // SNAP-TO-GRID al mover: cada nodo se ajusta a la cuadrícula (alinear fácil)
       translating: { restrict: false },
-      // Cell-aware: las decoraciones jamás son interactivas; el resto depende
-      // del modo del cursor (move / pan / connect).
       interacting: (cellView: { cell: { getData(): { _decoration?: boolean } | null } }) => {
         const data = cellView?.cell?.getData?.() ?? {};
         if ((data as { _decoration?: boolean })._decoration) {
@@ -274,7 +253,6 @@ export class DiagramCanvasComponent {
         if (mode === 'connect') {
           return { nodeMovable: false, edgeMovable: false, magnetConnectable: true, edgeLabelMovable: false };
         }
-        // mode === 'move'
         return { nodeMovable: true, edgeMovable: true, edgeLabelMovable: true, magnetConnectable: false };
       },
       connecting: {
@@ -303,7 +281,6 @@ export class DiagramCanvasComponent {
     }) as unknown as AnyGraph;
 
     if (!isReadonly) {
-      // Snapline: muestra guías cuando un nodo se alinea con otro
       graph.use(new Snapline({ enabled: true, sharp: true, clean: true, tolerance: 8 }));
       graph.use(
         new Selection({
@@ -332,7 +309,6 @@ export class DiagramCanvasComponent {
     this.syncFromInputs();
     this.ready.set(true);
 
-    // Cursor dinámico según modo — se hace vía JS porque el CSS de componente no penetra en el SVG de X6
     const canvasEl = this.canvasRef().nativeElement;
     canvasEl.addEventListener('mousedown', () => {
       if (this.cursorMode() === 'pan') canvasEl.style.cursor = 'grabbing';
@@ -340,7 +316,6 @@ export class DiagramCanvasComponent {
     canvasEl.addEventListener('mouseup', () => {
       if (this.cursorMode() === 'pan') canvasEl.style.cursor = 'grab';
     });
-    // Cerrar menú contextual con clic fuera
     const closeCtx = (ev: MouseEvent) => {
       const target = ev.target as HTMLElement;
       if (!target.closest('.ctx-menu')) this.contextMenu.set(null);
@@ -348,15 +323,13 @@ export class DiagramCanvasComponent {
     document.addEventListener('mousedown', closeCtx);
     this.destroyRef.onDestroy(() => document.removeEventListener('mousedown', closeCtx));
 
-    // Zoom inicial al 150% (mejor lectura de los nodos)
     try {
       (graph as unknown as { zoomTo(level: number): void }).zoomTo(1.5);
       this.zoomLevel.set(1.5);
-    } catch { /* ignore */ }
+    } catch {}
   }
 
   private bindEvents(graph: AnyGraph, _GraphCtor: unknown): void {
-    // SNAP a la grilla mientras se arrastra (alineación visible)
     graph.on('node:change:position', ((args: {
       node: {
         id: string;
@@ -405,7 +378,6 @@ export class DiagramCanvasComponent {
       this.contextMenu.set({ x: args.e.clientX, y: args.e.clientY, backendId, cellType: 'edge' });
     }) as unknown as (...a: unknown[]) => void);
 
-    // Movimiento → persistencia (al soltar)
     graph.on('node:moved', ((args: {
       node: { id: string; getPosition(): { x: number; y: number }; getBBox(): { width: number; height: number } };
     }) => {
@@ -429,7 +401,6 @@ export class DiagramCanvasComponent {
       };
     }) => {
       if (this.suppressEvents || !args.isNew) return;
-      // Si la arista fue creada programáticamente desde syncFromInputs, ignorarla
       const data = args.edge.getData?.() ?? {};
       if ((data as { _synced?: boolean })._synced) return;
 
@@ -439,8 +410,7 @@ export class DiagramCanvasComponent {
       const destinoBackendId = this.backendIdByCellId.get(targetCellId);
       if (!origenBackendId || !destinoBackendId) return;
 
-      // Eliminar la arista temporal — el backend devolverá la real al re-sincronizar
-      try { (this.graph as unknown as { removeCell(id: string): void } | null)?.removeCell(args.edge.id); } catch { /* ignore */ }
+      try { (this.graph as unknown as { removeCell(id: string): void } | null)?.removeCell(args.edge.id); } catch {}
 
       this.edgeCreated.emit({ origenBackendId, destinoBackendId });
     }) as unknown as (...a: unknown[]) => void);
@@ -467,7 +437,6 @@ export class DiagramCanvasComponent {
         }
       });
 
-      // Botón rojo de eliminar sobre cada enlace al hacer hover
       graph.on('edge:mouseenter', ((args: {
         edge: { id: string; addTools(tools: unknown[]): void };
       }) => {
@@ -503,24 +472,17 @@ export class DiagramCanvasComponent {
     }
   }
 
-  // ────────────────────────────────────────────────────────
-  // Swimlanes VERTICALES (calles)
-  // ────────────────────────────────────────────────────────
   private drawSwimlanes(): void {
     if (!this.graph) return;
     const lanes = this.swimlanes();
 
-    // Idempotente: al redibujar (p. ej. tras agregar una calle) quitamos primero
-    // las decoraciones existentes para no apilar marcos/calles superpuestos.
     this.removeDecorationCells();
 
-    // Atributos comunes de bloqueo para decoraciones
     const lockedAttrs = {
       magnet: false,
       pointerEvents: 'none' as const,
     };
 
-    // Marco contenedor exterior
     this.graph.addNode({
       shape: 'rect',
       x: 0,
@@ -542,7 +504,6 @@ export class DiagramCanvasComponent {
     });
 
     lanes.forEach((name, i) => {
-      // Cuerpo de la calle
       this.graph!.addNode({
         shape: 'rect',
         x: laneXLeft(i),
@@ -563,7 +524,6 @@ export class DiagramCanvasComponent {
         data: { _decoration: true },
       });
 
-      // Header (tipo "comprador / vendedor")
       this.graph!.addNode({
         shape: 'rect',
         x: laneXLeft(i),
@@ -596,9 +556,6 @@ export class DiagramCanvasComponent {
     });
   }
 
-  // ────────────────────────────────────────────────────────
-  // Sync inputs ↔ graph cells
-  // ────────────────────────────────────────────────────────
   private syncFromInputs(): void {
     if (!this.graph) return;
 
@@ -611,8 +568,6 @@ export class DiagramCanvasComponent {
       const deps = this.departamentos();
       const nodos = this.nodos();
 
-      // Layout inicial vertical: si no hay posición guardada, apilar por orden.
-      // Agrupamos por swimlane y damos cada uno su offset Y según su orden relativo.
       const perLaneCount = new Map<number, number>();
 
       for (const nodo of nodos) {
@@ -671,7 +626,6 @@ export class DiagramCanvasComponent {
           source: { cell: src },
           target: { cell: dst },
           labels,
-          // _synced evita que esta arista se interprete como nueva conexión del usuario
           data: { backendId: t.id, tipo: t.tipo, _synced: true },
           attrs:
             t.tipo === 'condicional'
@@ -688,8 +642,6 @@ export class DiagramCanvasComponent {
     }
   }
 
-  /** Quita las celdas de decoración (marco + calles + headers) para poder
-   *  redibujar las swimlanes desde cero cuando cambia el input. */
   private removeDecorationCells(): void {
     if (!this.graph) return;
     const internal = this.graph as unknown as {
@@ -741,9 +693,6 @@ export class DiagramCanvasComponent {
     return partes.join(' · ');
   }
 
-  // ────────────────────────────────────────────────────────
-  // Drag from palette
-  // ────────────────────────────────────────────────────────
   protected onPaletteDragStart(ev: DragEvent, tipo: string): void {
     if (this.readonly()) return;
     ev.dataTransfer?.setData('text/cre-tipo', tipo);
@@ -781,9 +730,6 @@ export class DiagramCanvasComponent {
 
     const x = snapToGrid(Math.max(0, local.x - size.width / 2));
     const y = snapToGrid(Math.max(LANE_HEADER_HEIGHT + 8, local.y - size.height / 2));
-    // La calle se calcula desde el CENTRO del nodo ya colocado (igual que al
-    // moverlo: pos.x + width/2), no desde la posición cruda del cursor. Así crear
-    // y mover dan la misma calle y el departamento se toma de forma consistente.
     const swimlane = swimlaneFromX(x + size.width / 2, this.swimlanes());
 
     this.nodoCreated.emit({
@@ -794,14 +740,10 @@ export class DiagramCanvasComponent {
     });
   }
 
-  // ────────────────────────────────────────────────────────
-  // Toolbar
-  // ────────────────────────────────────────────────────────
   protected togglePalette(): void {
     this.paletteCollapsed.update((v) => !v);
-    // Forzamos a X6 a recalcular su tamaño tras la transición CSS
     setTimeout(() => {
-      try { (this.graph as unknown as { resize(): void } | null)?.resize(); } catch { /* ignore */ }
+      try { (this.graph as unknown as { resize(): void } | null)?.resize(); } catch {}
     }, 220);
   }
 
@@ -840,7 +782,7 @@ export class DiagramCanvasComponent {
     try {
       this.graph.zoomToFit({ padding: 40, maxScale: 1 } as unknown);
       this.zoomLevel.set(1);
-    } catch { /* empty */ }
+    } catch {}
   }
 
   protected undo(): void {

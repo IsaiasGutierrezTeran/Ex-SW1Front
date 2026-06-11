@@ -6,7 +6,6 @@
     </p>
   </div>
 
-  <!-- Paso 1: descripción -->
   @if (!sugerencia() && !feedbackFinal()) {
     <div class="card border-0 shadow-sm">
       <div class="card-body">
@@ -57,7 +56,6 @@
     </div>
   }
 
-  <!-- Paso 2: ver sugerencia y elegir -->
   @if (sugerencia(); as s) {
     @if (!feedbackFinal()) {
       <div class="card border-0 shadow-sm">
@@ -134,7 +132,6 @@
     }
   }
 
-  <!-- Paso 3: confirmación -->
   @if (feedbackFinal(); as fb) {
     <div class="card border-0 shadow-sm text-center">
       <div class="card-body py-5">

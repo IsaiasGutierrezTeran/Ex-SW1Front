@@ -14,7 +14,6 @@ export class PoliticaService {
     return this.http.get<Politica[]>(this.url, { params });
   }
 
-  /** Políticas SIN diagrama (1:1) — para los selectores de "Nuevo diagrama" y "Diseño con IA". */
   listarSinDiagrama(): Observable<Politica[]> {
     return this.http.get<Politica[]>(`${this.url}/sin-diagrama`);
   }

@@ -25,7 +25,6 @@ export class DashboardMetricasComponent {
   readonly departamentos = signal<Map<string, string>>(new Map());
   readonly actividades = signal<Map<string, string>>(new Map());
 
-  // Para buscar métricas de un trámite específico (CU-24)
   readonly tramiteIdBusqueda = signal('');
 
   constructor() {

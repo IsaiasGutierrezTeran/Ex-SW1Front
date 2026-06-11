@@ -8,14 +8,6 @@ import {
 } from '../../core/services/colaboracion.service';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
-/**
- * "Compartidos conmigo" — diagramas a los que invitaron al usuario.
- *
- * Como la colaboración es solo por invitación, aquí el usuario ve TODOS los
- * diagramas que le compartieron: su política, el permiso (editor / solo lectura)
- * y un acceso para abrir el diagrama. Las invitaciones pendientes se pueden
- * aceptar o rechazar desde aquí (antes no había UI para responderlas).
- */
 @Component({
   selector: 'app-diagramas-compartidos',
   imports: [DatePipe, RouterLink],
@@ -38,7 +30,6 @@ import { mensajeAmigable } from '../../core/utils/error-messages';
           <span class="spinner-border spinner-border-sm me-2"></span>Cargando…
         </div>
       } @else {
-        <!-- Invitaciones pendientes -->
         @if (pendientes().length) {
           <h2 class="h6 text-muted mt-2 mb-2">Invitaciones pendientes</h2>
           <div class="row g-3 mb-4">
@@ -77,7 +68,6 @@ import { mensajeAmigable } from '../../core/utils/error-messages';
           </div>
         }
 
-        <!-- Diagramas aceptados -->
         <h2 class="h6 text-muted mt-2 mb-2">Diagramas compartidos</h2>
         @if (aceptadas().length === 0) {
           <div class="text-center text-muted py-5 border rounded bg-light">
@@ -125,7 +115,6 @@ export class DiagramasCompartidosComponent {
   private readonly svc = inject(ColaboracionService);
   private readonly auth = inject(AuthService);
 
-  /** Ruta base del editor según el rol (la vista la usan admin Y funcionario). */
   readonly baseDiagramas = computed(() =>
     this.auth.isAdmin() ? '/admin/diagramas' : '/funcionario/diagramas',
   );

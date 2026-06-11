@@ -19,9 +19,7 @@ export class ThemeService {
       document.documentElement.dataset['theme'] = m;
       try {
         localStorage.setItem(this.storageKey, m);
-      } catch {
-        /* storage may be unavailable */
-      }
+      } catch {}
     });
   }
 

@@ -110,20 +110,13 @@
           </div>
         </div>
         <div class="d-flex gap-2 align-items-center">
-          <!-- Gobierno del diagrama: SOLO admin (el colaborador edita el lienzo,
-               no publica/archiva ni gestiona calles o invitaciones). -->
           @if (esAdminUsuario()) {
-            <!-- El diagrama NO tiene estado propio: lo manda la política asociada
-                 (borrador/activa/archivada → borrador/publicado/archivado). Por eso
-                 aquí no hay Publicar/Archivar; el estado es informativo. -->
             <span class="cre-badge cre-badge-secondary" title="El estado lo controla la política asociada">
               Estado: {{ data.estado }}
             </span>
-            <!-- Agregar calle (swimlane) -->
             <button type="button" class="cre-btn cre-btn-secondary cre-btn-sm" (click)="abrirAgregarCalle()">
               + Agregar calle
             </button>
-            <!-- CU-15: botón de colaboración -->
             <button type="button" class="cre-btn cre-btn-primary cre-btn-sm" (click)="abrirModalColab()">
               + Invitar Colaborador
             </button>
@@ -135,7 +128,6 @@
         </div>
       </header>
 
-      <!-- ── Modal: Agregar calle (swimlane) ── -->
       @if (mostrarAgregarCalle()) {
         <div class="modal-backdrop" (click)="cerrarAgregarCalle()">
           <div class="modal-card" (click)="$event.stopPropagation()">
@@ -184,7 +176,6 @@
         </div>
       }
 
-      <!-- ── Modal CU-15: Invitar Colaborador ── -->
       @if (mostrarModalColab()) {
         <div
           class="modal-backdrop-colab"
@@ -260,7 +251,6 @@
         </div>
       }
 
-      <!-- ── Modal: Crear Departamento ── -->
       @if (mostrarModalDepto()) {
         <div class="modal-backdrop" (click)="cerrarModalDepto()">
           <div class="modal-card" (click)="$event.stopPropagation()">
@@ -309,7 +299,6 @@
         </div>
       }
 
-      <!-- ── Modal: Crear Actividad ── -->
       @if (mostrarModalActividad()) {
         <div class="modal-backdrop" (click)="cerrarModalActividad()">
           <div class="modal-card" (click)="$event.stopPropagation()">
@@ -582,7 +571,6 @@
                     </span>
                   </div>
 
-                  <!-- Documentos requeridos por la actividad asociada (EDITABLE) -->
                   <div class="inspector-row">
                     <span class="inspector-key">Documentos requeridos</span>
                     @if (!draft.actividadId) {
@@ -649,8 +637,6 @@
                         </table>
                       }
 
-                      <!-- Fila para agregar un documento del catálogo (solo admin:
-                           muta la Actividad compartida, PUT /api/actividades) -->
                       @if (esAdminUsuario() && documentosDisponiblesNodo().length > 0) {
                         <div class="req-add">
                           <select
@@ -686,9 +672,6 @@
                   </div>
                 }
 
-                <!-- Nivel de acceso documental del punto (CU-36, P2 §3.1.2):
-                     se configura EN el diagramador, con la política del diagrama.
-                     Solo admin: el upsert del permiso es admin-only (RN-P03). -->
                 @if (esAdminUsuario() && draft.tipo === 'actividad' && draft.actividadId) {
                   <div class="inspector-row">
                     <span class="inspector-key">Acceso documental</span>
@@ -739,7 +722,6 @@
   }
 }
 
-<!-- Modal de permiso documental con la política del diagrama FIJA (P2 §3.1.2) -->
 <app-permiso-documental-modal
   [actividad]="actividadParaPermisoNodo()"
   [politicaFijaId]="diagrama()?.politicaId ?? null"

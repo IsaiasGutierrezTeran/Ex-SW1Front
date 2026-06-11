@@ -5,18 +5,6 @@ import { DictadoService } from '../../core/services/dictado.service';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 import { GrabadorVozComponent } from '../grabador-voz/grabador-voz.component';
 
-/**
- * CU-39 — Componente compuesto: grabador + envío al backend + visualización
- * de los campos sugeridos por la IA.
- *
- * Uso:
- *   <app-dictar-seccion
- *     [seccionId]="seccion.id"
- *     (aplicado)="onCamposSugeridos($event)"
- *   />
- *
- * El padre puede escuchar `(aplicado)` para auto-rellenar el form de la sección.
- */
 @Component({
   selector: 'app-dictar-seccion',
   imports: [GrabadorVozComponent, DecimalPipe],
@@ -28,7 +16,6 @@ export class DictarSeccionComponent {
 
   readonly seccionId = input.required<string>();
 
-  /** Emite cuando el usuario pulsa "Aplicar a formulario". */
   readonly aplicado = output<DictarFormularioResponse>();
 
   readonly resultado = signal<DictarFormularioResponse | null>(null);

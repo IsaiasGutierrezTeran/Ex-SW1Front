@@ -4,7 +4,6 @@ import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from './auth.service';
 
-/** Forma del payload que llega del backend. Debe coincidir con DiagramaEvento.java */
 export interface DiagramaEventoRT {
   tipo:
     | 'nodo-creado'
@@ -19,24 +18,12 @@ export interface DiagramaEventoRT {
   timestamp: number;
 }
 
-/**
- * Cliente STOMP para la colaboración en tiempo real del diagramador (CU-15).
- *
- * Uso típico en un componente:
- *   const sub = this.rt.observarDiagrama(diagramaId).subscribe(...);
- *   // El servicio se desconecta automáticamente cuando ya no quedan suscriptores.
- *
- * El servicio reutiliza una única conexión RxStomp con auto-reconexión.
- * El JWT se pasa como query string `?token=...` porque WebSocket en el navegador
- * no admite cabeceras personalizadas en el handshake.
- */
 @Injectable({ providedIn: 'root' })
 export class ColaboracionRtService {
   private readonly auth = inject(AuthService);
   private rx: RxStomp | null = null;
   private suscriptoresPorDiagrama = new Map<string, number>();
 
-  /** Devuelve un Observable que emite cada vez que cambia el diagrama indicado. */
   observarDiagrama(diagramaId: string): Observable<DiagramaEventoRT> {
     const topic = `/topic/diagramas/${diagramaId}`;
     return new Observable<DiagramaEventoRT>((subscriber) => {
@@ -59,7 +46,6 @@ export class ColaboracionRtService {
         } else {
           this.suscriptoresPorDiagrama.set(diagramaId, restante);
         }
-        // Si nadie está observando ningún diagrama, cerramos la conexión.
         if (this.suscriptoresPorDiagrama.size === 0) {
           this.desconectar();
         }
@@ -77,8 +63,6 @@ export class ColaboracionRtService {
       reconnectDelay: 3000,
       heartbeatIncoming: 10_000,
       heartbeatOutgoing: 10_000,
-      // En CADA (re)conexión leemos el token vigente y lo fijamos en la URL,
-      // de modo que tras refresh/re-login no se reutilice un token caducado.
       beforeConnect: (client) => {
         const token = this.auth.getToken() ?? '';
         client.configure({ brokerURL: `${wsBase}/ws?token=${encodeURIComponent(token)}` });
@@ -94,13 +78,10 @@ export class ColaboracionRtService {
     if (!this.rx) return;
     try {
       void this.rx.deactivate();
-    } catch {
-      /* ignore */
-    }
+    } catch {}
     this.rx = null;
   }
 
-  /** Útil cuando se cierra sesión: cierra la conexión incluso si quedan refs. */
   forzarCierre(): void {
     this.suscriptoresPorDiagrama.clear();
     this.desconectar();

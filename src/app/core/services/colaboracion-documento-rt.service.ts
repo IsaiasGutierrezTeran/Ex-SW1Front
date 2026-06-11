@@ -4,19 +4,6 @@ import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from './auth.service';
 
-/**
- * CU-38 — Cliente STOMP para edición colaborativa de documentos.
- *
- * Topics:
- *   /topic/documento/{id}/edicion    → ops textuales reenviadas a todos
- *   /topic/documento/{id}/presencia  → join/leave/cursor/kick/roster
- *
- * Envíos:
- *   /app/documento/{id}/join
- *   /app/documento/{id}/leave
- *   /app/documento/{id}/op       (payload libre — el backend solo retransmite)
- *   /app/documento/{id}/cursor   ({cursorPos: number})
- */
 export interface DocumentoEventoRT {
   tipo: 'op' | 'join' | 'leave' | 'kick' | 'cursor' | 'roster' | 'snapshot';
   documentoId: string;
@@ -31,12 +18,10 @@ export class ColaboracionDocumentoRtService {
   private rx: RxStomp | null = null;
   private suscriptores = new Map<string, number>();
 
-  /** Observa el canal de edición de un documento. */
   observarEdicion(documentoId: string): Observable<DocumentoEventoRT> {
     return this.observar(`/topic/documento/${documentoId}/edicion`, documentoId);
   }
 
-  /** Observa el canal de presencia (roster, cursor, kick). */
   observarPresencia(documentoId: string): Observable<DocumentoEventoRT> {
     return this.observar(`/topic/documento/${documentoId}/presencia`, documentoId);
   }
@@ -56,8 +41,6 @@ export class ColaboracionDocumentoRtService {
   publicarCursor(documentoId: string, cursorPos: number): void {
     this.publicar(documentoId, 'cursor', { cursorPos });
   }
-
-  // ── interno ─────────────────────────────────────────────────────────────
 
   private observar(topic: string, documentoId: string): Observable<DocumentoEventoRT> {
     return new Observable<DocumentoEventoRT>((subscriber) => {
@@ -103,8 +86,6 @@ export class ColaboracionDocumentoRtService {
       reconnectDelay: 3000,
       heartbeatIncoming: 10_000,
       heartbeatOutgoing: 10_000,
-      // En CADA (re)conexión leemos el token vigente y lo fijamos en la URL,
-      // de modo que tras refresh/re-login no se reutilice un token caducado.
       beforeConnect: (client) => {
         const token = this.auth.getToken() ?? '';
         client.configure({ brokerURL: `${wsBase}/ws?token=${encodeURIComponent(token)}` });
@@ -119,9 +100,7 @@ export class ColaboracionDocumentoRtService {
     if (!this.rx) return;
     try {
       void this.rx.deactivate();
-    } catch {
-      /* ignore */
-    }
+    } catch {}
     this.rx = null;
   }
 

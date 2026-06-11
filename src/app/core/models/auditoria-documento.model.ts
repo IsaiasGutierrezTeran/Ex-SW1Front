@@ -1,4 +1,3 @@
-/** CU-37 — Evento inmutable del timeline de auditoría documental. */
 export type AccionAuditoria =
   | 'LECTURA'
   | 'DESCARGA'
@@ -36,12 +35,11 @@ export interface AuditoriaItem {
   detalle?: Record<string, unknown> | null;
 }
 
-/** Página paginada (formato Spring Data Page). */
 export interface PageAuditoria {
   content: AuditoriaItem[];
   totalElements: number;
   totalPages: number;
-  number: number;   // página actual (0-indexed)
+  number: number;
   size: number;
   first?: boolean;
   last?: boolean;

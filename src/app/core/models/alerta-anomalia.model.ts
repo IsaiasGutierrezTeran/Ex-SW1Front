@@ -1,4 +1,3 @@
-/** CU-45 — Anomalía detectada por la IA en el flujo de un trámite. */
 export type CategoriaAnomalia =
   | 'tiempo_atipico'
   | 'secuencia_inusual'

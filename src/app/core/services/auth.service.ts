@@ -50,16 +50,9 @@ export class AuthService {
   }
 
   logout(): void {
-    // Cierra las conexiones STOMP vivas antes de borrar el token, para que
-    // ninguna reconexión intente usar credenciales que ya no son válidas.
-    // Se resuelven de forma perezosa para evitar la dependencia circular
-    // (ambos servicios RT inyectan AuthService).
     this.injector.get(ColaboracionRtService).forzarCierre();
     this.injector.get(ColaboracionDocumentoRtService).forzarCierre();
 
-    // Detener el polling de notificaciones y limpiar la lista: sin esto seguirían
-    // saliendo GETs sin token cada 30s tras el logout, y un segundo usuario en la
-    // misma sesión SPA vería el badge/lista del usuario anterior hasta 30s.
     const notif = this.injector.get(NotificacionesService);
     notif.detenerPolling();
     notif.lista.set([]);

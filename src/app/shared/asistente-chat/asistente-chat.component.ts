@@ -14,20 +14,12 @@ import { AgenteService, AgenteAccion } from '../../core/services/agente.service'
 import { AuthService } from '../../core/services/auth.service';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
-/** Un mensaje dentro del hilo de chat. */
 interface ChatMensaje {
   texto: string;
   delUsuario: boolean;
   accion?: AgenteAccion | null;
 }
 
-/**
- * Chat flotante del asistente IA para la WEB (admin y funcionario).
- *
- * Es el equivalente web del chat del móvil: un FAB redondo abajo-derecha que
- * abre/cierra un panel de chat. Sólo es visible cuando hay sesión iniciada, por
- * lo que aparece en todo /admin y /funcionario y nunca en /login.
- */
 @Component({
   selector: 'app-asistente-chat',
   standalone: true,
@@ -35,7 +27,6 @@ interface ChatMensaje {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (visible()) {
-      <!-- Botón flotante (FAB) -->
       <button
         type="button"
         class="ac-fab"
@@ -44,13 +35,11 @@ interface ChatMensaje {
         [attr.aria-expanded]="abierto()"
       >
         @if (abierto()) {
-          <!-- ícono cerrar -->
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" />
           </svg>
         } @else {
-          <!-- ícono robot -->
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <rect x="4" y="8" width="16" height="11" rx="3" stroke="currentColor"
               stroke-width="2" />
@@ -64,7 +53,6 @@ interface ChatMensaje {
         }
       </button>
 
-      <!-- Panel de chat -->
       @if (abierto()) {
         <section class="ac-panel" role="dialog" aria-label="Asistente">
           <header class="ac-panel__header">
@@ -173,7 +161,6 @@ interface ChatMensaje {
         --ac-text: #0c1424;
         --ac-muted: #5a6b85;
       }
-      /* Modo oscuro: el chatbot toma superficies oscuras y texto claro */
       :host-context([data-theme='dark']) {
         --ac-surface: #0e1426;
         --ac-body-bg: #0b1020;
@@ -183,7 +170,6 @@ interface ChatMensaje {
         --ac-muted: #9aa8c2;
       }
 
-      /* ── FAB con glow pulsante ───────────────────────────── */
       .ac-fab {
         position: fixed;
         right: 24px;
@@ -220,7 +206,6 @@ interface ChatMensaje {
         100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
       }
 
-      /* ── Panel ───────────────────────────────────────────── */
       .ac-panel {
         position: fixed;
         right: 24px;
@@ -244,7 +229,6 @@ interface ChatMensaje {
         to { opacity: 1; transform: translateY(0) scale(1); }
       }
 
-      /* ── Cabecera con gradiente + avatar + estado ────────── */
       .ac-panel__header {
         display: flex;
         align-items: center;
@@ -328,7 +312,6 @@ interface ChatMensaje {
         background: rgba(255, 255, 255, 0.2);
       }
 
-      /* ── Cuerpo / mensajes ───────────────────────────────── */
       .ac-panel__body {
         flex: 1 1 auto;
         overflow-y: auto;
@@ -378,7 +361,6 @@ interface ChatMensaje {
       }
       .ac-bubble--typing { padding: 12px 14px; }
 
-      /* puntos "escribiendo" */
       .ac-typing {
         display: inline-flex;
         gap: 4px;
@@ -417,7 +399,6 @@ interface ChatMensaje {
         transform: translateY(-1px);
       }
 
-      /* ── Input ───────────────────────────────────────────── */
       .ac-panel__input {
         display: flex;
         align-items: center;
@@ -469,7 +450,6 @@ export class AsistenteChatComponent implements AfterViewChecked {
   protected readonly consulta = signal('');
   protected readonly mensajes = signal<ChatMensaje[]>([]);
 
-  /** Sólo visible con sesión activa (todo /admin y /funcionario). */
   protected readonly visible = computed(() => !!this.auth.usuario());
 
   private autoScroll = false;

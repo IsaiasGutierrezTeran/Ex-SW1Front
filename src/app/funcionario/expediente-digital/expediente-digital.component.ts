@@ -40,42 +40,28 @@ export class ExpedienteDigitalComponent {
 
   readonly tramiteId = this.route.snapshot.params['id'] as string;
 
-  // CU-10
   readonly expediente = signal<any>(null);
   readonly loading = signal(false);
   readonly error = signal('');
   readonly exito = signal('');
 
-  // CU-16 / CU-18 / CU-17 / CU-11 — panel de decisiones
   readonly justificacion = signal('');
   readonly accionSeleccionada = signal('');
   readonly procesando = signal(false);
 
-  // CU-17
   readonly nodoDestinoId = signal('');
   readonly seccionesAnteriores = signal<any[]>([]);
 
-  // CU-17 (extensión): ids de DocumentoArchivo marcados como erróneos al devolver.
-  // Solo esos documentos se mandan en `documentosObservados` para que el cliente
-  // vea únicamente los que debe corregir.
   readonly documentosObservadosIds = signal<Set<string>>(new Set());
 
-  // CU-11
   readonly funcionarioDestinoId = signal('');
   readonly listaFuncionarios = signal<any[]>([]);
 
-  // CU-30: el dictado por voz se canaliza a través de <app-dictar-seccion>
-  // dentro de cada sección activa. El botón micrófono duplicado que vivía
-  // en este componente se removió para evitar dos puntos de entrada.
-
-  // CU-34 — documentos del repositorio asociados al trámite
   readonly documentos = signal<DocumentoArchivo[]>([]);
   readonly cargandoDocumentos = signal(false);
   readonly errorDocumentos = signal('');
   readonly previewCargandoId = signal<string | null>(null);
 
-  // CU-33 — subida de documentos al trámite desde el expediente.
-  // El backend resuelve/crea el repositorio 1:1 a partir del tramiteId.
   readonly archivoSubir = signal<File | null>(null);
   readonly tipoDocumentoSubir = signal<TipoDocumento>('PDF');
   readonly nombreLogicoSubir = signal('');
@@ -84,9 +70,6 @@ export class ExpedienteDigitalComponent {
 
   readonly tiposDocumento = TIPOS_DOCUMENTO;
 
-  // actividadId / nodoId del paso en curso (lo expone /estado en nodoActual).
-  // Son la referencia que el backend usa para validar permiso de escritura y
-  // etiquetar el documento subido contra la actividad correcta.
   readonly actividadActualId = computed<string | null>(
     () => this.tramiteEstado()?.nodoActual?.actividadId ?? null,
   );
@@ -94,23 +77,16 @@ export class ExpedienteDigitalComponent {
     () => this.tramiteEstado()?.nodoActual?.nodoId ?? null,
   );
 
-  /**
-   * En PARALELO el trámite NO tiene un nodo "actual" único (nodoActual = null):
-   * hay varias ramas activas a la vez. En ese caso cada sección editable se
-   * completa/avanza por separado con SU nodoId.
-   */
   readonly enParalelo = computed(
     () => this.mostrarAcciones() && this.nodoActualId() == null,
   );
 
-  /** nodoId de la primera sección editable (fallback para subir en paralelo). */
   private nodoIdSeccionEditable(): string | undefined {
     const secciones = this.expediente()?.secciones ?? [];
     const ed = secciones.find((s: any) => this.esSeccionEditable(s?.infoSeccion?.estado));
     return ed?.infoSeccion?.nodoId ?? undefined;
   }
 
-  /** Completa/avanza UNA sección concreta (rama) en un flujo paralelo. */
   completarSeccion(seccion: any): void {
     const nodoId = seccion?.infoSeccion?.nodoId;
     if (!nodoId) return;
@@ -123,12 +99,10 @@ export class ExpedienteDigitalComponent {
     });
   }
 
-  // CU-13c — valores en edición por campoId (no persiste hasta "Guardar borrador").
   readonly valoresEnEdicion = signal<Record<string, string>>({});
   readonly guardandoSeccionId = signal<string | null>(null);
   readonly guardadoOkSeccionId = signal<string | null>(null);
 
-  // Documento de resolución (lo que el trámite entrega al finalizar)
   readonly archivoResolucion = signal<File | null>(null);
   readonly tramiteEstado = signal<any>(null);
   readonly tieneResolucion = computed(() => !!this.tramiteEstado()?.documentoResolucionId);
@@ -138,26 +112,17 @@ export class ExpedienteDigitalComponent {
     ),
   );
 
-  // Nodo decisión (if) que sigue a la actividad actual, si lo hay. El backend lo
-  // expone en /estado como decisionSiguiente { pregunta, opciones:[{valor,etiqueta}] }.
-  // El funcionario responde la pregunta y su avance enruta por la rama elegida.
   readonly decisionSiguiente = computed<any>(() => this.tramiteEstado()?.decisionSiguiente ?? null);
   readonly respuestaDecision = signal('');
 
-  // Solo ofrecemos la pregunta del if cuando la sección ya fue aceptada (no
-  // mientras está "Pendiente de recepción"): primero se recepciona, luego se avanza.
   readonly mostrarDecision = computed<boolean>(
     () => !!this.decisionSiguiente() && !this.hayPendienteRecepcion(),
   );
 
-  // Salidas configuradas por el admin para la actividad del nodo actual. El panel
-  // solo muestra los botones de estas acciones. Si la actividad no declara salidas
-  // (datos antiguos o nodo sin actividad), no restringimos (se muestran todas).
   readonly salidasActividad = computed<string[]>(
     () => this.tramiteEstado()?.nodoActual?.salidasPosibles ?? [],
   );
   readonly sinRestriccionSalidas = computed(() => this.salidasActividad().length === 0);
-  // 'derivar' es legacy = avanzar, lo tratamos como 'completar'.
   readonly puedeAvanzar = computed(
     () =>
       this.sinRestriccionSalidas() ||
@@ -169,8 +134,6 @@ export class ExpedienteDigitalComponent {
   readonly puedeObservar = computed(
     () => this.sinRestriccionSalidas() || this.salidasActividad().includes('observar'),
   );
-  // Texto del botón de avance según la posición del nodo: nodo de cierre -> "Aprobar";
-  // intermedio -> "Completar / Avanzar"; con decisión (if) pendiente -> "Continuar →".
   readonly textoAvanzar = computed(() => {
     if (this.mostrarDecision()) return 'Continuar →';
     return this.salidasActividad().includes('aprobar') ? 'Aprobar' : 'Completar / Avanzar';
@@ -184,7 +147,6 @@ export class ExpedienteDigitalComponent {
 
   private cargarEstado(): void {
     if (!this.tramiteId) return;
-    // Evita arrastrar una rama Sí/No de un estado anterior a uno recién cargado.
     this.respuestaDecision.set('');
     this.tramiteC2Svc.getEstado(this.tramiteId).subscribe({
       next: (e) => this.tramiteEstado.set(e),
@@ -192,24 +154,16 @@ export class ExpedienteDigitalComponent {
     });
   }
 
-  /** Sección sobre la que el funcionario puede trabajar (recibida, en ejecución u observada). */
   esSeccionEditable(estado: string | undefined): boolean {
     return ['En ejecucion', 'Pendiente de recepcion', 'Observado', 'en_curso'].includes(estado ?? '');
   }
 
-  /**
-   * True si la sección corresponde al NODO ACTUAL del trámite. Solo la sección
-   * del nodo en curso debe ser editable (botones Guardar/Completar). Si aún no
-   * conocemos el nodo actual (p. ej. /estado no respondió), no restringimos para
-   * no romper el comportamiento previo basado solo en el estado de la sección.
-   */
   esSeccionDelNodoActual(seccion: any): boolean {
     const actual = this.nodoActualId();
     if (!actual) return true;
     return seccion?.infoSeccion?.nodoId === actual;
   }
 
-  /** Sección ya terminada (nuevo "Derivada"; tolera legacy). */
   esSeccionCompletada(estado: string | undefined): boolean {
     return ['Derivada', 'completada', 'completado'].includes(estado ?? '');
   }
@@ -231,8 +185,6 @@ export class ExpedienteDigitalComponent {
     });
   }
 
-  // ── CU-13c: llenado del formulario de la sección activa ───────────────
-
   setCampoValor(campoId: string, ev: Event): void {
     const target = ev.target as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
     this.valoresEnEdicion.update((curr) => ({ ...curr, [campoId]: target.value }));
@@ -243,28 +195,18 @@ export class ExpedienteDigitalComponent {
     this.valoresEnEdicion.update((curr) => ({ ...curr, [campoId]: target.checked ? 'true' : 'false' }));
   }
 
-  /** Campo tipo 'radio': fija directamente la opción elegida. */
   setCampoRadio(campoId: string, opcion: string): void {
     this.valoresEnEdicion.update((curr) => ({ ...curr, [campoId]: opcion }));
   }
 
-  /** Valor vigente de un campo (lo editado, o lo persistido). */
   valorActual(campo: any): string {
     const editado = this.valoresEnEdicion()[campo.id];
     return editado !== undefined ? editado : (campo.valor ?? '');
   }
 
-  // ── Campo tipo 'calculado': evaluación segura de la fórmula ─────────────
-
-  /**
-   * Evalúa la fórmula del campo sobre los valores vigentes de su sección
-   * (otros campos referenciados por su nombre técnico). Devuelve '' si la
-   * fórmula no es evaluable (referencias vacías o sintaxis inválida).
-   */
   valorCalculado(seccion: any, campo: any, visitados?: Set<string>): string {
     const formula = campo?.formula;
     if (!formula) return '';
-    // Guard de ciclos para fórmulas encadenadas (calculado que referencia calculado).
     const vistos = visitados ?? new Set<string>();
     if (vistos.has(campo.id)) return '';
     vistos.add(campo.id);
@@ -272,8 +214,6 @@ export class ExpedienteDigitalComponent {
     const valores = new Map<string, number>();
     for (const c of seccion?.campos ?? []) {
       if (!c?.nombre || c.id === campo.id) continue;
-      // Encadenado: un calculado referenciado se evalúa EN VIVO (no su valor
-      // persistido, que puede estar desfasado hasta el próximo guardado).
       const crudo = c.tipo === 'calculado'
         ? this.valorCalculado(seccion, c, vistos)
         : this.valorActual(c);
@@ -285,10 +225,6 @@ export class ExpedienteDigitalComponent {
     return String(Math.round(r * 100) / 100);
   }
 
-  /**
-   * Mini-evaluador aritmético SEGURO (sin eval): números, identificadores de
-   * campo, + - * / y paréntesis. Gramática por descenso recursivo.
-   */
   private evaluarExpresion(expr: string, vars: Map<string, number>): number | null {
     const tokens = expr.match(/\d+(?:\.\d+)?|[A-Za-z_][A-Za-z0-9_]*|[()+\-*/]/g);
     if (!tokens || tokens.join('') !== expr.replace(/\s+/g, '')) return null;
@@ -341,25 +277,18 @@ export class ExpedienteDigitalComponent {
     return pos === tokens.length ? resultado : null;
   }
 
-  // ── Campo tipo 'archivo': subir/ver el adjunto de la sección ────────────
-
   readonly subiendoCampoId = signal<string | null>(null);
 
-  /** DocumentoArchivo referenciado por un campo adjunto (su valor = documentoId). */
   docDeCampo(campo: any): DocumentoArchivo | null {
     const id = this.valorActual(campo);
     if (!id) return null;
     return this.documentos().find((d) => d.id === id) ?? null;
   }
 
-  /** Sube el archivo elegido y enlaza su documentoId como valor del campo. */
   subirCampoArchivo(seccion: any, campo: any, ev: Event): void {
     const input = ev.target as HTMLInputElement;
     const archivo = input.files?.[0];
     if (!archivo) return;
-    // En PARALELO el trámite no tiene nodo único (actividadActualId null): se
-    // manda el nodoId de la SECCIÓN de esta rama y el backend resuelve la
-    // actividad de ese nodo.
     const actividadId = this.actividadActualId() ?? '';
     const nodoId = this.nodoActualId() ?? seccion?.infoSeccion?.nodoId ?? undefined;
     if (!actividadId && !nodoId) {
@@ -368,8 +297,6 @@ export class ExpedienteDigitalComponent {
       return;
     }
     const nombreLogico = `${campo.etiqueta || campo.nombre} — ${archivo.name}`;
-    // Comprobación de duplicado (igual que el panel lateral). Para reemplazar de
-    // verdad (versionar) está el botón "Reemplazar" del propio campo.
     if (
       this.documentos().some(
         (d: any) => (d.nombreLogico ?? '').trim().toLowerCase() === nombreLogico.toLowerCase(),
@@ -392,12 +319,11 @@ export class ExpedienteDigitalComponent {
       .subscribe({
         next: (resp) => {
           this.subiendoCampoId.set(null);
-          // El valor del campo es el id del documento del repositorio.
           this.valoresEnEdicion.update((curr) => ({
             ...curr,
             [campo.id]: resp.documentoArchivoId,
           }));
-          this.cargarDocumentos(); // para mostrar nombre/Ver en el render
+          this.cargarDocumentos();
           input.value = '';
         },
         error: (err: any) => {
@@ -409,11 +335,6 @@ export class ExpedienteDigitalComponent {
       });
   }
 
-  /**
-   * "Reemplazar" = NUEVA VERSIÓN del mismo documento (CU-35): conserva el
-   * documentoId del campo (no requiere re-guardar el borrador), mantiene el
-   * historial y no deja duplicados activos en el repositorio.
-   */
   reemplazarCampoArchivo(campo: any, ev: Event): void {
     const input = ev.target as HTMLInputElement;
     const archivo = input.files?.[0];
@@ -437,7 +358,6 @@ export class ExpedienteDigitalComponent {
       });
   }
 
-  /** Abre el adjunto de un campo aunque aún no esté en la lista de documentos. */
   verArchivoCampo(campo: any): void {
     const id = this.valorActual(campo);
     if (!id) return;
@@ -452,7 +372,6 @@ export class ExpedienteDigitalComponent {
     });
   }
 
-  /** Deriva el tipo del catálogo a partir de la extensión del archivo. */
   private tipoDesdeArchivo(archivo: File): TipoDocumento {
     const ext = (archivo.name.split('.').pop() ?? '').toLowerCase();
     if (ext === 'pdf') return 'PDF';
@@ -472,8 +391,6 @@ export class ExpedienteDigitalComponent {
     const campos = (seccion.campos ?? [])
       .map((c: any) => ({
         campoId: c.id,
-        // Calculados: se persiste el valor DERIVADO de su fórmula (el usuario no
-        // los edita). Resto: lo editado o, si no se tocó, el valor que ya venía.
         valor: c.tipo === 'calculado'
           ? this.valorCalculado(seccion, c)
           : (editados[c.id] !== undefined ? editados[c.id] : (c.valor ?? '')),
@@ -486,7 +403,6 @@ export class ExpedienteDigitalComponent {
       next: () => {
         this.guardandoSeccionId.set(null);
         this.guardadoOkSeccionId.set(seccionId);
-        // Refrescamos para que los valores del servidor se reflejen en pantalla.
         this.cargarExpediente();
         this.cargarEstado();
         setTimeout(() => this.guardadoOkSeccionId.set(null), 3000);
@@ -514,12 +430,10 @@ export class ExpedienteDigitalComponent {
         } else if (err?.status !== 404) {
           this.errorDocumentos.set('No se pudieron cargar los documentos.');
         }
-        // 404 = repositorio aún no creado → lista vacía sin mensaje.
       },
     });
   }
 
-  /** Pide la URL S3 firmada y la abre en una pestaña nueva. */
   verDocumento(doc: DocumentoArchivo): void {
     if (this.previewCargandoId() === doc.id) return;
     this.previewCargandoId.set(doc.id);
@@ -538,8 +452,6 @@ export class ExpedienteDigitalComponent {
     });
   }
 
-  // ── CU-33: subir un documento al trámite desde el expediente ───────────
-
   setArchivoSubir(ev: Event): void {
     const input = ev.target as HTMLInputElement;
     this.archivoSubir.set(input.files?.[0] ?? null);
@@ -557,13 +469,11 @@ export class ExpedienteDigitalComponent {
     this.obligatorioSubir.set((ev.target as HTMLInputElement).checked);
   }
 
-  /** ¿El documento es un Office co-editable (.docx/.xlsx/.pptx…)? */
   esOfficeEditable(d: { nombreLogico?: string }): boolean {
     const n = (d?.nombreLogico ?? '').toLowerCase();
     return /\.(docx|xlsx|pptx|doc|xls|ppt|odt|ods|odp)$/.test(n);
   }
 
-  /** Abre el editor colaborativo OnlyOffice en una pestaña nueva. */
   abrirOffice(d: { id: string }): void {
     window.open(`/funcionario/documentos/${d.id}/office`, '_blank');
   }
@@ -577,7 +487,6 @@ export class ExpedienteDigitalComponent {
     }
     const nombreLogico = this.nombreLogicoSubir().trim() || archivo.name;
     const actividadId = this.actividadActualId() ?? undefined;
-    // En PARALELO no hay actividad/nodo único: cae al nodo de la 1ª sección editable.
     const nodoId = this.nodoActualId() ?? this.nodoIdSeccionEditable();
     if (!actividadId && !nodoId) {
       this.errorDocumentos.set('No se pudo determinar el nodo actual del trámite.');
@@ -585,7 +494,6 @@ export class ExpedienteDigitalComponent {
       return;
     }
 
-    // Duplicado: si ya existe un documento con ese nombre, ofrecer reemplazo (nueva versión, CU-35).
     const existente = this.documentos().find(
       (d: any) => (d.nombreLogico ?? '').trim().toLowerCase() === nombreLogico.toLowerCase(),
     );
@@ -633,7 +541,6 @@ export class ExpedienteDigitalComponent {
     this.docSvc.subir(this.tramiteId, archivo, req).subscribe({
       next: () => {
         this.subiendoDocumento.set(false);
-        // Limpiamos el formulario de subida y refrescamos el listado.
         this.archivoSubir.set(null);
         this.nombreLogicoSubir.set('');
         this.obligatorioSubir.set(false);
@@ -694,11 +601,9 @@ export class ExpedienteDigitalComponent {
     });
   }
 
-  // CU-17: carga secciones completadas para selector de retroceso
   prepararDevolucion(): void {
     this.accionSeleccionada.set('DEVOLVER');
     this.nodoDestinoId.set('');
-    // Empezamos sin documentos marcados cada vez que se abre el panel de devolución.
     this.documentosObservadosIds.set(new Set());
 
     if (this.seccionesAnteriores().length === 0) {
@@ -709,13 +614,11 @@ export class ExpedienteDigitalComponent {
       this.seccionesAnteriores.set(completadas);
     }
 
-    // Aseguramos que los documentos del trámite estén cargados para poder tildarlos.
     if (this.documentos().length === 0 && !this.cargandoDocumentos()) {
       this.cargarDocumentos();
     }
   }
 
-  /** Marca/desmarca un documento como observado (erróneo) re-emitiendo un new Set. */
   toggleDocumentoObservado(docId: string): void {
     this.documentosObservadosIds.update((curr) => {
       const next = new Set(curr);
@@ -728,7 +631,6 @@ export class ExpedienteDigitalComponent {
     });
   }
 
-  /** Aceptar (recepcionar) el trámite: Pendiente de recepción → En ejecución. */
   aceptar(): void {
     this.procesando.set(true);
     this.error.set('');
@@ -744,7 +646,6 @@ export class ExpedienteDigitalComponent {
     });
   }
 
-  // CU-11: carga funcionarios disponibles
   prepararDerivacion(): void {
     this.accionSeleccionada.set('DERIVAR');
     this.funcionarioDestinoId.set('');
@@ -759,8 +660,6 @@ export class ExpedienteDigitalComponent {
     }
   }
 
-  // Mensaje de confirmación contextual (no genérico): "APROBAR" confundía al
-  // responder un if (donde el botón realmente "continúa", no aprueba).
   private mensajeConfirmacion(tipo: string): string {
     if (tipo === 'APROBAR') {
       if (this.mostrarDecision()) return '¿Continuar el trámite con la respuesta seleccionada?';
@@ -774,9 +673,7 @@ export class ExpedienteDigitalComponent {
     return `¿Proceder con: ${tipo}?`;
   }
 
-  // Llama el endpoint correcto según la acción elegida
   ejecutarAccion(tipo: string): void {
-    // Regla CU-17: para devolver hay que marcar al menos un documento a corregir.
     if (tipo === 'DEVOLVER' && this.documentosObservadosIds().size === 0) {
       this.error.set('Selecciona al menos un documento a corregir para devolver el trámite.');
       return;
@@ -788,9 +685,6 @@ export class ExpedienteDigitalComponent {
     this.error.set('');
 
     if (tipo === 'APROBAR') {
-      // Si el siguiente paso es un nodo decisión (if), el funcionario debe haber
-      // respondido la pregunta: avanzamos con completar-nodo enviando la rama
-      // elegida ('si'/'no') para que el motor enrute por la transición correcta.
       if (this.mostrarDecision()) {
         const rama = this.respuestaDecision();
         if (!rama) {
@@ -807,9 +701,6 @@ export class ExpedienteDigitalComponent {
           });
         return;
       }
-      // Nodo INTERMEDIO o rama en PARALELO (no es cierre): avanzar con completar-nodo,
-      // que sí maneja el paralelo y no exige documento de resolución. Solo los nodos
-      // de cierre (cuya salida incluye 'aprobar') pasan por decision-final.
       if (!this.salidasActividad().includes('aprobar')) {
         this.tramiteC2Svc
           .completarNodo(this.tramiteId, undefined, this.justificacion(), this.nodoActualId() ?? undefined)
@@ -819,7 +710,6 @@ export class ExpedienteDigitalComponent {
           });
         return;
       }
-      // Nodo de CIERRE: aprobar (cierra el trámite y gestiona el documento de resolución).
       const archivo = this.archivoResolucion();
       const obs$ = archivo
         ? this.tramiteC2Svc.decisionFinalConResolucion(this.tramiteId, 'Aprobar', this.justificacion(), archivo)
@@ -891,11 +781,6 @@ export class ExpedienteDigitalComponent {
     }
   }
 
-  // CU-39 · dictado por voz: vuelca las sugerencias de la IA en los campos del
-  // formulario de la sección. La IA identifica cada sugerencia por el NOMBRE
-  // TÉCNICO del campo (CampoSugerido.campo === campo.nombre); lo traducimos al
-  // id de CampoSeccion (la clave de valoresEnEdicion) para que "Guardar borrador"
-  // lo persista, y reflejamos el valor en el input al instante.
   onDictadoAplicado(seccion: any, resp: DictarFormularioResponse): void {
     const campos: any[] = seccion?.campos ?? [];
     const porNombre = new Map<string, any>(
@@ -908,7 +793,7 @@ export class ExpedienteDigitalComponent {
 
     for (const sug of resp.campos ?? []) {
       const crudo = (sug.valor ?? '').trim();
-      if (!crudo) continue; // la IA no extrajo nada para este campo
+      if (!crudo) continue;
       const campo = porNombre.get(sug.campo);
       if (!campo?.id) {
         noCasados.push(sug.campo);
@@ -916,18 +801,17 @@ export class ExpedienteDigitalComponent {
       }
       const valor = this.normalizarValorDictado(crudo, campo);
       if (valor === null) {
-        noCasados.push(sug.campo); // no encaja con el tipo (p. ej. opción inválida)
+        noCasados.push(sug.campo);
         continue;
       }
       patch[campo.id] = valor;
-      campo.valor = valor; // refleja en el input ([value]="campo.valor")
-      campo.fueDictado = true; // enciende el badge "IA"
+      campo.valor = valor;
+      campo.fueDictado = true;
       aplicados++;
     }
 
     if (aplicados > 0) {
       this.valoresEnEdicion.update((curr) => ({ ...curr, ...patch }));
-      // Re-emitimos la signal para que OnPush refresque los [value]="campo.valor".
       this.expediente.update((e) => (e ? { ...e } : e));
     }
 
@@ -942,30 +826,23 @@ export class ExpedienteDigitalComponent {
     setTimeout(() => this.exito.set(''), 6000);
   }
 
-  /**
-   * Adapta el valor crudo de la IA al formato que espera cada tipo de campo.
-   * Devuelve null si el valor no es utilizable para ese tipo (se reporta como
-   * "sin ubicar" en vez de meter un valor inválido en el formulario).
-   */
   private normalizarValorDictado(valor: string, campo: any): string | null {
     switch (campo?.tipo) {
       case 'checkbox':
         return /^(true|s[ií]|1|ok|x)$/i.test(valor) ? 'true' : 'false';
       case 'select':
       case 'radio': {
-        // Dominio cerrado: solo se aplica si coincide con una opción definida.
         const opciones: string[] = campo.opciones ?? [];
         const match = opciones.find((o) => o.toLowerCase() === valor.toLowerCase());
-        return match ?? null; // si no coincide con una opción válida, no se aplica
+        return match ?? null;
       }
       case 'fecha':
-        return this.aIsoFecha(valor); // puede devolver null si no parsea
+        return this.aIsoFecha(valor);
       default:
         return valor;
     }
   }
 
-  /** Convierte 'dd/MM/yyyy', 'dd/MM' y 'hoy'/'mañana' al ISO 'yyyy-MM-dd' de <input type="date">. */
   private aIsoFecha(valor: string): string | null {
     const v = valor.trim().toLowerCase();
     const hoy = new Date();

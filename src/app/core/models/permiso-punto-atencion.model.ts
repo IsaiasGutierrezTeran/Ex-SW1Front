@@ -1,4 +1,3 @@
-/** CU-36 — Nivel de acceso documental por punto de atención. */
 export type NivelAcceso = 'SOLO_LECTURA' | 'SOLO_EDICION' | 'LECTURA_Y_EDICION';
 
 export const NIVELES_ACCESO: { value: NivelAcceso; label: string; descripcion: string }[] = [

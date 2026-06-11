@@ -1,4 +1,3 @@
-/** Parte 2 — Archivo del repositorio documental (versión actual + metadatos). */
 export interface DocumentoArchivo {
   id: string;
   repositorioId: string;
@@ -7,7 +6,6 @@ export interface DocumentoArchivo {
   actividadId: string;
   nodoId?: string;
   nombreLogico: string;
-  /** PDF | IMAGEN | WORD | EXCEL | AUDIO | VIDEO | OTRO */
   tipoDocumento: string;
   obligatorio: boolean;
   versionActualId: string;
@@ -19,7 +17,6 @@ export interface DocumentoArchivo {
   activo: boolean;
 }
 
-/** Respuesta de subida / nueva versión — incluye URL firmada lista para preview. */
 export interface DocumentoArchivoResponse {
   documentoArchivoId: string;
   versionId: string;
@@ -34,7 +31,6 @@ export interface DocumentoArchivoResponse {
   expiraEn: string | null;
 }
 
-/** Payload de subida (campos obligatorios además del archivo). */
 export interface SubirDocumentoRequest {
   tramiteId: string;
   actividadId: string;

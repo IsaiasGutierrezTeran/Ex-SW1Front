@@ -64,9 +64,6 @@ export class DiagramaEditorComponent {
   readonly diagramaId = this.route.snapshot.params['id'] as string | undefined;
   readonly politicaIdPreseleccionada = (this.route.snapshot.queryParamMap.get('politicaId') ?? '') as string;
 
-  // P1 §7 — el editor también lo abre el FUNCIONARIO colaborador (ruta
-  // /funcionario/diagramas/:id). Las acciones de gobierno del diagrama
-  // (publicar/archivar/calles/invitar) siguen siendo solo del admin.
   readonly esAdminUsuario = computed(() => this.auth.isAdmin());
   readonly volverDiagramasUrl = computed(() =>
     this.auth.isAdmin() ? '/admin/diagramas' : '/funcionario/diagramas/compartidos',
@@ -74,39 +71,16 @@ export class DiagramaEditorComponent {
 
   readonly diagrama = signal<DiagramaWorkflow | null>(null);
 
-  /**
-   * Solo se pueden editar diagramas en estado 'borrador'. Los publicados son de
-   * solo lectura (hay que crear una nueva versión para modificarlos). Se usa para
-   * poner el lienzo en modo lectura y bloquear las operaciones de edición con un
-   * aviso claro, en vez de dejar que el backend rechace con un error crudo.
-   */
-  /** Rol del usuario NO-admin sobre este diagrama: 'editor' | 'visualizador' | null. */
   readonly miRolColaboracion = signal<string | null>(null);
 
   readonly editable = computed(() => {
     const d = this.diagrama();
     const enBorrador = d == null || d.estado === 'borrador';
     if (!enBorrador) return false;
-    // Admin siempre; el colaborador SOLO si su permiso es 'editor'. Un
-    // 'visualizador' tiene acceso de solo lectura aunque el diagrama esté en
-    // borrador (el backend además lo rechaza; esto lo refleja en la UI).
     if (this.esAdminUsuario()) return true;
     return this.miRolColaboracion() === 'editor';
   });
 
-  /**
-   * Departamentos que son calles (swimlanes) de ESTE diagrama. El inspector solo
-   * debe ofrecer las calles realmente agregadas al diagrama, no todos los
-   * departamentos del sistema (bug: aparecían calles no agregadas).
-   *
-   * OJO: las calles se guardan con DOS convenciones según el origen del diagrama:
-   *   - diagramas manuales / seed  -> CÓDIGO  (p.ej. "ATC")  [DiagramaSeeder]
-   *   - diagramas generados por IA -> NOMBRE  (p.ej. "Atención al Cliente")
-   *     [PromptFlowService usa Departamento::getNombre]
-   * Por eso resolvemos por código O nombre (igual que {@link findDepartamentoFromLane});
-   * si comparáramos solo por código, en los diagramas de IA el desplegable quedaba
-   * vacío y el inspector mostraba "Sin departamento" aunque el nodo sí lo tuviera.
-   */
   readonly departamentosDelDiagrama = computed(() => {
     const lanes = this.diagrama()?.swimlanes ?? [];
     const deps = this.departamentos();
@@ -114,13 +88,10 @@ export class DiagramaEditorComponent {
     const set = new Set(lanes.map((l) => l.trim().toLowerCase()));
     const enLanes = (d: Departamento) =>
       set.has(d.codigo.trim().toLowerCase()) || set.has(d.nombre.trim().toLowerCase());
-    // Garantiza que la calle del nodo seleccionado siempre esté en el desplegable,
-    // aunque por algún dato heredado no coincidiera con ninguna lane.
     const selId = this.inspectorDraft()?.departamentoId;
     return deps.filter((d) => enLanes(d) || d.id === selId);
   });
   readonly politicas = signal<Politica[]>([]);
-  /** Solo las políticas SIN diagrama — para el selector de "Nuevo diagrama" (1:1). */
   readonly politicasSinDiagrama = signal<Politica[]>([]);
   readonly nodos = signal<NodoDiagrama[]>([]);
   readonly transiciones = signal<FlujoTransicion[]>([]);
@@ -133,18 +104,11 @@ export class DiagramaEditorComponent {
   readonly error = signal('');
   readonly errorDetalles = signal<string[]>([]);
   readonly exito = signal('');
-  // Aviso no bloqueante (p. ej. join → decisión: la pregunta no se podrá mostrar).
   readonly advertencia = signal('');
   readonly selectedNodo = signal<NodoDiagrama | null>(null);
 
-  /**
-   * CU-36 (P2 §3.1.2) — Actividad cuyo nivel de acceso documental se está
-   * configurando desde el inspector del nodo (modal con la política del
-   * diagrama fija). Null = modal cerrado.
-   */
   readonly actividadParaPermisoNodo = signal<Actividad | null>(null);
 
-  /** Abre el modal de permisos documentales para la actividad del nodo en edición. */
   abrirPermisosNodo(): void {
     const draft = this.inspectorDraft();
     if (!draft?.actividadId) return;
@@ -152,14 +116,11 @@ export class DiagramaEditorComponent {
     this.actividadParaPermisoNodo.set(act);
   }
 
-  // Borrador del inspector (lo que el usuario está editando)
   readonly inspectorDraft = signal<NodoDiagrama | null>(null);
   readonly guardandoNodo = signal(false);
 
-  // CU-13b: diseñador de formulario del nodo
   readonly nodoEnDiseno = signal<NodoDiagrama | null>(null);
 
-  // Modales: crear departamento / actividad
   readonly mostrarModalDepto = signal(false);
   readonly mostrarModalActividad = signal(false);
 
@@ -181,7 +142,6 @@ export class DiagramaEditorComponent {
     return lista.filter((f) => f.departamentosIds?.includes(deptoId));
   });
 
-  // Actividades disponibles según el departamento del borrador
   readonly actividadesDelDraft = computed(() => {
     const draft = this.inspectorDraft();
     const acts = this.actividades();
@@ -189,30 +149,21 @@ export class DiagramaEditorComponent {
     return acts.filter((a) => a.departamentoId === draft.departamentoId);
   });
 
-  // ── Requisitos documentales del nodo (editable; edita la ACTIVIDAD compartida) ─
-  // Espejo editable de los documentosRequeridos de la actividad del nodo
-  // seleccionado. Se rellena al seleccionar un nodo de tipo "actividad" con
-  // actividadId. Disponible aunque el diagrama esté publicado (se edita la
-  // actividad, no el diagrama).
   readonly requisitosNodo = signal<RequisitoDocumento[]>([]);
   readonly guardandoRequisitos = signal(false);
-  // Documento elegido en el desplegable "Agregar documento requerido".
   readonly documentoAAgregar = signal('');
 
-  /** Catálogo de documentos que aún no están como requisito del nodo. */
   readonly documentosDisponiblesNodo = computed<Documento[]>(() => {
     const agregados = new Set(this.requisitosNodo().map((r) => r.documentoId));
     return this.documentos().filter((d) => !agregados.has(d.id));
   });
 
-  // Transiciones salientes del nodo decisión seleccionado
   readonly transicionesSalientes = computed(() => {
     const sel = this.selectedNodo();
     if (!sel || sel.tipo !== 'decision') return [];
     return this.transiciones().filter((t) => t.nodoOrigenId === sel.id);
   });
 
-  // ¿Hay cambios pendientes en el inspector?
   readonly inspectorDirty = computed(() => {
     const d = this.inspectorDraft();
     const o = this.selectedNodo();
@@ -225,16 +176,11 @@ export class DiagramaEditorComponent {
     );
   });
 
-  // ── Agregar calle (swimlane) a un diagrama existente ──────────────────────
-  // Las calles del diagrama en edición. Se inicializa al cargar el diagrama y es
-  // la fuente que se pasa al lienzo, para poder redibujar las calles al agregar
-  // una sin recargar. (El canvas lee este input y redibuja.)
   readonly swimlanesActivas = signal<string[]>([]);
   readonly mostrarAgregarCalle = signal(false);
   readonly deptoNuevaCalle = signal('');
   readonly agregandoCalle = signal(false);
 
-  /** Departamentos que aún NO son calles de este diagrama (candidatos a agregar). */
   readonly departamentosSinCalle = computed<Departamento[]>(() => {
     const lanes = this.swimlanesActivas();
     const set = new Set(lanes.map((l) => l.trim().toLowerCase()));
@@ -256,13 +202,6 @@ export class DiagramaEditorComponent {
     this.deptoNuevaCalle.set((ev.target as HTMLSelectElement).value);
   }
 
-  /**
-   * Agrega una calle (departamento) al diagrama y la persiste con PUT
-   * /api/diagramas/{id}. Funciona aunque el diagrama esté activo/publicado (el
-   * backend solo bloquea 'archivado'). Respeta el formato de las calles
-   * existentes (código vs nombre) y refresca el signal local para que el lienzo
-   * redibuje las calles con el nuevo ancho.
-   */
   agregarCalle(): void {
     const diagrama = this.diagrama();
     const deptoId = this.deptoNuevaCalle();
@@ -277,7 +216,6 @@ export class DiagramaEditorComponent {
     const lanesActuales = this.swimlanesActivas();
     const etiqueta = this.etiquetaCalleParaDepartamento(depto, lanesActuales);
 
-    // Evita duplicados si por algún dato heredado ya estuviera.
     if (lanesActuales.some((l) => l.trim().toLowerCase() === etiqueta.trim().toLowerCase())) {
       this.setError('Ese departamento ya es una calle del diagrama.');
       return;
@@ -295,8 +233,6 @@ export class DiagramaEditorComponent {
       .subscribe({
         next: (actualizado) => {
           this.diagrama.set(actualizado);
-          // Usa las lanes que devuelve el backend (fuente de verdad); si no las
-          // trae, cae a las que enviamos. Esto dispara el redibujado del lienzo.
           this.swimlanesActivas.set(
             actualizado.swimlanes && actualizado.swimlanes.length > 0
               ? [...actualizado.swimlanes]
@@ -316,12 +252,6 @@ export class DiagramaEditorComponent {
       });
   }
 
-  /**
-   * Etiqueta a usar para una NUEVA calle, respetando la convención de las calles
-   * existentes: si la primera calle coincide con un CÓDIGO de departamento, usa
-   * el código; si coincide con un NOMBRE, usa el nombre. Si el diagrama no tiene
-   * calles aún, usa el nombre del departamento.
-   */
   private etiquetaCalleParaDepartamento(depto: Departamento, lanesActuales: string[]): string {
     if (lanesActuales.length === 0) return depto.nombre;
     const primera = lanesActuales[0].trim().toLowerCase();
@@ -331,7 +261,6 @@ export class DiagramaEditorComponent {
     return coincideCodigo ? depto.codigo : depto.nombre;
   }
 
-  // Departamentos seleccionados (códigos) que serán swimlanes del nuevo diagrama
   readonly swimlanesSeleccionadas = signal<string[]>([]);
 
   readonly nuevoDiagrama = signal<DiagramaRequest>({
@@ -359,8 +288,6 @@ export class DiagramaEditorComponent {
       error: (err) => this.error.set(mensajeAmigable(err)),
     });
 
-    // Para el formulario de "Nuevo diagrama": solo políticas sin diagrama (1:1).
-    // Solo el admin crea diagramas; si el endpoint 403'ea, dejamos lista vacía.
     if (!this.diagramaId) {
       this.politicaSvc.listarSinDiagrama().subscribe({
         next: (politicas) => this.politicasSinDiagrama.set(politicas),
@@ -373,11 +300,8 @@ export class DiagramaEditorComponent {
       error: (err) => this.error.set(mensajeAmigable(err)),
     });
 
-    // Carga el catálogo de documentos para resolver los IDs guardados en
-    // Actividad.documentoIds a nombre/descripción legibles en el inspector.
     this.docSvc.listar().subscribe({
       next: (docs) => this.documentos.set(docs),
-      // Sin documentos seedeados el inspector simplemente no muestra la lista.
       error: () => undefined,
     });
 
@@ -395,8 +319,6 @@ export class DiagramaEditorComponent {
       this.cargar();
       this.suscribirColaboracionRT(this.diagramaId);
 
-      // Si NO es admin, averigua su permiso sobre ESTE diagrama (editor vs
-      // visualizador) para poner el lienzo en solo-lectura cuando es visualizador.
       if (!this.auth.isAdmin()) {
         this.colabSvc.compartidosConmigo().subscribe({
           next: (lista) => {
@@ -411,16 +333,10 @@ export class DiagramaEditorComponent {
     }
   }
 
-  /**
-   * CU-15: aplica en vivo los cambios que hagan otros colaboradores sobre el
-   * mismo diagrama. Ignora los eventos cuyo autor es uno mismo (echo).
-   */
   private suscribirColaboracionRT(diagramaId: string): void {
     const sub = this.rt.observarDiagrama(diagramaId).subscribe({
       next: (evt) => this.aplicarEventoRemoto(evt),
-      error: () => {
-        /* la reconexión la maneja RxStomp; sin acción explícita */
-      },
+      error: () => {},
     });
     this.destroyRef.onDestroy(() => sub.unsubscribe());
   }
@@ -487,7 +403,7 @@ export class DiagramaEditorComponent {
   }
 
   abrirModalDepto(): void {
-    if (!this.esAdminUsuario()) return; // crear departamentos es solo del admin
+    if (!this.esAdminUsuario()) return;
     this.deptoCodigo.set('');
     this.deptoNombre.set('');
     this.deptoDescripcion.set('');
@@ -499,7 +415,7 @@ export class DiagramaEditorComponent {
   }
 
   abrirModalActividad(): void {
-    if (!this.esAdminUsuario()) return; // crear actividades es solo del admin
+    if (!this.esAdminUsuario()) return;
     this.actNombre.set('');
     this.actDescripcion.set('');
     this.actFuncionarioResponsableId.set('');
@@ -566,7 +482,6 @@ export class DiagramaEditorComponent {
       departamentoId,
       funcionarioResponsableId: funcionarioResponsableId || undefined,
       slaHoras,
-      // Las salidas reales se derivan de la posición del nodo; placeholder ignorado.
       salidasPosibles: ['completar'],
       reutilizable: this.actReutilizable(),
     }).subscribe({
@@ -590,7 +505,6 @@ export class DiagramaEditorComponent {
     this.diagramaSvc.obtenerDiagrama(this.diagramaId).subscribe({
       next: (diagrama) => {
         this.diagrama.set(diagrama);
-        // Fuente local de calles para poder agregar y redibujar sin recargar.
         this.swimlanesActivas.set([...(diagrama.swimlanes ?? [])]);
       },
       error: (err) => this.error.set(mensajeAmigable(err)),
@@ -646,12 +560,8 @@ export class DiagramaEditorComponent {
     if (!this.diagramaId) return;
     if (this.bloquearSiNoEditable()) return;
 
-    // La calle/departamento se toma de donde se soltó el nodo. Primero por la
-    // etiqueta de calle que reporta el lienzo; si esa no resuelve (llegó vacía o
-    // no coincide), se deriva de la POSICIÓN real del nodo (red de seguridad).
     const depto = this.departamentoDeCreacion(payload);
 
-    // Una actividad debe caer dentro de una calle válida (su departamento).
     if (payload.tipo === 'actividad' && !depto) {
       this.setError(
         `No se pudo crear el nodo: la calle "${payload.swimlane ?? 'sin calle'}" no coincide con un departamento.`,
@@ -659,10 +569,6 @@ export class DiagramaEditorComponent {
       return;
     }
 
-    // Si la calle ya tiene una actividad registrada la preasignamos por comodidad;
-    // si no, el nodo se crea igual con su departamento y el usuario elige la
-    // actividad en el inspector. (Antes la falta de actividad BLOQUEABA la
-    // creación: por eso "al soltarlo por primera vez no funcionaba".)
     const actividadPorDepto = depto
       ? this.actividades().find((a) => a.departamentoId === depto.id)
       : null;
@@ -679,14 +585,10 @@ export class DiagramaEditorComponent {
 
     this.diagramaSvc.crearNodo(this.diagramaId, nodoReq).subscribe({
       next: (creado) => {
-        // Optimista: añadimos a la lista sin recargar (preserva zoom y cámara)
         this.nodos.update((lista) => [...lista, creado]);
-        // Lo seleccionamos al instante para que se vea su calle/departamento sin
-        // tener que volver a hacer click ni ajustarlo a mano.
         this.selectedNodo.set(creado);
         this.inspectorDraft.set({ ...creado });
         this.showSuccess('Nodo creado');
-        // Recordatorio inmediato: un decisión nace con el placeholder "¿Decisión?".
         if (creado.tipo === 'decision') {
           this.advertencia.set(
             '⚠️ Escribe la pregunta del if (ej. "¿El cliente tiene deuda?") en el nombre de esta ' +
@@ -700,8 +602,6 @@ export class DiagramaEditorComponent {
     });
   }
 
-  /** Bloquea una operación de edición si el diagrama está publicado (no editable),
-   *  mostrando un aviso claro en vez de dejar que el backend rechace. */
   private bloquearSiNoEditable(): boolean {
     if (!this.editable()) {
       this.setError('El diagrama está publicado: es de solo lectura. Crea una nueva versión para editarlo.');
@@ -715,21 +615,15 @@ export class DiagramaEditorComponent {
     const actual = this.nodos().find((n) => n.id === payload.backendId);
     if (!actual) return;
 
-    // Si cambió de calle, sincronizamos también el departamento
     const swimlaneNuevo = payload.swimlane ?? actual.swimlane;
     const cambioDeCalle = swimlaneNuevo !== actual.swimlane;
     const deptoMatch = swimlaneNuevo ? this.findDepartamentoFromLane(swimlaneNuevo) : null;
     const departamentoIdNuevo = cambioDeCalle && deptoMatch ? deptoMatch.id : actual.departamentoId;
-    // Si cambió de departamento, la actividad anterior puede no aplicar — la limpiamos
     const actividadIdNueva =
       cambioDeCalle && deptoMatch && actual.actividadId
         ? this.actividades().find((a) => a.id === actual.actividadId && a.departamentoId === deptoMatch.id)?.id
         : actual.actividadId;
 
-    // Movimiento dentro de la misma calle → PATCH con solo la posición (ligero,
-    // evita reenviar el nodo completo). Cambio de calle → puede mudar de
-    // departamento y limpiar la actividad: reemplazo completo con PUT para que
-    // esos campos se apliquen (incluido vaciarlos).
     const obs = cambioDeCalle
       ? this.diagramaSvc.actualizarNodo(payload.backendId, {
           tipo: actual.tipo,
@@ -765,8 +659,6 @@ export class DiagramaEditorComponent {
     const origen = this.nodos().find((n) => n.id === payload.origenBackendId);
     const destino = this.nodos().find((n) => n.id === payload.destinoBackendId);
 
-    // Reglas de topología del nodo de decisión (if): el motor no maneja la pregunta
-    // en estas posiciones, así que las bloqueamos con un mensaje claro.
     if (destino?.tipo === 'decision') {
       if (origen?.tipo === 'fork') {
         this.setError('Un "fork" no puede conectar directo a una "decisión". Una rama del fork debe ir a una actividad.');
@@ -807,8 +699,6 @@ export class DiagramaEditorComponent {
       next: (creada) => {
         this.transiciones.update((lista) => [...lista, creada]);
         this.showSuccess(esDecision ? `Conexión creada (rama "${etiqueta}")` : 'Conexión creada');
-        // join → decisión es válido pero el motor no puede mostrar la pregunta:
-        // avisamos para que el admin ponga una actividad intermedia si la quiere.
         if (origen?.tipo === 'join' && destino?.tipo === 'decision') {
           this.advertencia.set(
             '⚠️ La pregunta de una decisión justo después de un "join" no se mostrará al funcionario ' +
@@ -858,13 +748,6 @@ export class DiagramaEditorComponent {
     this.clearError();
   }
 
-  /**
-   * Carga en {@link requisitosNodo} los documentos requeridos de la actividad
-   * asociada al nodo seleccionado, para poder editarlos en el inspector. Resuelve
-   * la actividad desde el signal ya cargado; si por algún motivo no estuviera,
-   * la pide al backend. Para actividades legacy (solo `documentoIds`) deriva los
-   * requisitos con proveedor CLIENTE/obligatorio (igual que actividades.component).
-   */
   private cargarRequisitosNodo(nodo: NodoDiagrama | null): void {
     this.documentoAAgregar.set('');
     if (!nodo || nodo.tipo !== 'actividad' || !nodo.actividadId) {
@@ -876,14 +759,11 @@ export class DiagramaEditorComponent {
       this.requisitosNodo.set(this.requisitosDesdeActividad(act));
       return;
     }
-    // Actividad no presente en el signal: la pedimos al backend.
     this.actSvc.buscarPorId(nodo.actividadId).subscribe({
       next: (cargada) => {
-        // Cacheamos para resolver nombre/departamento en el resto del inspector.
         this.actividades.update((lista) =>
           lista.some((a) => a.id === cargada.id) ? lista : [...lista, cargada],
         );
-        // Solo aplica si el nodo seleccionado sigue siendo el mismo.
         if (this.selectedNodo()?.actividadId === cargada.id) {
           this.requisitosNodo.set(this.requisitosDesdeActividad(cargada));
         }
@@ -937,12 +817,6 @@ export class DiagramaEditorComponent {
     );
   }
 
-  /**
-   * Guarda los requisitos editados en la ACTIVIDAD compartida del nodo. Envía el
-   * ActividadRequest COMPLETO (a partir de la actividad ya cargada) para no borrar
-   * sus otros campos. Disponible aunque el diagrama esté publicado: editamos la
-   * actividad, no el diagrama.
-   */
   guardarRequisitosNodo(): void {
     const draft = this.inspectorDraft();
     if (!draft || draft.tipo !== 'actividad' || !draft.actividadId) return;
@@ -962,7 +836,6 @@ export class DiagramaEditorComponent {
       slaHoras: act.slaHoras,
       salidasPosibles: act.salidasPosibles?.length ? act.salidasPosibles : ['completar'],
       reutilizable: act.reutilizable,
-      // Mantener documentoIds derivado de los requisitos por compatibilidad legacy.
       documentoIds: requisitos.map((r) => r.documentoId),
       documentosRequeridos: requisitos,
     };
@@ -970,8 +843,6 @@ export class DiagramaEditorComponent {
     this.guardandoRequisitos.set(true);
     this.actSvc.actualizar(actividadId, payload).subscribe({
       next: (actualizada) => {
-        // Refresca el catálogo de actividades para que el resto del inspector
-        // (sublabel, etc.) y la lista reflejen los nuevos requisitos.
         this.actividades.update((lista) =>
           lista.map((a) => (a.id === actualizada.id ? actualizada : a)),
         );
@@ -989,7 +860,6 @@ export class DiagramaEditorComponent {
     });
   }
 
-  // ─── Inspector editable ──────────────────────────────────
   updateDraftNombre(ev: Event): void {
     const value = (ev.target as HTMLInputElement).value;
     this.inspectorDraft.update((d) => (d ? { ...d, nombre: value } : d));
@@ -1000,7 +870,6 @@ export class DiagramaEditorComponent {
     const depto = id ? this.departamentos().find((d) => d.id === id) ?? null : null;
     this.inspectorDraft.update((d) => {
       if (!d) return d;
-      // Verificamos si la actividad actual sigue siendo válida con el nuevo depto
       const actActual = d.actividadId
         ? this.actividades().find((a) => a.id === d.actividadId)
         : null;
@@ -1008,8 +877,6 @@ export class DiagramaEditorComponent {
       return {
         ...d,
         departamentoId: id,
-        // La calle (swimlane) se sincroniza con la etiqueta que el diagrama usa
-        // para ese departamento (código o nombre, según el origen del diagrama).
         swimlane: depto ? this.laneLabelForDepartamento(depto) : d.swimlane,
         actividadId: actSigueValida ? d.actividadId : undefined,
       };
@@ -1019,7 +886,6 @@ export class DiagramaEditorComponent {
   updateDraftActividad(ev: Event): void {
     const id = (ev.target as HTMLSelectElement).value || undefined;
     this.inspectorDraft.update((d) => (d ? { ...d, actividadId: id } : d));
-    // Recargar los requisitos editables para la nueva actividad seleccionada.
     const act = id ? this.actividades().find((a) => a.id === id) : null;
     this.requisitosNodo.set(act ? this.requisitosDesdeActividad(act) : []);
     this.documentoAAgregar.set('');
@@ -1061,7 +927,6 @@ export class DiagramaEditorComponent {
         this.inspectorDraft.set({ ...actualizado });
         this.guardandoNodo.set(false);
         this.showSuccess('Nodo actualizado');
-        // Si es un decisión, avisa (o limpia el aviso) según tenga pregunta real.
         if (actualizado.tipo === 'decision') {
           this.advertencia.set(
             this.preguntaDecisionVacia(actualizado.nombre)
@@ -1104,11 +969,10 @@ export class DiagramaEditorComponent {
     return this.nodos().find((n) => n.id === nodoId)?.nombre ?? '(nodo)';
   }
 
-  /** ¿La pregunta de un decisión quedó vacía o con el placeholder "¿Decisión?"? */
   private preguntaDecisionVacia(nombre: string | undefined): boolean {
     const norm = (nombre ?? '')
       .normalize('NFD')
-      .replace(/[̀-ͯ]/g, '') // quitar acentos
+      .replace(/[̀-ͯ]/g, '')
       .replace(/[¿?]/g, '')
       .trim()
       .toLowerCase();
@@ -1185,7 +1049,6 @@ export class DiagramaEditorComponent {
     if (typeof errorObj?.message === 'string' && errorObj.message.trim()) return errorObj.message.trim();
     if (typeof errorObj?.detail === 'string' && errorObj.detail.trim()) return errorObj.detail.trim();
     if (typeof errorObj?.title === 'string' && errorObj.title.trim()) return errorObj.title.trim();
-    // Si hay status, lo preferimos sobre el "Http failure response..." genérico de Angular
     if (e?.status) {
       return `${fallback} — el servidor respondió HTTP ${e.status}${e.statusText ? ` ${e.statusText}` : ''}.`;
     }
@@ -1248,7 +1111,6 @@ export class DiagramaEditorComponent {
     return [...new Set(out)].slice(0, 8);
   }
 
-  // ─── CU-15: Colaboración ─────────────────────────────────
   readonly mostrarModalColab = signal(false);
   readonly usuariosDisponibles = signal<any[]>([]);
   readonly cargandoUsuarios = signal(false);
@@ -1311,7 +1173,6 @@ export class DiagramaEditorComponent {
     });
   }
 
-  /** Reabre un diagrama publicado/archivado para editarlo (con confirmación). */
   volverABorrador(): void {
     if (
       !confirm(
@@ -1346,14 +1207,6 @@ export class DiagramaEditorComponent {
     );
   }
 
-  /**
-   * Departamento al CREAR un nodo desde la paleta. Primero por la etiqueta de
-   * calle que reporta el lienzo; si no resuelve (la calle llegó vacía o no
-   * coincide por datos/zoom), se deriva de la POSICIÓN del nodo mapeada a las
-   * calles del diagrama —la misma fuente con la que el lienzo dibuja las
-   * swimlanes—, para que el nodo SIEMPRE tome el departamento de la calle donde
-   * se soltó (antes, al soltar desde la paleta, a veces quedaba sin departamento).
-   */
   private departamentoDeCreacion(payload: NodoCreatedPayload): Departamento | null {
     if (payload.swimlane) {
       const porCalle = this.findDepartamentoFromLane(payload.swimlane);
@@ -1368,13 +1221,6 @@ export class DiagramaEditorComponent {
     return null;
   }
 
-  /**
-   * Etiqueta de calle (swimlane) que ESTE diagrama usa para un departamento.
-   * Las calles pueden estar guardadas por código (diagramas manuales/seed) o por
-   * nombre (diagramas generados por IA). Elegimos la que realmente exista entre
-   * las lanes para que el nodo caiga en la calle correcta; si ninguna coincide
-   * (no debería), caemos al código.
-   */
   private laneLabelForDepartamento(depto: Departamento): string {
     const lanes = this.diagrama()?.swimlanes ?? [];
     const cod = depto.codigo.trim().toLowerCase();

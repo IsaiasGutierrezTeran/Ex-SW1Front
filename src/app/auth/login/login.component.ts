@@ -24,7 +24,6 @@ export class LoginComponent {
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  /** Credenciales reales del seed (UsuarioSeeder.java). Las usa el panel demo. */
   readonly cuentasDemo = [
     { label: 'Administrador', email: 'admin@cre.bo',       password: 'admin12345',   variant: 'primary' },
     { label: 'Admin 2 (Ana)', email: 'admin2@cre.bo',      password: 'admin12345',   variant: 'primary' },
@@ -35,7 +34,6 @@ export class LoginComponent {
     { label: 'Cliente',       email: 'cliente@cre.bo',     password: 'cliente12345', variant: 'info' },
   ];
 
-  /** Autollena el formulario con las credenciales seleccionadas. */
   llenarDemo(c: { email: string; password: string }): void {
     this.form.patchValue({ email: c.email, password: c.password });
     this.error.set('');

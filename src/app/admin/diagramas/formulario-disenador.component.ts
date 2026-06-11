@@ -16,7 +16,6 @@ interface TipoCampoVisual {
   icono: string;
   descripcion: string;
   necesitaOpciones: boolean;
-  /** Etiqueta sugerida al soltar el campo en el canvas */
   etiquetaDefault: string;
 }
 
@@ -70,16 +69,13 @@ export class FormularioDisenadorComponent {
   readonly error = signal('');
   readonly exito = signal('');
 
-  // Cabecera
   readonly nombre = signal('');
   readonly permiteAdjuntos = signal(false);
   readonly permiteDictadoVoz = signal(false);
 
-  // Selección + edición en panel lateral
   readonly campoSeleccionadoId = signal<string | null>(null);
   readonly opcionesTexto = signal('');
 
-  // Drag state — desde la paleta o reordenando
   readonly dragTipoNuevo = signal<TipoCampo | null>(null);
   readonly dragIdReorden = signal<string | null>(null);
   readonly indicadorIndice = signal<number | null>(null);
@@ -108,7 +104,6 @@ export class FormularioDisenadorComponent {
     queueMicrotask(() => this.cargar());
   }
 
-  // ── Carga inicial ─────────────────────────────────────────
   private cargar(): void {
     const nodoId = this.nodoId();
     if (!nodoId) return;
@@ -152,7 +147,6 @@ export class FormularioDisenadorComponent {
     this.cerrado.emit();
   }
 
-  // ── Cabecera ──────────────────────────────────────────────
   guardarCabecera(): void {
     if (this.readonly()) return;
     const nombre = this.nombre().trim();
@@ -203,7 +197,6 @@ export class FormularioDisenadorComponent {
     });
   }
 
-  // ── Drag desde la PALETA ───────────────────────────────────
   onPaletaDragStart(ev: DragEvent, tipo: TipoCampo): void {
     if (this.readonly() || !this.formulario()) {
       ev.preventDefault();
@@ -215,7 +208,6 @@ export class FormularioDisenadorComponent {
     ev.dataTransfer!.effectAllowed = 'copy';
   }
 
-  // ── Drag para REORDENAR en el canvas ──────────────────────
   onCampoDragStart(ev: DragEvent, campoId: string): void {
     if (this.readonly()) {
       ev.preventDefault();
@@ -227,7 +219,6 @@ export class FormularioDisenadorComponent {
     ev.dataTransfer!.effectAllowed = 'move';
   }
 
-  // ── Canvas: hover + drop ──────────────────────────────────
   onCanvasDragOver(ev: DragEvent): void {
     if (!this.dragTipoNuevo() && !this.dragIdReorden()) return;
     ev.preventDefault();
@@ -239,7 +230,6 @@ export class FormularioDisenadorComponent {
     if (!this.dragTipoNuevo() && !this.dragIdReorden()) return;
     ev.preventDefault();
     ev.stopPropagation();
-    // Insertamos antes (top half) o después (bottom half)
     const rect = (ev.currentTarget as HTMLElement).getBoundingClientRect();
     const offset = ev.clientY - rect.top;
     const insertAfter = offset > rect.height / 2;
@@ -277,12 +267,10 @@ export class FormularioDisenadorComponent {
     }
   }
 
-  // ── Crear / reordenar / actualizar / eliminar ─────────────
   private crearCampoEn(formId: string, tipo: TipoCampo, posicion: number): void {
     const meta = this.tiposVisual.find((t) => t.value === tipo)!;
     const etiquetaBase = meta.etiquetaDefault;
     const ordenTemp = posicion + 1;
-    // Generamos nombre único: slug + sufijo si colisiona
     let nombreTec = slugify(etiquetaBase);
     const existentes = new Set(this.campos().map((c) => c.nombre));
     if (existentes.has(nombreTec)) {
@@ -298,7 +286,6 @@ export class FormularioDisenadorComponent {
       obligatorio: false,
       opciones: meta.necesitaOpciones ? ['Opción 1', 'Opción 2'] : undefined,
       validacionRegex: undefined,
-      // El backend exige fórmula en los calculados; '0' como placeholder editable.
       formula: tipo === 'calculado' ? '0' : undefined,
       orden: ordenTemp,
     };
@@ -307,11 +294,9 @@ export class FormularioDisenadorComponent {
     this.formSvc.agregarCampo(formId, payload).subscribe({
       next: (creado) => {
         this.guardandoCampo.set(false);
-        // Insertar en la posición elegida
         const actuales = [...this.campos()];
         actuales.splice(posicion, 0, creado);
         this.campos.set(actuales);
-        // Si la posición no era el final, persistimos el orden real
         if (posicion < actuales.length - 1) {
           this.persistirOrden(formId, actuales);
         } else {
@@ -333,7 +318,7 @@ export class FormularioDisenadorComponent {
     const fromIndex = lista.findIndex((c) => c.id === campoId);
     if (fromIndex < 0) return;
     let to = posicion;
-    if (fromIndex < to) to -= 1; // ajuste al quitar el origen
+    if (fromIndex < to) to -= 1;
     if (fromIndex === to) return;
 
     const [movido] = lista.splice(fromIndex, 1);
@@ -361,12 +346,10 @@ export class FormularioDisenadorComponent {
     this.campoSeleccionadoId.set(null);
   }
 
-  // ── Edición inline en el panel lateral ─────────────────────
   updateCampoProperty<K extends keyof CampoPlantillaRequest>(key: K, value: CampoPlantillaRequest[K]): void {
     const sel = this.campoSeleccionado();
     if (!sel) return;
     const actualizado = { ...sel, [key]: value } as CampoPlantilla;
-    // El ID interno (nombre) siempre se deriva de la etiqueta, con desambiguación
     if (key === 'etiqueta') {
       actualizado.nombre = this.generarNombreUnico(value as string, sel.id);
     }
@@ -479,7 +462,6 @@ export class FormularioDisenadorComponent {
     this.opcionesTexto.set(raw);
   }
 
-  // ── Utilidades de presentación ─────────────────────────────
   tipoLabel(t: TipoCampo): string {
     return this.tiposVisual.find((x) => x.value === t)?.label ?? t;
   }

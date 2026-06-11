@@ -8,13 +8,6 @@ import {
   SugerirPoliticaResponse,
 } from '../models/sugerencia-politica.model';
 
-/**
- * CU-40 — Sugerencia automática de política.
- *
- * El cliente describe su trámite y la IA devuelve el top 3 con confianza;
- * tras confirmar se registra el feedback (ACEPTADA / CAMBIADA) para
- * reentrenar el clasificador.
- */
 @Injectable({ providedIn: 'root' })
 export class IaService {
   private readonly http = inject(HttpClient);

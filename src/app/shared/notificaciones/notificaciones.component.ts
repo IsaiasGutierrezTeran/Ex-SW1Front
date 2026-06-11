@@ -7,11 +7,6 @@ import {
   NotificacionesService,
 } from '../../core/services/notificaciones.service';
 
-/**
- * P1 §7 — Panel de notificaciones internas de la plataforma web.
- * El funcionario ve aquí cuándo un trámite llega a su área, alertas de SLA
- * vencido, riesgo de demora, etc. Marca leídas y navega al trámite.
- */
 @Component({
   selector: 'app-notificaciones',
   imports: [DatePipe, RouterLink],

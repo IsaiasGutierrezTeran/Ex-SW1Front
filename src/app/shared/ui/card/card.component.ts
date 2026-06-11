@@ -67,10 +67,7 @@ export class CardComponent {
   readonly flush = input<boolean>(false);
   readonly hoverable = input<boolean>(false);
 
-  /** Best-effort flag: si el consumidor proyecta `[card-actions]` mostramos el slot. */
   protected get hasActions(): boolean {
-    // Renderizamos siempre el wrapper de actions cuando haya título o subtítulo;
-    // si no se proyecta nada, queda vacío sin coste visual.
     return !!(this.title() || this.subtitle());
   }
 }

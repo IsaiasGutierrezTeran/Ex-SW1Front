@@ -1,4 +1,3 @@
-/** CU-39 — Resultado del dictado de un formulario. */
 export interface CampoSugerido {
   campo: string;
   valor: string;

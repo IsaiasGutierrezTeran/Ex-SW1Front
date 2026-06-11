@@ -28,13 +28,6 @@ export class AgenteService {
   private readonly http = inject(HttpClient);
   private readonly url = `${environment.apiUrl}/agente/consultar`;
 
-  /**
-   * Consulta al agente IA.
-   *
-   * Acepta dos formas de invocación:
-   *  - consultar(payload)                  → payload completo (compatibilidad).
-   *  - consultar(consulta, modulo, tramiteId?) → forma simple usada por el chat web.
-   */
   consultar(payload: AgenteConsulta): Observable<AgenteRespuesta>;
   consultar(
     consulta: string,

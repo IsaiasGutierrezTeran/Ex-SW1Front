@@ -3,19 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { DocumentoArchivoService } from '../../core/services/documento-archivo.service';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
-// El api.js de OnlyOffice expone window.DocsAPI.DocEditor.
 declare global {
   interface Window {
     DocsAPI?: { DocEditor: new (id: string, config: unknown) => { destroyEditor?: () => void } };
   }
 }
 
-/**
- * Editor colaborativo de documentos Office (.docx/.xlsx/.pptx) del repositorio.
- * Pide la config firmada al backend, carga el api.js del Document Server y abre
- * el documento. Varios funcionarios que abran el MISMO documento co-editan en
- * tiempo real (lo gestiona OnlyOffice); al guardar, el backend crea una versión.
- */
 @Component({
   selector: 'app-onlyoffice-editor',
   template: `
@@ -101,8 +94,6 @@ export class OnlyofficeEditorComponent implements OnDestroy {
   ngOnDestroy(): void {
     try {
       this.editor?.destroyEditor?.();
-    } catch {
-      /* el editor ya estaba cerrado */
-    }
+    } catch {}
   }
 }

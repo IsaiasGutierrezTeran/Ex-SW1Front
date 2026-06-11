@@ -6,15 +6,6 @@ import { TranscripcionService } from '../../core/services/transcripcion.service'
 import { GrabadorVozComponent } from '../../shared/grabador-voz/grabador-voz.component';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
-/**
- * CU-41 — Reportes ad-hoc por consulta natural.
- *
- * El admin escribe una consulta libre ("conteo de tramites por estado",
- * "tramites entre el 1 y 15 de mayo") y el sistema:
- *   1. delega al microservicio IA para interpretar y generar un pipeline Mongo,
- *   2. backend valida y ejecuta el pipeline contra la colección permitida,
- *   3. devuelve `filasMuestra` (50 filas) + `totalFilas`.
- */
 @Component({
   selector: 'app-reportes-naturales',
   imports: [FormsModule, GrabadorVozComponent],
@@ -46,13 +37,11 @@ export class ReportesNaturalesComponent {
     return Object.keys(r.filasMuestra[0]);
   });
 
-  /** Es un reporte de CONTEO/agrupación (2 columnas y una es 'total') → graficable. */
   readonly esConteo = computed<boolean>(() => {
     const cols = this.columnas();
     return cols.length === 2 && cols.includes('total');
   });
 
-  /** Datos del gráfico de barras (etiqueta, valor, % relativo al máximo). */
   readonly chart = computed<{ label: string; value: number; pct: number }[]>(() => {
     const r = this.resultado();
     if (!r || !this.esConteo()) return [];
@@ -101,7 +90,6 @@ export class ReportesNaturalesComponent {
     this.consulta.set(ej);
   }
 
-  /** Voz → texto: el admin dicta la consulta y se coloca en el campo para revisarla. */
   onAudioReporte(audio: Blob): void {
     this.transcribiendo.set(true);
     this.error.set('');
@@ -134,14 +122,12 @@ export class ReportesNaturalesComponent {
     this.error.set('');
   }
 
-  /** Renderizado seguro para celdas con objetos/arrays. */
   formatear(valor: unknown): string {
     if (valor == null) return '—';
     if (typeof valor === 'object') return JSON.stringify(valor);
     return String(valor);
   }
 
-  /** Descarga el reporte como Excel o PDF (lo genera el backend reusando POI/iText). */
   exportarArchivo(formato: 'xlsx' | 'pdf'): void {
     const consulta = this.consulta().trim();
     if (!consulta) return;

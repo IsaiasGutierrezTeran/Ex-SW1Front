@@ -1,4 +1,3 @@
-/** CU-40 — Sugerencia de política para iniciar trámite (la app móvil lo usa más). */
 export interface SugerirPoliticaRequest {
   descripcion: string;
   audioBase64?: string | null;

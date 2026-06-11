@@ -21,16 +21,6 @@ import { PermisoDocumentalService } from '../../core/services/permiso-documental
 import { PoliticaService } from '../../core/services/politica.service';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
-/**
- * CU-36 — Modal para configurar el permiso documental de una actividad
- * en el contexto de una política específica.
- *
- * Uso:
- *   <app-permiso-documental-modal
- *     [actividad]="actividadElegida"
- *     (cerrado)="modalAbierto = false"
- *   />
- */
 @Component({
   selector: 'app-permiso-documental-modal',
   imports: [FormsModule],
@@ -42,15 +32,7 @@ export class PermisoDocumentalModalComponent {
   private readonly permisoSvc = inject(PermisoDocumentalService);
   private readonly politicaSvc = inject(PoliticaService);
 
-  /** Si se setea con una actividad, el modal está abierto. */
   readonly actividad = input<Actividad | null>(null);
-  /**
-   * Política FIJA (P2 §3.1.2): cuando el modal se abre desde el DIAGRAMADOR, la
-   * política es la del diagrama en edición — se preselecciona y el dropdown se
-   * bloquea, para que el nivel de acceso se configure en contexto y no haya
-   * riesgo de elegir la política equivocada. Null = comportamiento clásico
-   * (catálogo de actividades, el admin elige la política).
-   */
   readonly politicaFijaId = input<string | null>(null);
   readonly cerrado = output<void>();
 
@@ -75,12 +57,10 @@ export class PermisoDocumentalModalComponent {
   });
 
   constructor() {
-    // Cargar políticas y, al abrir el modal, recargar el permiso vigente.
     this.politicaSvc.listar().subscribe({
       next: (p) => this.politicas.set(p ?? []),
     });
 
-    // Política fija (diagramador): al abrir, preseleccionarla.
     effect(() => {
       const fija = this.politicaFijaId();
       if (fija && this.actividad()) {
@@ -88,7 +68,6 @@ export class PermisoDocumentalModalComponent {
       }
     });
 
-    // Cada vez que cambia actividad o política seleccionada → recargar
     effect(() => {
       const act = this.actividad();
       const polId = this.politicaSeleccionadaId();
@@ -107,7 +86,6 @@ export class PermisoDocumentalModalComponent {
         this.cargando.set(false);
       },
       error: () => {
-        // Si no hay permiso configurado, dejamos defaults
         this.nivelSeleccionado.set('SOLO_LECTURA');
         this.tiposSeleccionados.set([]);
         this.cargando.set(false);

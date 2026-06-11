@@ -73,7 +73,6 @@
               @if (documentos().length === 0) {
                 <div class="alert alert-warning mb-0" role="alert">No hay documentos disponibles</div>
               } @else {
-                <!-- Selector para agregar un documento requerido -->
                 <div class="input-group input-group-sm mb-2">
                   <select
                     class="form-select form-select-sm"
@@ -97,7 +96,6 @@
                   </button>
                 </div>
 
-                <!-- Tabla de requisitos agregados -->
                 @if (requisitosActuales().length > 0) {
                   <div class="table-responsive">
                     <table class="table table-sm align-middle mb-0">
@@ -246,7 +244,6 @@
   </div>
 </section>
 
-<!-- CU-36 · Modal de permiso documental -->
 <app-permiso-documental-modal
   [actividad]="actividadParaPermiso()"
   (cerrado)="cerrarPermisos()"

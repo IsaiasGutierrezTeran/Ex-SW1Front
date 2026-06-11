@@ -23,8 +23,6 @@ export class UsuarioFormComponent {
   readonly departamentos = signal<Departamento[]>([]);
   readonly loading = signal(false);
   readonly error = signal('');
-  // Solo los funcionarios pertenecen a un departamento (calle/swimlane). Para
-  // administrador/cliente el campo Departamentos no aplica → se oculta.
   readonly esFuncionario = signal(true);
 
   readonly usuarioId = this.route.snapshot.params['id'] as string | undefined;
@@ -42,7 +40,6 @@ export class UsuarioFormComponent {
   });
 
   constructor() {
-    // Mostrar/ocultar Departamentos según el tipo; al dejar de ser funcionario, limpiar.
     this.form.controls.tipo.valueChanges.subscribe((tipo) => {
       const esFunc = tipo === 'funcionario';
       this.esFuncionario.set(esFunc);
@@ -83,7 +80,6 @@ export class UsuarioFormComponent {
     }
 
     const value = this.form.getRawValue();
-    // Solo el funcionario lleva departamentos; para admin/cliente se manda vacío.
     const departamentosIds = this.esFuncionario() ? value.departamentosIds : [];
     if (this.esFuncionario() && departamentosIds.length === 0) {
       this.error.set('Un funcionario debe pertenecer a al menos un departamento.');

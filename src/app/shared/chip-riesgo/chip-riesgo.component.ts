@@ -2,12 +2,6 @@ import { DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { NivelRiesgo } from '../../core/models/tramite-riesgo.model';
 
-/**
- * CU-43 — Badge visual del nivel de riesgo de un trámite.
- *
- * Uso:
- *   <app-chip-riesgo [nivel]="t.riesgoDemora" [probSla]="t.probSuperarSla" />
- */
 @Component({
   selector: 'app-chip-riesgo',
   imports: [DecimalPipe],
@@ -34,11 +28,8 @@ import { NivelRiesgo } from '../../core/models/tramite-riesgo.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChipRiesgoComponent {
-  /** Nivel de riesgo del trámite. Si viene null o '', se trata como desconocido. */
   readonly nivel = input<NivelRiesgo | string | null | undefined>(null);
-  /** Probabilidad SLA en [0, 1]. Opcional, se muestra entre paréntesis. */
   readonly probSla = input<number | null | undefined>(null);
-  /** Si false, no muestra el porcentaje aunque venga `probSla`. */
   readonly mostrarProb = input<boolean>(true);
 
   protected readonly nivelNorm = computed<NivelRiesgo>(() => {

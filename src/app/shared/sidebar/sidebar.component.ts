@@ -70,7 +70,6 @@ export class SidebarComponent {
   private readonly isBrowser = isPlatformBrowser(this.platformId);
 
   constructor() {
-    // Badge de notificaciones (P1 §7): el sidebar solo se renderiza logueado.
     if (this.isBrowser) this.notif.iniciarPolling();
   }
 
@@ -109,7 +108,6 @@ export class SidebarComponent {
     return null;
   });
 
-  // ── Grupos desplegables (admin) ─────────────────────────────
   readonly groupGestion: NavGroup = {
     label: 'Gestión',
     icon: this.icons.settings,
@@ -143,27 +141,20 @@ export class SidebarComponent {
       { label: 'Historial',         icon: this.icons.historial,  link: '/admin/historial',          roles: ['admin'] },
       { label: 'Anomalías IA',      icon: this.icons.aiSparkles, link: '/admin/anomalias',          roles: ['admin'] },
       { label: 'Reportes IA',       icon: this.icons.aiSparkles, link: '/admin/reportes-naturales', roles: ['admin'] },
-      // "Sugerir trámite" (CU-40) pertenece al flujo del cliente, no al admin —
-      // se accede desde la app móvil. Quitado del sidebar admin.
     ],
   };
 
-  // Sección usuario (tema + logout) también desplegable
   readonly userExpanded = signal(true);
 
-  // Desplegables de la barra superior (admin)
   readonly menuGroups = [
     { key: 'gestion',  group: this.groupGestion },
     { key: 'flujos',   group: this.groupFlujos },
     { key: 'analisis', group: this.groupAnalisis },
   ];
 
-  // ── Barra superior: control de desplegables y menú móvil ────
-  /** Clave del menú abierto: 'gestion' | 'flujos' | 'analisis' | 'user' | null */
   readonly openMenu = signal<string | null>(null);
   readonly mobileOpen = signal(false);
 
-  /** Link de la marca según el rol. */
   readonly brandLink = computed(() =>
     this.role() === 'funcionario' ? '/funcionario/bandeja' : '/admin/dashboard',
   );
@@ -182,13 +173,11 @@ export class SidebarComponent {
     this.openMenu.set(null);
   }
 
-  /** Al navegar (click en un enlace) cierra desplegables y el panel móvil. */
   onNavigate(): void {
     this.openMenu.set(null);
     this.mobileOpen.set(false);
   }
 
-  /** Click fuera de la barra → cierra cualquier desplegable abierto. */
   @HostListener('document:click')
   onDocumentClick(): void {
     if (this.openMenu() !== null) this.openMenu.set(null);
@@ -200,7 +189,6 @@ export class SidebarComponent {
     this.mobileOpen.set(false);
   }
 
-  // Lista plana — usada solo en collapsed para mostrar todos los íconos
   readonly flatItems: NavItem[] = [
     { label: 'Dashboard',     icon: this.icons.dashboard,   link: '/admin/dashboard',     roles: ['admin'] },
     { label: 'Usuarios',      icon: this.icons.users,       link: '/admin/usuarios',      roles: ['admin'] },
@@ -215,7 +203,6 @@ export class SidebarComponent {
     { label: 'Historial',     icon: this.icons.historial,   link: '/admin/historial',          roles: ['admin'] },
     { label: 'Anomalías IA',  icon: this.icons.aiSparkles,  link: '/admin/anomalias',          roles: ['admin'] },
     { label: 'Reportes IA',   icon: this.icons.aiSparkles,  link: '/admin/reportes-naturales', roles: ['admin'] },
-    // "Mis Trámites" se quitó por duplicar la Bandeja de Entrada (mismo endpoint).
     { label: 'Bandeja',       icon: this.icons.bandeja,     link: '/funcionario/bandeja',      roles: ['funcionario'] },
     { label: 'Notificaciones', icon: this.icons.campana,    link: '/notificaciones',           roles: ['admin', 'funcionario'] },
     { label: 'Compartidos conmigo', icon: this.icons.compartidos, link: '/funcionario/diagramas/compartidos', roles: ['funcionario'] },
@@ -227,7 +214,6 @@ export class SidebarComponent {
     return this.flatItems.filter((i) => i.roles.includes(r));
   });
 
-  // ── Acciones ────────────────────────────────────────────────
   toggle(): void {
     this.collapsed.update((v) => !v);
     if (this.isBrowser) {

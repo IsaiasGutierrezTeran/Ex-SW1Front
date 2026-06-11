@@ -82,7 +82,6 @@ export class TableComponent {
         this.currentPage.set(1);
       });
 
-    // Reset de página cuando cambian los datos.
     effect(() => {
       this.data();
       const total = this.totalPages();

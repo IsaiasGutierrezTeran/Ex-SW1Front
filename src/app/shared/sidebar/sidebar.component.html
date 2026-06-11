@@ -1,7 +1,6 @@
 <header class="topnav" (click)="$event.stopPropagation()" aria-label="Navegación principal">
   <div class="topnav-inner">
 
-    <!-- ── Marca ──────────────────────────────────────────── -->
     <a class="topnav-brand" [routerLink]="brandLink()" (click)="onNavigate()">
       <span class="brand-mark" aria-hidden="true">
         <lucide-icon [img]="icons.brand" [size]="20"></lucide-icon>
@@ -12,7 +11,6 @@
       </span>
     </a>
 
-    <!-- ── Hamburguesa (móvil) ────────────────────────────── -->
     <button
       type="button"
       class="topnav-burger"
@@ -24,7 +22,6 @@
       <span></span><span></span><span></span>
     </button>
 
-    <!-- ── Menú de navegación ─────────────────────────────── -->
     <nav class="topnav-menu" [class.open]="mobileOpen()">
 
       @if (role() === 'admin') {
@@ -79,7 +76,6 @@
       }
     </nav>
 
-    <!-- ── Lado derecho: tema + usuario ───────────────────── -->
     <div class="topnav-right">
       <button
         type="button"

@@ -95,7 +95,10 @@
   --bs-link-color: #4f46e5;
   --bs-link-color-rgb: 79, 70, 229;
   --bs-link-hover-color: #4338ca;
-  --bs-body-color: #0c1424;
+  --bs-body-color: var(--cre-text);
+  --bs-body-color-rgb: 12, 20, 36;
+  --bs-emphasis-color: var(--cre-text);
+  --bs-secondary-color: var(--cre-text-muted);
   --bs-border-radius: 14px;
   --bs-border-radius-sm: 11px;
   --bs-border-radius-lg: 20px;
@@ -312,6 +315,7 @@ h1, h2, h3, h4, h5, h6,
   border: 1px solid var(--cre-border) !important;
   border-radius: var(--cre-radius-lg) !important;
   background: var(--cre-surface);
+  color: var(--cre-text);
   box-shadow: var(--cre-shadow-sm);
   overflow: hidden;               /* recorta esquinas de header/tabla */
   transition: box-shadow 200ms ease, transform 200ms ease, border-color 200ms ease;
@@ -444,6 +448,31 @@ small, .small { color: inherit; }
   border-radius: var(--cre-radius-md);
 }
 :root[data-theme='dark'] .cre-note-warn { color: #fbbf24 !important; }
+
+/* Botones dark/outline-dark legibles en modo oscuro (chips de filtro, etc.) */
+:root[data-theme='dark'] .btn-outline-dark {
+  --bs-btn-color: var(--cre-text-muted);
+  --bs-btn-border-color: var(--cre-border-strong);
+  --bs-btn-hover-bg: var(--cre-bg-muted);
+  --bs-btn-hover-color: var(--cre-text);
+  --bs-btn-hover-border-color: var(--cre-border-strong);
+  --bs-btn-active-bg: var(--cre-surface-2);
+  --bs-btn-active-color: var(--cre-text);
+}
+:root[data-theme='dark'] .btn-dark {
+  --bs-btn-bg: var(--cre-surface-2);
+  --bs-btn-border-color: var(--cre-border-strong);
+  --bs-btn-color: var(--cre-text);
+  --bs-btn-hover-bg: var(--cre-bg-muted);
+  --bs-btn-hover-color: var(--cre-text);
+}
+/* thead table-dark legible en ambos modos */
+.table > thead.table-dark th,
+.table-dark th {
+  background-color: var(--cre-surface-2) !important;
+  color: var(--cre-text) !important;
+  border-color: var(--cre-border-strong) !important;
+}
 
 /* Sombras adaptadas: en modo oscuro las sombras claras no se ven; usar tokens */
 :root[data-theme='dark'] .shadow-sm { box-shadow: var(--cre-shadow-sm) !important; }

@@ -1,18 +1,10 @@
 export type SalidaActividad =
   | 'aprobar'
   | 'rechazar'
-  // 'derivar' es LEGACY: hacía lo mismo que 'completar' (avanzar al siguiente
-  // paso). Se mantiene en el tipo para no romper datos antiguos, pero ya no se
-  // ofrece al crear actividades (no está en SALIDAS_INFO).
   | 'derivar'
   | 'observar'
   | 'completar';
 
-/**
- * Requisito documental de una actividad. Cada documento requerido especifica
- * quién lo aporta (`proveedor`) y si es `obligatorio`. Reemplaza al legacy
- * `documentoIds: string[]` (que se mantiene por compatibilidad).
- */
 export interface RequisitoDocumento {
   documentoId: string;
   proveedor: 'CLIENTE' | 'FUNCIONARIO';
@@ -26,10 +18,6 @@ export interface Actividad {
   departamentoId: string;
   funcionarioResponsableId?: string;
   slaHoras: number;
-  /**
-   * Acciones que el funcionario podrá emitir al completar esta actividad.
-   * Debe contener al menos una. Reemplaza al antiguo campo `tipoSalida`.
-   */
   salidasPosibles: SalidaActividad[];
   reutilizable: boolean;
   documentoIds?: string[];

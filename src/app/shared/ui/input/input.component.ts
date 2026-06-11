@@ -66,9 +66,7 @@ export class InputComponent implements ControlValueAccessor {
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
-  setDisabledState(): void {
-    /* noop — disabled flow controlled by [disabled] input */
-  }
+  setDisabledState(): void {}
 
   protected handleInput(ev: Event): void {
     const next = (ev.target as HTMLInputElement).value;

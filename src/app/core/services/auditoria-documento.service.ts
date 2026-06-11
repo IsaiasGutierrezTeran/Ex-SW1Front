@@ -4,12 +4,6 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { PageAuditoria } from '../models/auditoria-documento.model';
 
-/**
- * CU-37 — Timeline de auditoría documental.
- *
- * Solo admin. La auditoría es inmutable (no UPDATE, no DELETE).
- * El backend devuelve una página al estilo Spring Data Page.
- */
 @Injectable({ providedIn: 'root' })
 export class AuditoriaDocumentoService {
   private readonly http = inject(HttpClient);

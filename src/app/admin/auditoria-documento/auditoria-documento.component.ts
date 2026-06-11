@@ -11,13 +11,6 @@ import {
 import { AuditoriaDocumentoService } from '../../core/services/auditoria-documento.service';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
-/**
- * CU-37 — Timeline de auditoría de un documento.
- *
- * Filtros: rango de fechas (cliente) + acción (cliente).
- * Paginación: del backend (Page<>).
- * Exportar: descarga CSV generado en el cliente con la página actual.
- */
 @Component({
   selector: 'app-auditoria-documento',
   imports: [DatePipe, FormsModule, JsonPipe, KeyValuePipe, RouterLink],

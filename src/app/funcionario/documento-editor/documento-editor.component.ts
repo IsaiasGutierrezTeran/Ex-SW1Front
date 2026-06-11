@@ -24,20 +24,6 @@ interface Participante {
   cursorPos?: number;
 }
 
-/**
- * CU-38 — Editor colaborativo de documentos en vivo.
- *
- * MVP simple (sin CRDT real):
- *  - `<textarea>` controlado.
- *  - Cambios locales se envían con debounce de 400ms como `{tipo: 'replace', contenido}`.
- *  - Los eventos remotos del mismo userId se ignoran (echo-suppression).
- *  - El backend retransmite a todos los suscriptores del topic.
- *  - Para snapshot final, usar el endpoint REST de "nueva versión" (CU-35).
- *
- * Limitación conocida: si dos personas escriben al mismo tiempo, gana
- * el último mensaje. Para edición conflictiva real se necesita Yjs/CRDT
- * (queda como mejora futura — el contrato STOMP del backend ya lo soporta).
- */
 @Component({
   selector: 'app-documento-editor',
   imports: [RouterLink],
@@ -63,7 +49,6 @@ export class DocumentoEditorComponent implements OnDestroy {
   readonly mensajeTipo = signal<'info' | 'warning' | 'danger' | 'success'>('info');
   readonly ultimoEvento = signal<DocumentoEventoRT | null>(null);
 
-  /** Contador de cambios recibidos del otro lado — útil para ver actividad. */
   readonly opsRemotas = signal(0);
 
   readonly soloLectura = signal(false);
@@ -88,10 +73,7 @@ export class DocumentoEditorComponent implements OnDestroy {
     this.conectar();
   }
 
-  // ── Conexión STOMP ──────────────────────────────────────────────────────
-
   private conectar(): void {
-    // 1. Suscribir presencia
     this.subPresencia = this.rt
       .observarPresencia(this.documentoId)
       .subscribe({
@@ -99,7 +81,6 @@ export class DocumentoEditorComponent implements OnDestroy {
         error: () => this.aviso('warning', 'Conexión de presencia interrumpida.'),
       });
 
-    // 2. Suscribir edición
     this.subEdicion = this.rt
       .observarEdicion(this.documentoId)
       .subscribe({
@@ -107,7 +88,6 @@ export class DocumentoEditorComponent implements OnDestroy {
         error: () => this.aviso('warning', 'Conexión de edición interrumpida.'),
       });
 
-    // 3. Anunciar JOIN tras un microtick para que las suscripciones estén activas
     this.joinTimer = setTimeout(() => {
       this.rt.publicarJoin(this.documentoId);
       this.conectado.set(true);
@@ -116,22 +96,11 @@ export class DocumentoEditorComponent implements OnDestroy {
   }
 
   private cargarDocumentoInfo(): void {
-    // Para informativo: nombre del documento, versión actual.
-    // Si falla, no es crítico — la sesión sigue. OJO: un 403 del preview ya NO
-    // implica "sin permiso de edición": con nivel SOLO_EDICION el funcionario
-    // puede editar pero no leer (CU-36). El permiso de edición lo decide el
-    // servidor en el JOIN (evento 'kick' si no puede editar).
     this.docSvc.preview(this.documentoId).subscribe({
-      next: () => {
-        // OK — documento existe
-      },
-      error: () => {
-        // No crítico: la autorización de edición la resuelve el kick del server.
-      },
+      next: () => {},
+      error: () => {},
     });
   }
-
-  // ── Eventos entrantes ───────────────────────────────────────────────────
 
   private onEventoPresencia(ev: DocumentoEventoRT): void {
     this.ultimoEvento.set(ev);
@@ -142,7 +111,6 @@ export class DocumentoEditorComponent implements OnDestroy {
       this.soloLectura.set(true);
       this.aviso('danger', 'Has sido expulsado de la sesión (permiso revocado o sesión llena).');
     } else if (ev.tipo === 'cursor') {
-      // Actualizar cursor de un participante específico
       const payload = ev.payload as { cursorPos?: number };
       if (ev.autorId && typeof payload?.cursorPos === 'number') {
         this.participantes.update((lista) =>
@@ -155,11 +123,6 @@ export class DocumentoEditorComponent implements OnDestroy {
   }
 
   private onEventoEdicion(ev: DocumentoEventoRT): void {
-    // SNAPSHOT (al unirse alguien): el servidor manda el contenido vivo de la
-    // sesión. Se procesa ANTES del echo-suppression porque el autor del snapshot
-    // es el que se une (yo mismo, en mi join). Solo se aplica sobre un editor
-    // VACÍO: el componente siempre arranca vacío (el join snapshot entra), y así
-    // nunca pisa texto ya tecleado (ni en la ventana pre-join ni en otra pestaña).
     if (ev.tipo === 'snapshot') {
       const payload = ev.payload as { contenido?: string };
       if (typeof payload?.contenido === 'string' && payload.contenido && !this.contenido()) {

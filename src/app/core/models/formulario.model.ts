@@ -33,7 +33,6 @@ export interface CampoPlantilla {
   obligatorio: boolean;
   opciones?: string[];
   validacionRegex?: string;
-  /** Solo tipo 'calculado': expresión aritmética sobre otros campos (por nombre). */
   formula?: string;
   orden: number;
 }
@@ -45,7 +44,6 @@ export interface CampoPlantillaRequest {
   obligatorio: boolean;
   opciones?: string[];
   validacionRegex?: string;
-  /** Solo tipo 'calculado'. */
   formula?: string;
   orden: number;
 }

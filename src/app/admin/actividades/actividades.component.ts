@@ -42,13 +42,8 @@ export class ActividadesComponent {
   readonly error = signal('');
   readonly exito = signal('');
 
-  /** CU-36 — actividad cuya configuración de permiso documental se está editando. */
   readonly actividadParaPermiso = signal<Actividad | null>(null);
 
-  /**
-   * Espejo reactivo del control `documentosRequeridos` para poder derivar
-   * señales computadas (la tabla y el dropdown de disponibles).
-   */
   readonly requisitosActuales = signal<RequisitoDocumento[]>([]);
 
   readonly funcionariosFiltrados = computed(() => {
@@ -69,14 +64,12 @@ export class ActividadesComponent {
     reutilizable: [true],
   });
 
-  /** Documentos del catálogo que aún no se agregaron como requisito. */
   readonly documentosDisponibles = computed(() => {
     const requeridos = this.requisitosActuales();
     const agregados = new Set(requeridos.map((r) => r.documentoId));
     return this.documentos().filter((d) => !agregados.has(d.id));
   });
 
-  /** Documento seleccionado en el dropdown "Agregar documento requerido". */
   readonly documentoAAgregar = signal('');
 
   constructor() {
@@ -136,7 +129,6 @@ export class ActividadesComponent {
     this.modoEdicion.set(true);
     this.editandoId.set(actividad.id);
 
-    // Usar documentosRequeridos si existe; si no, derivarlo del legacy documentoIds.
     const requisitos: RequisitoDocumento[] =
       actividad.documentosRequeridos && actividad.documentosRequeridos.length > 0
         ? actividad.documentosRequeridos.map((r) => ({ ...r }))
@@ -186,14 +178,10 @@ export class ActividadesComponent {
     return this.documentos().find((d) => d.id === id)?.nombre ?? id;
   }
 
-  /** Alias usado por la tabla de requisitos en la plantilla. */
   nombreDocumento(documentoId: string): string {
     return this.getNombreDocumento(documentoId);
   }
 
-  // ── Requisitos documentales (proveedor + obligatorio por documento) ───────
-
-  /** Reemplaza la lista de requisitos en el control y en el espejo reactivo. */
   private setRequisitos(requisitos: RequisitoDocumento[]): void {
     this.form.controls.documentosRequeridos.setValue(requisitos);
     this.requisitosActuales.set(requisitos);
@@ -241,11 +229,8 @@ export class ActividadesComponent {
 
     const raw = this.form.getRawValue();
     const documentosRequeridos = raw.documentosRequeridos;
-    // Las salidas reales se derivan de la posición del nodo en el flujo; la
-    // actividad guarda un placeholder que el motor ignora.
     const payload: ActividadRequest = {
       ...raw,
-      // Mantener documentoIds derivado de los requisitos por compatibilidad.
       documentoIds: documentosRequeridos.map((r) => r.documentoId),
       documentosRequeridos,
       salidasPosibles: ['completar'],
@@ -280,7 +265,6 @@ export class ActividadesComponent {
     });
   }
 
-  // ── CU-36 · permisos documentales ───────────────────────────────────────
   abrirPermisos(actividad: Actividad): void {
     this.actividadParaPermiso.set(actividad);
   }

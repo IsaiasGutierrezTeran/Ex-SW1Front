@@ -17,12 +17,10 @@ export class HistorialTramitesComponent {
   readonly error = signal('');
   readonly descargando = signal(false);
 
-  // Filtros
   readonly filtroEstado = signal('');
   readonly filtroDesde = signal('');
   readonly filtroHasta = signal('');
 
-  // Búsqueda libre (client-side) por código, cliente o política
   readonly busqueda = signal('');
   readonly tramitesFiltrados = computed(() => {
     const q = this.busqueda().trim().toLowerCase();
@@ -75,7 +73,6 @@ export class HistorialTramitesComponent {
     this.buscarHistorial();
   }
 
-  // CU-26: generar → descargar en dos pasos
   exportar(formato: 'PDF' | 'EXCEL' | 'CSV'): void {
     if (this.tramites().length === 0) return;
     this.descargando.set(true);

@@ -1,4 +1,3 @@
-/** Parte 2 — Item del historial de versiones de un DocumentoArchivo. */
 export interface VersionDocumento {
   versionId: string;
   numeroVersion: number;

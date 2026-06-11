@@ -4,13 +4,6 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { DictarFormularioResponse } from '../models/dictado-formulario.model';
 
-/**
- * CU-39 — Dictado por voz de un formulario del expediente.
- *
- * El audio se envía al backend Spring (multipart); este lo pasa al
- * microservicio Python, que devuelve texto transcrito + mapeo a los
- * campos del formulario activo.
- */
 @Injectable({ providedIn: 'root' })
 export class DictadoService {
   private readonly http = inject(HttpClient);

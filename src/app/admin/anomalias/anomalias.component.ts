@@ -5,14 +5,6 @@ import { AlertaAnomaliaService } from '../../core/services/alerta-anomalia.servi
 import { mensajeAmigable } from '../../core/utils/error-messages';
 import { HumanizePipe } from '../../shared/pipes/humanize.pipe';
 
-/**
- * CU-45 — Panel administrador para revisar las anomalías detectadas por IA.
- *
- * Funciones:
- *  - listar anomalías abiertas
- *  - disparar detección manual (además del scheduler diario del backend)
- *  - marcar una como falso positivo (se quita del listado y entra al dataset de feedback)
- */
 @Component({
   selector: 'app-anomalias',
   imports: [DatePipe, DecimalPipe, HumanizePipe],
@@ -30,7 +22,6 @@ export class AnomaliasComponent {
   readonly error = signal('');
   readonly exito = signal('');
 
-  /** Filtro por categoría (multi-select simple por chip). */
   readonly filtroCategoria = signal<string | null>(null);
 
   readonly categoriasDisponibles = computed(() => {
@@ -106,7 +97,6 @@ export class AnomaliasComponent {
     this.procesandoId.set(a.id);
     this.svc.marcarFalsoPositivo(a.id).subscribe({
       next: () => {
-        // Quitar del listado local
         this.anomalias.update((lista) => lista.filter((x) => x.id !== a.id));
         this.procesandoId.set(null);
         this.exito.set('Marcada como falso positivo.');
@@ -123,7 +113,6 @@ export class AnomaliasComponent {
     this.filtroCategoria.set(cat);
   }
 
-  /** Color del badge según categoría. */
   badgeCategoria(cat: string): string {
     switch ((cat || '').toLowerCase()) {
       case 'tiempo_atipico':       return 'bg-warning text-dark';
@@ -134,7 +123,6 @@ export class AnomaliasComponent {
     }
   }
 
-  /** Texto del título según score: 0..1 → "baja", "media", "alta". */
   intensidad(score: number): string {
     if (score >= 0.8) return 'alta';
     if (score >= 0.5) return 'media';

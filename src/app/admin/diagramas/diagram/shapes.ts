@@ -1,25 +1,17 @@
-/**
- * Registro de formas X6 para el diagramador CRE.
- * Mapea los tipos del modelo backend (inicio/fin/actividad/decision/fork/join)
- * a representaciones SVG con la paleta CRE.
- *
- * Importante: este archivo NO importa @antv/x6 en su top-level — la importación
- * la hace el caller dentro de un guard isPlatformBrowser para mantener SSR-safe.
- */
 import type { Graph } from '@antv/x6';
 
 const COLORS = {
-  brand:        '#ffffff',   //   ← Color principal (blanco)
-  brandDark:    '#111827',     // ← Borde oscuro
-  text:         '#0f172a',      //← Texto oscuro
-  white:        '#ffffff',      //← Blanco puro
-  success:      '#ffffff',    //  ← Color éxito (inicio)
-  successDark:  '#111827',  //    ← Borde éxito oscuro
-  warning:      '#ffffff',     // ← Color advertencia
-  warningDark:  '#111827',      //← Borde advertencia oscuro
-  warningInk:   '#0f172a',     // ← Texto advertencia
-  ink:          '#0f172a',    //  ← Texto oscuro general
-  border:       '#94a3b8',  //    ← Bordes grises
+  brand:        '#ffffff',
+  brandDark:    '#111827',
+  text:         '#0f172a',
+  white:        '#ffffff',
+  success:      '#ffffff',
+  successDark:  '#111827',
+  warning:      '#ffffff',
+  warningDark:  '#111827',
+  warningInk:   '#0f172a',
+  ink:          '#0f172a',
+  border:       '#94a3b8',
 };
 
 
@@ -29,7 +21,6 @@ export function registerCreShapes(graph: typeof Graph): void {
   if (registered) return;
   registered = true;
 
-  // ── inicio ──────────────────────────────────────────────
   graph.registerNode(
     'cre-inicio',
     {
@@ -55,7 +46,6 @@ export function registerCreShapes(graph: typeof Graph): void {
     true,
   );
 
-  // ── fin (doble círculo) ─────────────────────────────────
   graph.registerNode(
     'cre-fin',
     {
@@ -97,7 +87,6 @@ export function registerCreShapes(graph: typeof Graph): void {
     true,
   );
 
-  // ── actividad (rectángulo redondeado azul con sub-label de depto) ──
   graph.registerNode(
     'cre-actividad',
     {
@@ -153,9 +142,6 @@ export function registerCreShapes(graph: typeof Graph): void {
     true,
   );
 
-  // ── decision (rombo amarillo) ───────────────────────────
-  // inherit:'polygon' es CRÍTICO — sin él, X6 no maneja el hit-test ni el
-  // movimiento correctamente para nodos con polygon body.
   graph.registerNode(
     'cre-decision',
     {
@@ -183,7 +169,6 @@ export function registerCreShapes(graph: typeof Graph): void {
     true,
   );
 
-  // ── fork (barra paralela horizontal) ────────────────────
   graph.registerNode(
     'cre-fork',
     {
@@ -217,7 +202,6 @@ export function registerCreShapes(graph: typeof Graph): void {
     true,
   );
 
-  // ── join (alias visual de fork) ─────────────────────────
   graph.registerNode(
     'cre-join',
     {
@@ -251,7 +235,6 @@ export function registerCreShapes(graph: typeof Graph): void {
     true,
   );
 
-  // ── arista por defecto ──────────────────────────────────
   graph.registerEdge(
     'cre-edge',
     {
@@ -302,7 +285,6 @@ export function registerCreShapes(graph: typeof Graph): void {
   );
 }
 
-/** Mapea el `tipo` del backend al nombre de forma X6 registrada. */
 export function shapeFromTipo(tipo: string): string {
   switch (tipo) {
     case 'inicio': return 'cre-inicio';
@@ -315,7 +297,6 @@ export function shapeFromTipo(tipo: string): string {
   }
 }
 
-/** Tamaño aproximado por tipo, útil para layout inicial. */
 export function defaultSize(tipo: string): { width: number; height: number } {
   switch (tipo) {
     case 'inicio': case 'fin': return { width: 60, height: 60 };

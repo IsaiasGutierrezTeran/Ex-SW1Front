@@ -14,13 +14,6 @@ export interface Notificacion {
   fechaCreacion: string;
 }
 
-/**
- * P1 §7 — Notificaciones internas de la plataforma web (funcionario/admin).
- *
- * Consume el REST del backend con POLLING (30s): el stream SSE existe pero
- * EventSource no puede enviar el JWT por header, así que se usa el mismo
- * patrón que la app móvil. El badge del sidebar lee `noLeidas`.
- */
 @Injectable({ providedIn: 'root' })
 export class NotificacionesService {
   private readonly http = inject(HttpClient);
@@ -32,7 +25,6 @@ export class NotificacionesService {
 
   private timer: ReturnType<typeof setInterval> | null = null;
 
-  /** Arranca el polling (idempotente; solo browser). Lo llama el sidebar al renderizarse. */
   iniciarPolling(): void {
     if (!isPlatformBrowser(this.platformId) || this.timer) return;
     this.refrescar();
@@ -51,9 +43,7 @@ export class NotificacionesService {
       .get<Notificacion[]>(`${this.api}/notificaciones/mis-notificaciones`)
       .subscribe({
         next: (l) => this.lista.set(l ?? []),
-        error: () => {
-          /* sesión expirada o backend caído: el badge simplemente no se actualiza */
-        },
+        error: () => {},
       });
   }
 

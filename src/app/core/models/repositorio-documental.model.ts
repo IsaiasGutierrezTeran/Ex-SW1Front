@@ -1,4 +1,3 @@
-/** Parte 2 — Repositorio documental asociado 1:1 a una política. */
 export interface RepositorioDocumental {
   id: string;
   politicaId: string;

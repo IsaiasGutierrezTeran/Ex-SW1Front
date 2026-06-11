@@ -18,7 +18,6 @@
     @if (cargando()) {
       <div class="fd-loading">Cargando formulario…</div>
     } @else {
-      <!-- ── 1. Cabecera ────────────────────────────────────── -->
       <section class="fd-section">
         <div class="fd-step-head">
           <span class="fd-step-num">1</span>
@@ -84,7 +83,6 @@
         </div>
       </section>
 
-      <!-- ── 2. Constructor visual ─────────────────────────── -->
       @if (formulario()) {
         <section class="fd-section">
           <div class="fd-step-head">
@@ -99,7 +97,6 @@
           </div>
 
           <div class="fd-rad" [class.fd-rad--readonly]="readonly()">
-            <!-- ── PALETA ── -->
             <aside class="fd-paleta" aria-label="Paleta de componentes">
               <div class="fd-paleta-titulo">Componentes</div>
               @for (t of tiposVisual; track t.value) {
@@ -120,7 +117,6 @@
               <p class="fd-paleta-tip">Arrastra hacia el lienzo</p>
             </aside>
 
-            <!-- ── CANVAS ── -->
             <main
               class="fd-canvas"
               [class.fd-canvas--hover]="hoveringCanvas()"
@@ -168,7 +164,6 @@
                     }
                   </div>
 
-                  <!-- Render del campo como se verá -->
                   <div class="fd-canvas-campo-render">
                     @if (c.etiqueta) {
                       <label class="fd-render-label">
@@ -215,7 +210,6 @@
               }
             </main>
 
-            <!-- ── PANEL DE PROPIEDADES ── -->
             <aside class="fd-propiedades" aria-label="Propiedades del campo">
               @if (campoSeleccionado(); as sel) {
                 <div class="fd-propiedades-head">

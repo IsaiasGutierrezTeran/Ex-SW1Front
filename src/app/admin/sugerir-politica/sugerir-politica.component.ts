@@ -7,18 +7,6 @@ import {
 } from '../../core/models/sugerencia-politica.model';
 import { IaService } from '../../core/services/ia.service';
 
-/**
- * CU-40 — Sugerencia automática de política a partir de descripción libre.
- *
- * En el flujo real esto vive en la app móvil del cliente. La pantalla web
- * sirve como demo para que el admin pruebe el flujo (y para clientes que
- * accedan vía navegador).
- *
- * Flujo:
- *   1. Usuario escribe descripción libre.
- *   2. POST → backend → microservicio IA → devuelve top 3.
- *   3. Usuario confirma la sugerida o elige otra (registra feedback).
- */
 @Component({
   selector: 'app-sugerir-politica',
   imports: [DecimalPipe, FormsModule],
@@ -34,7 +22,7 @@ export class SugerirPoliticaComponent {
   readonly seleccionada = signal<string>('');
   readonly procesando = signal(false);
   readonly confirmando = signal(false);
-  readonly feedbackFinal = signal<string>('');   // ACEPTADA | CAMBIADA | CANCELADA
+  readonly feedbackFinal = signal<string>('');
   readonly error = signal('');
 
   readonly ejemplos = [

@@ -1,9 +1,3 @@
-/**
- * Helpers para cálculo de swimlanes (calles) en el canvas.
- * Las calles son VERTICALES: cada departamento ocupa LANE_WIDTH px de ancho.
- * El flujo del diagrama crece de arriba hacia abajo dentro de cada calle.
- */
-
 export const LANE_WIDTH = 360;
 export const LANE_HEADER_HEIGHT = 48;
 export const CANVAS_HEIGHT = 2600;
