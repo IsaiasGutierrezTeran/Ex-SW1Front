@@ -37,6 +37,8 @@ import { mensajeAmigable } from '../../core/utils/error-messages';
                   <input type="file" accept="image/*" hidden (change)="onFoto($event)" [disabled]="subiendoFoto()" />
                 </label>
                 <p class="text-muted x-small mt-2 mb-0">JPG o PNG. Se guarda de forma segura en el servidor.</p>
+                @if (msgFoto()) { <div class="alert alert-success py-2 mt-2 mb-0 small">{{ msgFoto() }}</div> }
+                @if (errFoto()) { <div class="alert alert-danger py-2 mt-2 mb-0 small">{{ errFoto() }}</div> }
               </div>
             </div>
           </div>
@@ -140,6 +142,8 @@ export class PerfilComponent {
   readonly guardando = signal(false);
   readonly cambiandoPass = signal(false);
   readonly subiendoFoto = signal(false);
+  readonly msgFoto = signal('');
+  readonly errFoto = signal('');
   readonly msgPerfil = signal('');
   readonly errPerfil = signal('');
   readonly msgPass = signal('');
@@ -188,7 +192,11 @@ export class PerfilComponent {
   private cargarFoto(): void {
     this.usuarioSvc.miFoto().subscribe({
       next: (blob) => {
-        if (blob && blob.size > 0) this.fotoUrl.set(URL.createObjectURL(blob));
+        if (blob && blob.size > 0) {
+          const reader = new FileReader();
+          reader.onload = () => this.fotoUrl.set(reader.result as string);
+          reader.readAsDataURL(blob);
+        }
       },
       error: () => {},
     });
@@ -239,14 +247,30 @@ export class PerfilComponent {
     const input = ev.target as HTMLInputElement;
     const file = input.files?.[0];
     if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      this.errFoto.set('El archivo debe ser una imagen (JPG o PNG).');
+      input.value = '';
+      return;
+    }
+
+    // Vista previa inmediata del archivo elegido (no depende del servidor)
+    const reader = new FileReader();
+    reader.onload = () => this.fotoUrl.set(reader.result as string);
+    reader.readAsDataURL(file);
+
     this.subiendoFoto.set(true);
+    this.msgFoto.set('');
+    this.errFoto.set('');
     this.usuarioSvc.subirFoto(file).subscribe({
       next: (u) => {
         this.usuario.set(u);
-        this.cargarFoto();
         this.subiendoFoto.set(false);
+        this.msgFoto.set('Foto de perfil actualizada.');
       },
-      error: () => this.subiendoFoto.set(false),
+      error: (e) => {
+        this.subiendoFoto.set(false);
+        this.errFoto.set(mensajeAmigable(e, 'No se pudo subir la foto.'));
+      },
     });
     input.value = '';
   }
