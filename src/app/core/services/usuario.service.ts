@@ -32,4 +32,33 @@ export class UsuarioService {
   toggleActivo(id: string, activo: boolean): Observable<Usuario> {
     return this.http.put<Usuario>(`${this.url}/${id}`, { activo });
   }
+
+  // ── Perfil propio ────────────────────────────────────────
+  miPerfil(): Observable<Usuario> {
+    return this.http.get<Usuario>(`${this.url}/me`);
+  }
+
+  actualizarMiPerfil(data: {
+    nombre: string;
+    apellido: string;
+    telefono?: string;
+    dni?: string;
+    direccion?: string;
+  }): Observable<Usuario> {
+    return this.http.put<Usuario>(`${this.url}/me`, data);
+  }
+
+  cambiarPassword(actual: string, nueva: string): Observable<void> {
+    return this.http.put<void>(`${this.url}/me/password`, { actual, nueva });
+  }
+
+  subirFoto(file: File): Observable<Usuario> {
+    const fd = new FormData();
+    fd.append('file', file);
+    return this.http.post<Usuario>(`${this.url}/me/foto`, fd);
+  }
+
+  miFoto(): Observable<Blob> {
+    return this.http.get(`${this.url}/me/foto`, { responseType: 'blob' });
+  }
 }

@@ -181,6 +181,12 @@ export const routes: Routes = [
 			import('./shared/notificaciones/notificaciones.component').then((m) => m.NotificacionesComponent),
 	},
 	{
+		path: 'perfil',
+		canActivate: [authGuard],
+		loadComponent: () =>
+			import('./shared/perfil/perfil.component').then((m) => m.PerfilComponent),
+	},
+	{
 		path: 'no-autorizado',
 		loadComponent: () =>
 			import('./shared/pages/no-autorizado.component').then((m) => m.NoAutorizadoComponent),

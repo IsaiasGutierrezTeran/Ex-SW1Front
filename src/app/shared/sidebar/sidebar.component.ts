@@ -36,6 +36,7 @@ import {
   FileText,
   Share2,
   Bell,
+  UserCircle,
 } from 'lucide-angular';
 import { AuthService } from '../../core/services/auth.service';
 import { NotificacionesService } from '../../core/services/notificaciones.service';
@@ -97,6 +98,7 @@ export class SidebarComponent {
     historial:    BookOpen        as LucideIconData,
     compartidos:  Share2          as LucideIconData,
     campana:      Bell            as LucideIconData,
+    perfil:       UserCircle      as LucideIconData,
   };
 
   private readonly storageKey = 'cre.sidebar.collapsed';

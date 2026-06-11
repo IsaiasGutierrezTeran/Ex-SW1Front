@@ -98,6 +98,10 @@
             <lucide-icon class="caret" [class.rotated]="openMenu() === 'user'" [img]="icons.chevronDown" [size]="14"></lucide-icon>
           </button>
           <div class="topnav-dd-panel topnav-dd-panel-right">
+            <a routerLink="/perfil" class="topnav-dd-item" (click)="onNavigate()">
+              <lucide-icon [img]="icons.perfil" [size]="16"></lucide-icon>
+              <span>Mi perfil</span>
+            </a>
             <button type="button" class="topnav-dd-item" (click)="theme.toggle()">
               <lucide-icon [img]="theme.mode() === 'dark' ? icons.sun : icons.moon" [size]="16"></lucide-icon>
               <span>{{ theme.mode() === 'dark' ? 'Modo claro' : 'Modo oscuro' }}</span>
