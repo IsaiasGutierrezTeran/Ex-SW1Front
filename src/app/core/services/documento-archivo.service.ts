@@ -49,9 +49,30 @@ export class DocumentoArchivoService {
     return this.http.get<VersionDocumento[]>(`${this.api}/documentos/${documentoId}/versiones`);
   }
 
-  onlyofficeConfig(documentoId: string): Observable<{ serverUrl: string; config: unknown }> {
+  onlyofficeConfig(
+    documentoId: string,
+    mode: 'edit' | 'view' = 'edit',
+  ): Observable<{ serverUrl: string; config: unknown }> {
     return this.http.get<{ serverUrl: string; config: unknown }>(
-      `${this.api}/documentos/${documentoId}/onlyoffice/config`,
+      `${this.api}/documentos/${documentoId}/onlyoffice/config?mode=${mode}`,
+    );
+  }
+
+  crearEnBlanco(
+    tramiteId: string,
+    body: { tipo: 'docx' | 'xlsx'; nombreLogico: string; nodoId?: string; actividadId?: string },
+  ): Observable<DocumentoArchivoResponse> {
+    return this.http.post<DocumentoArchivoResponse>(
+      `${this.api}/tramites/${tramiteId}/documentos/blank`,
+      body,
+    );
+  }
+
+  /** Fuerza el guardado de la co-edición OnlyOffice (crea nueva versión en S3). */
+  forzarGuardado(documentoId: string): Observable<{ status: number; respuesta: string }> {
+    return this.http.post<{ status: number; respuesta: string }>(
+      `${this.api}/documentos/${documentoId}/onlyoffice/forzar-guardado`,
+      {},
     );
   }
 

@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://api.ficctuagrmbolivia.online/api/:path*"
+      "destination": "http://3.233.132.212/api/:path*"
     },
     {
       "source": "/(.*)",

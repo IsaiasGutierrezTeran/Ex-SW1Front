@@ -300,6 +300,45 @@
               <div class="alert alert-warning small m-2 mb-0">{{ errorDocumentos() }}</div>
             }
 
+            <!-- Crear un documento Office EN BLANCO (Word/Excel) para co-editar en vivo -->
+            @if (mostrarAcciones() && !finalizado()) {
+              <div class="border-bottom p-3">
+                @if (!mostrarCrearDoc()) {
+                  <button type="button" class="btn btn-sm btn-success w-100" (click)="mostrarCrearDoc.set(true)">
+                    + Crear documento (Word/Excel)
+                  </button>
+                } @else {
+                  <p class="small fw-semibold mb-2">Nuevo documento en blanco</p>
+                  <input
+                    type="text"
+                    class="form-control form-control-sm mb-2"
+                    [value]="nombreNuevoDoc()"
+                    (input)="setNombreNuevoDoc($event)"
+                    placeholder="Nombre (ej. Contrato)"
+                  />
+                  <div class="btn-group btn-group-sm w-100 mb-2" role="group">
+                    <button type="button" class="btn"
+                      [class.btn-primary]="tipoNuevoDoc() === 'docx'"
+                      [class.btn-outline-primary]="tipoNuevoDoc() !== 'docx'"
+                      (click)="tipoNuevoDoc.set('docx')">Word</button>
+                    <button type="button" class="btn"
+                      [class.btn-primary]="tipoNuevoDoc() === 'xlsx'"
+                      [class.btn-outline-primary]="tipoNuevoDoc() !== 'xlsx'"
+                      (click)="tipoNuevoDoc.set('xlsx')">Excel</button>
+                  </div>
+                  <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-sm btn-success flex-grow-1"
+                      [disabled]="creandoDoc()" (click)="crearDocumento()">
+                      @if (creandoDoc()) { <span class="spinner-border spinner-border-sm me-1"></span> }
+                      Crear y abrir
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                      (click)="mostrarCrearDoc.set(false)">Cancelar</button>
+                  </div>
+                }
+              </div>
+            }
+
             <!-- CU-33 · Subir documento al trámite (solo funcionario, no admin) -->
             @if (mostrarAcciones() && !finalizado()) {
               <div class="border-bottom p-3">
@@ -382,28 +421,38 @@
                       }
                     </div>
                   </div>
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-outline-primary"
-                    [disabled]="previewCargandoId() === d.id"
-                    (click)="verDocumento(d)"
-                    title="Abrir en pestaña nueva"
-                  >
-                    @if (previewCargandoId() === d.id) {
-                      <span class="spinner-border spinner-border-sm"></span>
-                    } @else {
-                      Ver
-                    }
-                  </button>
-                  <!-- Co-edición en vivo de Office (.docx/.xlsx/.pptx) vía OnlyOffice -->
+                  <!-- Office: el visor del navegador no los abre bien → Ver y Editar
+                       van por OnlyOffice (lectura / co-edición). Resto: preview normal. -->
                   @if (esOfficeEditable(d)) {
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-primary"
+                      (click)="abrirOfficeView(d)"
+                      title="Ver en OnlyOffice (solo lectura)"
+                    >
+                      Ver
+                    </button>
                     <button
                       type="button"
                       class="btn btn-sm btn-primary"
                       (click)="abrirOffice(d)"
-                      title="Abrir y co-editar (varios funcionarios a la vez)"
+                      title="Co-editar (varios funcionarios a la vez)"
                     >
                       Editar
+                    </button>
+                  } @else {
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-primary"
+                      [disabled]="previewCargandoId() === d.id"
+                      (click)="verDocumento(d)"
+                      title="Abrir en pestaña nueva"
+                    >
+                      @if (previewCargandoId() === d.id) {
+                        <span class="spinner-border spinner-border-sm"></span>
+                      } @else {
+                        Ver
+                      }
                     </button>
                   }
                 </li>

@@ -68,6 +68,12 @@ export class ExpedienteDigitalComponent {
   readonly obligatorioSubir = signal(false);
   readonly subiendoDocumento = signal(false);
 
+  // Crear documento Office en blanco (Word/Excel) para co-editar.
+  readonly mostrarCrearDoc = signal(false);
+  readonly nombreNuevoDoc = signal('');
+  readonly tipoNuevoDoc = signal<'docx' | 'xlsx'>('docx');
+  readonly creandoDoc = signal(false);
+
   readonly tiposDocumento = TIPOS_DOCUMENTO;
 
   readonly actividadActualId = computed<string | null>(
@@ -469,13 +475,66 @@ export class ExpedienteDigitalComponent {
     this.obligatorioSubir.set((ev.target as HTMLInputElement).checked);
   }
 
-  esOfficeEditable(d: { nombreLogico?: string }): boolean {
+  esOfficeEditable(d: { nombreLogico?: string; tipoDocumento?: string }): boolean {
     const n = (d?.nombreLogico ?? '').toLowerCase();
-    return /\.(docx|xlsx|pptx|doc|xls|ppt|odt|ods|odp)$/.test(n);
+    if (/\.(docx|xlsx|pptx|doc|xls|ppt|odt|ods|odp)$/.test(n)) return true;
+    const t = (d?.tipoDocumento ?? '').toUpperCase();
+    return t === 'WORD' || t === 'EXCEL';
   }
 
   abrirOffice(d: { id: string }): void {
     window.open(`/funcionario/documentos/${d.id}/office`, '_blank');
+  }
+
+  abrirOfficeView(d: { id: string }): void {
+    window.open(`/funcionario/documentos/${d.id}/office?mode=view`, '_blank');
+  }
+
+  setNombreNuevoDoc(ev: Event): void {
+    this.nombreNuevoDoc.set((ev.target as HTMLInputElement).value);
+  }
+
+  crearDocumento(): void {
+    const nombre = this.nombreNuevoDoc().trim();
+    if (!nombre) {
+      this.errorDocumentos.set('Ponle un nombre al documento.');
+      setTimeout(() => this.errorDocumentos.set(''), 4000);
+      return;
+    }
+    // Resolver actividad/nodo: nodo actual → 1ª sección editable → documento ya
+    // existente del trámite (la lista trae actividadId/nodoId). El último respaldo
+    // cubre trámites en paralelo o sin nodoActual único, donde /estado no lo expone.
+    const docPrev = this.documentos()[0];
+    const nodoId = this.nodoActualId() ?? this.nodoIdSeccionEditable() ?? docPrev?.nodoId ?? undefined;
+    const actividadId = this.actividadActualId() ?? docPrev?.actividadId ?? undefined;
+    if (!actividadId && !nodoId) {
+      this.errorDocumentos.set('No se pudo determinar la actividad del trámite para crear el documento.');
+      setTimeout(() => this.errorDocumentos.set(''), 4000);
+      return;
+    }
+    this.creandoDoc.set(true);
+    this.errorDocumentos.set('');
+    this.docSvc
+      .crearEnBlanco(this.tramiteId, {
+        tipo: this.tipoNuevoDoc(),
+        nombreLogico: nombre,
+        nodoId,
+        actividadId,
+      })
+      .subscribe({
+        next: (resp) => {
+          this.creandoDoc.set(false);
+          this.mostrarCrearDoc.set(false);
+          this.nombreNuevoDoc.set('');
+          this.cargarDocumentos();
+          window.open(`/funcionario/documentos/${resp.documentoArchivoId}/office`, '_blank');
+        },
+        error: () => {
+          this.creandoDoc.set(false);
+          this.errorDocumentos.set('No se pudo crear el documento.');
+          setTimeout(() => this.errorDocumentos.set(''), 5000);
+        },
+      });
   }
 
   subirDocumento(): void {
@@ -486,8 +545,11 @@ export class ExpedienteDigitalComponent {
       return;
     }
     const nombreLogico = this.nombreLogicoSubir().trim() || archivo.name;
-    const actividadId = this.actividadActualId() ?? undefined;
-    const nodoId = this.nodoActualId() ?? this.nodoIdSeccionEditable();
+    // Respaldo: si no hay nodoActual ni sección editable resoluble, usa el
+    // actividadId/nodoId de un documento ya existente del trámite.
+    const docPrev = this.documentos()[0];
+    const actividadId = this.actividadActualId() ?? docPrev?.actividadId ?? undefined;
+    const nodoId = this.nodoActualId() ?? this.nodoIdSeccionEditable() ?? docPrev?.nodoId ?? undefined;
     if (!actividadId && !nodoId) {
       this.errorDocumentos.set('No se pudo determinar el nodo actual del trámite.');
       setTimeout(() => this.errorDocumentos.set(''), 4000);
