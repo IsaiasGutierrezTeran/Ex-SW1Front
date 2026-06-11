@@ -68,7 +68,24 @@ interface ChatMensaje {
       @if (abierto()) {
         <section class="ac-panel" role="dialog" aria-label="Asistente">
           <header class="ac-panel__header">
-            <span class="ac-panel__title">Asistente</span>
+            <div class="ac-panel__id">
+              <span class="ac-avatar" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <rect x="4" y="8" width="16" height="11" rx="3" stroke="currentColor"
+                    stroke-width="2" />
+                  <path d="M12 4v4" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  <circle cx="12" cy="4" r="1.4" fill="currentColor" />
+                  <circle cx="9" cy="13" r="1.3" fill="currentColor" />
+                  <circle cx="15" cy="13" r="1.3" fill="currentColor" />
+                  <path d="M2 12v3M22 12v3" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" />
+                </svg>
+              </span>
+              <span class="ac-panel__meta">
+                <span class="ac-panel__title">Asistente</span>
+                <span class="ac-panel__status"><i class="ac-dot"></i> En línea</span>
+              </span>
+            </div>
             <button
               type="button"
               class="ac-panel__close"
@@ -105,7 +122,9 @@ interface ChatMensaje {
             }
             @if (cargando()) {
               <div class="ac-row">
-                <div class="ac-bubble ac-bubble--bot ac-bubble--typing">escribiendo…</div>
+                <div class="ac-bubble ac-bubble--bot ac-bubble--typing" aria-label="escribiendo">
+                  <span class="ac-typing"><i></i><i></i><i></i></span>
+                </div>
               </div>
             }
           </div>
@@ -144,61 +163,144 @@ interface ChatMensaje {
   styles: [
     `
       :host {
-        --ac-morado: #6a1b9a;
-        --ac-morado-700: #571579;
+        --ac-grad: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+        --ac-brand: #4f46e5;
+        --ac-brand-700: #4338ca;
+        --ac-surface: #ffffff;
+        --ac-body-bg: #f3f6fc;
+        --ac-bot-bg: #ffffff;
+        --ac-bot-border: #e6ebf5;
+        --ac-text: #0c1424;
+        --ac-muted: #5a6b85;
       }
 
+      /* ── FAB con glow pulsante ───────────────────────────── */
       .ac-fab {
         position: fixed;
         right: 24px;
         bottom: 24px;
-        width: 56px;
-        height: 56px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         border: none;
-        background: var(--ac-morado);
+        background: var(--ac-grad);
         color: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        box-shadow: 0 6px 18px rgba(106, 27, 154, 0.4);
+        box-shadow: 0 10px 26px -6px rgba(79, 70, 229, 0.6);
         z-index: 1080;
-        transition: background 0.15s ease, transform 0.15s ease;
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+      }
+      .ac-fab::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.45);
+        animation: ac-pulse 2.4s ease-out infinite;
       }
       .ac-fab:hover {
-        background: var(--ac-morado-700);
-        transform: translateY(-1px);
+        transform: translateY(-2px) scale(1.04);
+        box-shadow: 0 16px 34px -8px rgba(79, 70, 229, 0.75);
+      }
+      @keyframes ac-pulse {
+        0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.5); }
+        70% { box-shadow: 0 0 0 16px rgba(79, 70, 229, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
       }
 
+      /* ── Panel ───────────────────────────────────────────── */
       .ac-panel {
         position: fixed;
         right: 24px;
-        bottom: 92px;
-        width: 360px;
+        bottom: 98px;
+        width: 372px;
         max-width: calc(100vw - 32px);
-        height: 480px;
-        max-height: calc(100vh - 120px);
+        height: 520px;
+        max-height: calc(100vh - 130px);
         display: flex;
         flex-direction: column;
-        background: #fff;
-        border-radius: 14px;
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+        background: var(--ac-surface);
+        border: 1px solid rgba(15, 23, 42, 0.06);
+        border-radius: 18px;
+        box-shadow: 0 24px 60px -16px rgba(8, 13, 33, 0.4);
         overflow: hidden;
         z-index: 1080;
+        animation: ac-rise 0.22s cubic-bezier(0.32, 0.72, 0.4, 1) both;
+      }
+      @keyframes ac-rise {
+        from { opacity: 0; transform: translateY(14px) scale(0.98); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
       }
 
+      /* ── Cabecera con gradiente + avatar + estado ────────── */
       .ac-panel__header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px 16px;
-        background: var(--ac-morado);
+        padding: 13px 16px;
+        background: var(--ac-grad);
         color: #fff;
+        position: relative;
+      }
+      .ac-panel__header::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(20rem 8rem at 90% -50%, rgba(255, 255, 255, 0.25), transparent 60%);
+        pointer-events: none;
+      }
+      .ac-panel__id {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        position: relative;
+        z-index: 1;
+      }
+      .ac-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 11px;
+        background: rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        flex-shrink: 0;
+      }
+      .ac-panel__meta {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
       }
       .ac-panel__title {
-        font-weight: 600;
-        font-size: 1rem;
+        font-weight: 700;
+        font-size: 0.98rem;
+        letter-spacing: -0.01em;
+      }
+      .ac-panel__status {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.72rem;
+        color: rgba(255, 255, 255, 0.85);
+        font-weight: 500;
+      }
+      .ac-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #4ade80;
+        box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+        animation: ac-online 2s ease-out infinite;
+      }
+      @keyframes ac-online {
+        0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6); }
+        70% { box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
       }
       .ac-panel__close {
         border: none;
@@ -207,21 +309,27 @@ interface ChatMensaje {
         display: flex;
         align-items: center;
         cursor: pointer;
-        padding: 2px;
-        border-radius: 6px;
+        padding: 4px;
+        border-radius: 8px;
+        position: relative;
+        z-index: 1;
+        transition: background 0.15s ease;
       }
       .ac-panel__close:hover {
-        background: rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.2);
       }
 
+      /* ── Cuerpo / mensajes ───────────────────────────────── */
       .ac-panel__body {
         flex: 1 1 auto;
         overflow-y: auto;
-        padding: 14px;
+        padding: 16px 14px;
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        background: #f7f5fa;
+        gap: 12px;
+        background:
+          radial-gradient(30rem 16rem at 100% 0%, rgba(6, 182, 212, 0.06), transparent 60%),
+          var(--ac-body-bg);
       }
 
       .ac-row {
@@ -229,88 +337,114 @@ interface ChatMensaje {
         flex-direction: column;
         align-items: flex-start;
         gap: 6px;
+        animation: ac-bubble-in 0.2s ease-out both;
       }
-      .ac-row--user {
-        align-items: flex-end;
+      .ac-row--user { align-items: flex-end; }
+      @keyframes ac-bubble-in {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
       }
 
       .ac-bubble {
-        max-width: 85%;
-        padding: 9px 12px;
-        border-radius: 14px;
+        max-width: 86%;
+        padding: 10px 13px;
+        border-radius: 16px;
         font-size: 0.9rem;
-        line-height: 1.35;
+        line-height: 1.4;
         white-space: pre-wrap;
         word-break: break-word;
       }
       .ac-bubble--bot {
-        background: #fff;
-        color: #1f2330;
-        border: 1px solid #e6e1ee;
-        border-bottom-left-radius: 4px;
+        background: var(--ac-bot-bg);
+        color: var(--ac-text);
+        border: 1px solid var(--ac-bot-border);
+        border-bottom-left-radius: 5px;
+        box-shadow: 0 2px 8px -4px rgba(8, 13, 33, 0.12);
       }
       .ac-bubble--user {
-        background: var(--ac-morado);
+        background: var(--ac-grad);
         color: #fff;
-        border-bottom-right-radius: 4px;
+        border-bottom-right-radius: 5px;
+        box-shadow: 0 6px 16px -8px rgba(79, 70, 229, 0.6);
       }
-      .ac-bubble--typing {
-        color: #6b7280;
-        font-style: italic;
+      .ac-bubble--typing { padding: 12px 14px; }
+
+      /* puntos "escribiendo" */
+      .ac-typing {
+        display: inline-flex;
+        gap: 4px;
+        align-items: center;
+      }
+      .ac-typing i {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--ac-brand);
+        opacity: 0.5;
+        animation: ac-typing 1.1s infinite ease-in-out;
+      }
+      .ac-typing i:nth-child(2) { animation-delay: 0.15s; }
+      .ac-typing i:nth-child(3) { animation-delay: 0.3s; }
+      @keyframes ac-typing {
+        0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+        30% { transform: translateY(-4px); opacity: 1; }
       }
 
       .ac-accion {
-        border: 1px solid var(--ac-morado);
+        border: 1px solid var(--ac-brand);
         background: #fff;
-        color: var(--ac-morado);
+        color: var(--ac-brand);
         font-size: 0.82rem;
         font-weight: 600;
-        padding: 5px 12px;
+        padding: 6px 14px;
         border-radius: 999px;
         cursor: pointer;
-        transition: background 0.15s ease, color 0.15s ease;
+        transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
       }
       .ac-accion:hover {
-        background: var(--ac-morado);
+        background: var(--ac-grad);
+        border-color: transparent;
         color: #fff;
+        transform: translateY(-1px);
       }
 
+      /* ── Input ───────────────────────────────────────────── */
       .ac-panel__input {
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 10px 12px;
-        border-top: 1px solid #ece8f2;
+        padding: 12px;
+        border-top: 1px solid #eceff5;
         background: #fff;
       }
       .ac-panel__input .form-control {
         flex: 1 1 auto;
+        border-radius: 999px;
+        padding: 0.6rem 0.95rem;
+        border-color: #dbe2ee;
       }
       .ac-panel__input .form-control:focus {
-        border-color: var(--ac-morado);
-        box-shadow: 0 0 0 0.2rem rgba(106, 27, 154, 0.2);
+        border-color: var(--ac-brand);
+        box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.18);
       }
 
       .ac-send {
         flex: 0 0 auto;
-        width: 40px;
-        height: 38px;
+        width: 42px;
+        height: 42px;
         border: none;
-        border-radius: 8px;
-        background: var(--ac-morado);
+        border-radius: 50%;
+        background: var(--ac-grad);
         color: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        box-shadow: 0 6px 16px -6px rgba(79, 70, 229, 0.6);
+        transition: transform 0.12s ease, filter 0.15s ease;
       }
-      .ac-send:hover:not(:disabled) {
-        background: var(--ac-morado-700);
-      }
-      .ac-send:disabled {
-        opacity: 0.55;
-        cursor: not-allowed;
-      }
+      .ac-send:hover:not(:disabled) { transform: scale(1.06); filter: brightness(1.05); }
+      .ac-send:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
     `,
   ],
 })
