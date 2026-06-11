@@ -48,7 +48,7 @@
               (change)="permiteAdjuntos.set($any($event.target).checked)"
               [disabled]="readonly()"
             />
-            <span>📎 Permitir adjuntar archivos al enviar</span>
+            <span>Permitir adjuntar archivos al enviar</span>
           </label>
           <label class="fd-check">
             <input
@@ -57,7 +57,7 @@
               (change)="permiteDictadoVoz.set($any($event.target).checked)"
               [disabled]="readonly()"
             />
-            <span>🎙 Permitir dictado por voz</span>
+            <span>Permitir dictado por voz</span>
           </label>
         </div>
 
@@ -114,10 +114,10 @@
                     <strong>{{ t.label }}</strong>
                     <small>{{ t.descripcion }}</small>
                   </div>
-                  <span class="fd-paleta-grip" aria-hidden="true">⋮⋮</span>
+                  <span class="fd-paleta-grip" aria-hidden="true"></span>
                 </div>
               }
-              <p class="fd-paleta-tip">Arrastra hacia el lienzo →</p>
+              <p class="fd-paleta-tip">Arrastra hacia el lienzo</p>
             </aside>
 
             <!-- ── CANVAS ── -->
@@ -134,7 +134,7 @@
 
               @if (campos().length === 0) {
                 <div class="fd-canvas-vacio">
-                  <div class="fd-canvas-vacio-icon">⇧</div>
+                  <div class="fd-canvas-vacio-icon"></div>
                   <p class="fd-canvas-vacio-text">Suelta aquí cualquier componente de la paleta para comenzar.</p>
                 </div>
               }
@@ -152,7 +152,7 @@
                   (click)="seleccionarCampo(c)"
                 >
                   <div class="fd-canvas-campo-bar">
-                    <span class="fd-canvas-campo-grip" aria-hidden="true">⋮⋮</span>
+                    <span class="fd-canvas-campo-grip" aria-hidden="true"></span>
                     <span class="fd-canvas-campo-tipo" [title]="tipoLabel(c.tipo)">
                       {{ tipoIcono(c.tipo) }} {{ tipoLabel(c.tipo) }}
                     </span>
@@ -162,7 +162,7 @@
                     <span class="fd-canvas-campo-orden">#{{ c.orden }}</span>
                     @if (!readonly()) {
                       <div class="fd-canvas-campo-acts">
-                        <button type="button" class="fd-icon-btn" title="Duplicar" (click)="duplicarCampo(c, $event)">⎘</button>
+                        <button type="button" class="fd-icon-btn" title="Duplicar" (click)="duplicarCampo(c, $event)"></button>
                         <button type="button" class="fd-icon-btn fd-icon-btn-danger" title="Eliminar" (click)="eliminarCampo(c, $event)">×</button>
                       </div>
                     }

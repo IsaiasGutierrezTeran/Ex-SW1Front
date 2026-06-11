@@ -428,6 +428,14 @@ small, .small { color: inherit; }
 :root[data-theme='dark'] .alert-warning { color: #fbbf24; }
 :root[data-theme='dark'] .alert-info    { color: #22d3ee; }
 
+/* Título de página — estilo profesional MAYÚSCULAS con espaciado entre letras.
+   Se aplica agregando class="page-title" al encabezado principal de cada pantalla. */
+.page-title {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 800;
+}
+
 /* Nota/aviso ámbar reutilizable (reemplaza estilos inline #fff3cd hardcodeados) */
 .cre-note-warn {
   background: color-mix(in srgb, var(--cre-warning-500) 15%, var(--cre-surface)) !important;

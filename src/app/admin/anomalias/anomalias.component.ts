@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { AlertaAnomalia } from '../../core/models/alerta-anomalia.model';
 import { AlertaAnomaliaService } from '../../core/services/alerta-anomalia.service';
 import { mensajeAmigable } from '../../core/utils/error-messages';
+import { HumanizePipe } from '../../shared/pipes/humanize.pipe';
 
 /**
  * CU-45 — Panel administrador para revisar las anomalías detectadas por IA.
@@ -14,7 +15,7 @@ import { mensajeAmigable } from '../../core/utils/error-messages';
  */
 @Component({
   selector: 'app-anomalias',
-  imports: [DatePipe, DecimalPipe],
+  imports: [DatePipe, DecimalPipe, HumanizePipe],
   templateUrl: './anomalias.component.html',
   styleUrl: './anomalias.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

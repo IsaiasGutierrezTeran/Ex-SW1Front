@@ -30,7 +30,7 @@ import {
       } @else {
         @if (estado() === 'inactivo') {
           <button type="button" class="btn btn-sm btn-outline-primary" (click)="iniciar()">
-            🎙️ Grabar
+            Grabar
           </button>
         } @else if (estado() === 'pidiendo-permiso') {
           <button type="button" class="btn btn-sm btn-outline-primary" disabled>
@@ -38,7 +38,7 @@ import {
           </button>
         } @else if (estado() === 'grabando') {
           <button type="button" class="btn btn-sm btn-danger" (click)="detener()">
-            ⏹ Detener · {{ duracion() }}s
+            Detener · {{ duracion() }}s
           </button>
           <span class="text-danger small fw-bold">● Grabando</span>
         } @else if (estado() === 'subiendo') {

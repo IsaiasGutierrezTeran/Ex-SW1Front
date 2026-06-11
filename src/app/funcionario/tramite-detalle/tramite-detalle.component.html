@@ -2,7 +2,7 @@
   <section class="container py-4">
     <div class="d-flex align-items-center gap-3 mb-4">
       <a routerLink="/funcionario/bandeja" class="btn btn-sm btn-outline-secondary">Volver</a>
-      <h1 class="h4 mb-0">Tramite: <code>{{ data.codigo }}</code></h1>
+      <h1 class="h4 mb-0 page-title">Tramite: <code>{{ data.codigo }}</code></h1>
       <span [class]="'badge ' + getEstadoBadgeClass(data.estado)">{{ data.estado }}</span>
     </div>
 
@@ -67,11 +67,11 @@
                     <form [formGroup]="form" (ngSubmit)="completarNodo()" novalidate>
                       @if (decisionSiguiente(); as dec) {
                         <div class="mb-2">
-                          <label class="form-label small">🔀 {{ dec.pregunta }}</label>
+                          <label class="form-label small">{{ dec.pregunta }}</label>
                           <select class="form-select form-select-sm" formControlName="resultado">
                             @for (op of dec.opciones; track op.valor) {
                               <option [value]="op.valor">
-                                {{ op.etiqueta }}@if (op.destinoNombre) { → {{ op.destinoNombre }}}
+                                {{ op.etiqueta }}@if (op.destinoNombre) { {{ op.destinoNombre }}}
                               </option>
                             }
                           </select>

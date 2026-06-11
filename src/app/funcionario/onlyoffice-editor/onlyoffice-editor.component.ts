@@ -21,7 +21,7 @@ declare global {
   template: `
     <div style="height: 100vh; display: flex; flex-direction: column">
       <div class="d-flex align-items-center gap-2 px-3 py-2 border-bottom bg-light">
-        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="volver()">← Volver</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="volver()">Volver</button>
         <span class="fw-semibold">Edición colaborativa de documento (OnlyOffice)</span>
         @if (cargando()) {
           <span class="text-muted small ms-2">

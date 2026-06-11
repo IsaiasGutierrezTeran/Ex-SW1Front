@@ -1,9 +1,9 @@
 @if (!diagramaId) {
   <section class="diagram-create">
     <div class="diagram-create-head">
-      <a routerLink="/admin/diagramas" class="cre-btn cre-btn-secondary cre-btn-sm">← Volver</a>
+      <a routerLink="/admin/diagramas" class="cre-btn cre-btn-secondary cre-btn-sm">Volver</a>
       <div>
-        <h1 class="diagram-create-title">Nuevo Diagrama</h1>
+        <h1 class="diagram-create-title page-title">Nuevo Diagrama</h1>
         <p class="diagram-create-sub">Define los datos básicos. Después podrás dibujar el flujo arrastrando elementos.</p>
       </div>
     </div>
@@ -96,9 +96,9 @@
     <section class="diagram-page">
       <header class="diagram-head">
         <div class="diagram-head-left">
-          <a [routerLink]="volverDiagramasUrl()" class="cre-btn cre-btn-secondary cre-btn-sm">← Volver</a>
+          <a [routerLink]="volverDiagramasUrl()" class="cre-btn cre-btn-secondary cre-btn-sm">Volver</a>
           <div class="diagram-titles">
-            <h1 class="diagram-title">{{ data.nombre }}</h1>
+            <h1 class="diagram-title page-title">{{ data.nombre }}</h1>
             <p class="diagram-meta">
               <span class="cre-badge cre-badge-brand">v{{ data.versionActual }}</span>
               <span class="cre-badge">{{ data.estado }}</span>
@@ -130,7 +130,7 @@
           } @else if (miRolColaboracion() === 'editor') {
             <span class="cre-badge cre-badge-brand" title="Editas como colaborador invitado">Colaborador (editor)</span>
           } @else {
-            <span class="cre-badge cre-badge-secondary" title="Tienes acceso de solo lectura">👁️ Solo lectura</span>
+            <span class="cre-badge cre-badge-secondary" title="Tienes acceso de solo lectura">Solo lectura</span>
           }
         </div>
       </header>
@@ -198,7 +198,7 @@
           >
             <div class="cre-card-body" style="padding:0">
               <div style="background:var(--cre-brand-500);color:#fff;padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center">
-                <strong>Invitar Colaborador (CU-15)</strong>
+                <strong>Invitar Colaborador</strong>
                 <button type="button" class="cre-btn cre-btn-secondary cre-btn-sm" (click)="cerrarModalColab()" style="padding:2px 8px">×</button>
               </div>
 
@@ -429,9 +429,9 @@
         @if (!editable()) {
           <div class="cre-note-warn" style="padding:.6rem 1rem;border-radius:10px;margin-bottom:.5rem;font-size:.9rem;">
             @if (data.estado !== 'borrador') {
-              🔒 Diagrama <strong>{{ data.estado }}</strong> — solo lectura. El estado del diagrama lo controla la política asociada (ponla en borrador para editar).
+              Diagrama <strong>{{ data.estado }}</strong> — solo lectura. El estado del diagrama lo controla la política asociada (ponla en borrador para editar).
             } @else {
-              👁️ Tienes acceso de <strong>solo lectura</strong> a este diagrama (no eres editor).
+              Tienes acceso de <strong>solo lectura</strong> a este diagrama (no eres editor).
             }
           </div>
         }
@@ -506,7 +506,7 @@
                       <div class="inspector-branches">
                         @for (trans of transicionesSalientes(); track trans.id) {
                           <div class="inspector-branch-row">
-                            <span class="inspector-branch-dest">→ {{ getNombreNodo(trans.nodoDestinoId) }}</span>
+                            <span class="inspector-branch-dest">{{ getNombreNodo(trans.nodoDestinoId) }}</span>
                             <select
                               class="cre-input"
                               [value]="trans.etiqueta ?? ''"

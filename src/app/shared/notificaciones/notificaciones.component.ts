@@ -20,7 +20,7 @@ import {
     <section class="container py-4">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
-          <h1 class="h4 mb-0">Notificaciones</h1>
+          <h1 class="h4 mb-0 page-title">Notificaciones</h1>
           <p class="text-muted small mb-0">
             Avisos del sistema: trámites que llegan a tu área, SLA, riesgo, documentos.
           </p>
@@ -57,7 +57,7 @@ import {
                       [routerLink]="['/funcionario/tramites', n.tramiteId]"
                       (click)="marcar(n)"
                     >
-                      Ver trámite →
+                      Ver trámite
                     </a>
                   }
                   @if (!n.leida) {

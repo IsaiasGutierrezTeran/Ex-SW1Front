@@ -2,9 +2,9 @@
   <!-- Cabecera -->
   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
     <div>
-      <h1 class="h4 mb-0">Anomalías detectadas por IA</h1>
+      <h1 class="h4 mb-0 page-title">Anomalías detectadas por IA</h1>
       <p class="text-muted small mb-0">
-        CU-45 — trámites que se desvían del flujo normal según el motor de detección.
+        Trámites que se desvían del flujo normal según el motor de detección.
       </p>
     </div>
     <div class="d-flex gap-2">
@@ -14,7 +14,7 @@
         (click)="cargar()"
         title="Solo recarga la lista de anomalías ya detectadas (no vuelve a analizar)."
       >
-        ↻ Refrescar lista
+        Refrescar lista
       </button>
       <button
         class="btn btn-sm btn-primary"
@@ -26,7 +26,7 @@
         @if (detectando()) {
           <span class="spinner-border spinner-border-sm me-2"></span>
         }
-        Detectar ahora ✨
+        Detectar ahora
       </button>
     </div>
   </div>
@@ -64,7 +64,7 @@
               [class.btn-outline-dark]="filtroCategoria() !== cat"
               (click)="cambiarFiltro(cat)"
             >
-              {{ cat }} ({{ conteoPorCategoria()[cat] }})
+              {{ cat | humanize }} ({{ conteoPorCategoria()[cat] }})
             </button>
           }
         </div>
@@ -91,7 +91,7 @@
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-start mb-2">
                 <span class="badge {{ badgeCategoria(a.categoria) }}">
-                  {{ a.categoria }}
+                  {{ a.categoria | humanize }}
                 </span>
                 <span class="text-muted small">
                   score {{ a.score | number: '1.2-2' }} ({{ intensidad(a.score) }})

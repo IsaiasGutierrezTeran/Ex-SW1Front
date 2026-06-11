@@ -18,11 +18,11 @@
     <!-- Encabezado -->
     <div class="d-flex justify-content-between align-items-center mb-4">
       <div>
-        <h1 class="h4 mb-0">Expediente Digital</h1>
+        <h1 class="h4 mb-0 page-title">Expediente Digital</h1>
         <span class="text-muted small">Trámite ID: {{ exp.expediente?.tramiteId ?? tramiteId }}</span>
       </div>
       <a [routerLink]="volverUrl()" class="btn btn-sm btn-outline-secondary">
-        ← Volver
+        Volver
       </a>
     </div>
 
@@ -165,7 +165,7 @@
                           @if (valorActual(campo)) {
                             <div class="d-flex align-items-center gap-2 flex-wrap">
                               <span class="small text-truncate">
-                                📎 {{ docDeCampo(campo)?.nombreLogico || 'Documento adjunto' }}
+                                {{ docDeCampo(campo)?.nombreLogico || 'Documento adjunto' }}
                               </span>
                               <button type="button" class="btn btn-sm btn-outline-primary"
                                       (click)="verArchivoCampo(campo)">Ver</button>
@@ -204,7 +204,7 @@
                             [value]="editable ? valorCalculado(seccion, campo) : (campo.valor || valorCalculado(seccion, campo))"
                             readonly
                             [title]="'Calculado: ' + (campo.formula || '')"
-                            placeholder="ƒ se calcula de otros campos"
+                            placeholder="Se calcula de otros campos"
                           />
                         }
                         @default {
@@ -225,7 +225,7 @@
                   <div class="d-flex justify-content-end mt-3 gap-2">
                     @if (guardadoOkSeccionId() === seccion.infoSeccion.id) {
                       <span class="text-success small align-self-center">
-                        ✓ Borrador guardado
+                        Borrador guardado
                       </span>
                     }
                     <button
@@ -249,7 +249,7 @@
                         (click)="completarSeccion(seccion)"
                         title="Completa esta rama del flujo paralelo y avanza el trámite por ella."
                       >
-                        Avanzar esta sección →
+                        Avanzar esta sección
                       </button>
                     }
                   </div>
@@ -567,7 +567,7 @@
              El funcionario ve solo la pregunta (no el formulario del paso posterior). -->
         @if (mostrarDecision() && decisionSiguiente(); as dec) {
           <div class="mb-3 p-3 border border-primary rounded bg-primary-subtle">
-            <label class="form-label fw-bold d-block mb-1">🔀 {{ dec.pregunta }}</label>
+            <label class="form-label fw-bold d-block mb-1">{{ dec.pregunta }}</label>
             <p class="small text-muted mb-2">Tu respuesta decide por qué camino continúa el trámite.</p>
             <div class="d-flex flex-wrap gap-2">
               @for (op of dec.opciones; track op.valor) {
@@ -580,7 +580,7 @@
                 >
                   {{ op.etiqueta }}
                   @if (op.destinoNombre) {
-                    <small class="d-block opacity-75">→ {{ op.destinoNombre }}</small>
+                    <small class="d-block opacity-75">{{ op.destinoNombre }}</small>
                   }
                 </button>
               }

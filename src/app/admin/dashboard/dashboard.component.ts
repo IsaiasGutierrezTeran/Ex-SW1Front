@@ -24,7 +24,7 @@ interface Promedio {
     <section class="container-fluid py-4">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
-          <h1 class="h4 mb-0">Dashboard</h1>
+          <h1 class="h4 mb-0 page-title">Dashboard</h1>
           <p class="text-muted small mb-0">Monitoreo en tiempo real de la operación.</p>
         </div>
         <button class="btn btn-sm btn-outline-secondary" type="button" (click)="cargar()">
