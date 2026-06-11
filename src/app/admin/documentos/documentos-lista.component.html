@@ -101,7 +101,7 @@
           <span class="badge bg-secondary">{{ documentos().length }}</span>
         </div>
         <div class="table-responsive">
-          <table class="table table-sm table-hover mb-0 align-middle">
+          <table class="table table-sm table-hover mb-0 align-middle tabla-cards">
             <thead class="table-light">
               <tr>
                 <th>Nombre</th>
@@ -114,25 +114,25 @@
             <tbody>
               @for (documento of documentos(); track documento.id) {
                 <tr>
-                  <td>
+                  <td data-label="Nombre">
                     <strong>{{ documento.nombre }}</strong>
                   </td>
-                  <td>
+                  <td data-label="Descripción">
                     <small class="text-muted">{{ documento.descripcion }}</small>
                   </td>
-                  <td>
+                  <td data-label="Estado">
                     @if (documento.activo) {
                       <span class="badge bg-success">Activo</span>
                     } @else {
                       <span class="badge bg-secondary">Inactivo</span>
                     }
                   </td>
-                  <td>
+                  <td data-label="Fecha Creación">
                     <small class="text-muted">
                       {{ documento.fechaCreacion | date: 'dd/MM/yyyy' }}
                     </small>
                   </td>
-                  <td>
+                  <td data-label="Acciones">
                     <div class="btn-group btn-group-sm">
                       <button
                         type="button"

@@ -46,7 +46,7 @@
     <div class="col-md-8">
       <div class="card shadow-sm border-0">
         <div class="table-responsive">
-          <table class="table table-sm table-hover mb-0 align-middle">
+          <table class="table table-sm table-hover mb-0 align-middle tabla-cards">
             <thead class="table-light">
               <tr>
                 <th>Nombre</th>
@@ -58,16 +58,16 @@
             <tbody>
               @for (doc of documentos(); track doc.id) {
                 <tr>
-                  <td><strong>{{ doc.nombre }}</strong></td>
-                  <td><small>{{ doc.descripcion }}</small></td>
-                  <td>
+                  <td data-label="Nombre"><strong>{{ doc.nombre }}</strong></td>
+                  <td data-label="Descripción"><small>{{ doc.descripcion }}</small></td>
+                  <td data-label="Estado">
                     @if (doc.activo) {
                       <span class="badge bg-success">Activo</span>
                     } @else {
                       <span class="badge bg-secondary">Inactivo</span>
                     }
                   </td>
-                  <td>
+                  <td data-label="Acciones">
                     <div class="btn-group btn-group-sm">
                       <button type="button" class="btn btn-outline-secondary" (click)="editar(doc)">Editar</button>
                       <button type="button" class="btn btn-outline-danger" (click)="eliminar(doc.id)">Eliminar</button>

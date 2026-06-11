@@ -589,7 +589,7 @@
                       @if (requisitosNodo().length === 0) {
                         <span class="inspector-hint warn">Esta actividad aún no exige documentos.</span>
                       } @else {
-                        <table class="req-table">
+                        <table class="req-table tabla-cards">
                           <thead>
                             <tr>
                               <th>Documento</th>
@@ -601,8 +601,8 @@
                           <tbody>
                             @for (req of requisitosNodo(); track req.documentoId) {
                               <tr>
-                                <td class="req-doc">{{ nombreDocumento(req.documentoId) }}</td>
-                                <td>
+                                <td data-label="Documento" class="req-doc">{{ nombreDocumento(req.documentoId) }}</td>
+                                <td data-label="Aporta">
                                   <select
                                     class="cre-input req-input"
                                     [value]="req.proveedor"
@@ -613,7 +613,7 @@
                                     <option value="FUNCIONARIO">Funcionario</option>
                                   </select>
                                 </td>
-                                <td class="req-check">
+                                <td data-label="Obl." class="req-check">
                                   <input
                                     type="checkbox"
                                     [checked]="req.obligatorio"
@@ -621,7 +621,7 @@
                                     (change)="setObligatorioNodo(req.documentoId, $any($event.target).checked)"
                                   />
                                 </td>
-                                <td>
+                                <td data-label="Detalle">
                                   @if (esAdminUsuario()) {
                                     <button
                                       type="button"

@@ -318,8 +318,27 @@
 
 /* ── Responsive: menú colapsa en panel desplegable ─────── */
 @media (max-width: 992px) {
-  .topnav-burger { display: flex; }
-  .topnav-right { margin-left: 0; order: 3; }
+  .topnav-inner { flex-wrap: nowrap; }
+  .topnav-brand { order: 1; margin-right: 0; padding-right: 0.4rem; }
+  /* Derecha (tema + usuario) agrupada y empujada al borde; hamburguesa al final */
+  .topnav-right { margin-left: auto; order: 4; gap: 0.35rem; }
+  .topnav-burger { display: flex; order: 5; margin-left: 0.4rem; }
+  /* Desplegable del usuario: panel FIJO debajo de la barra (no flota ni se corre) */
+  .topnav-user .topnav-dd-panel {
+    position: fixed;
+    top: calc(var(--cre-topbar-h) + 6px);
+    right: 0.6rem;
+    left: auto;
+    min-width: 210px;
+    max-width: calc(100vw - 1.2rem);
+    /* Restaurar apariencia (la regla móvil genérica los hace transparentes) */
+    background: var(--cre-surface);
+    border: 1px solid var(--cre-border);
+    border-radius: var(--cre-radius-lg);
+    box-shadow: var(--cre-shadow-lg);
+    padding: 0.4rem;
+    z-index: 1050;
+  }
 
   .topnav-menu {
     position: fixed;

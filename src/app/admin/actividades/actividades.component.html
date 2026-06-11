@@ -98,7 +98,7 @@
 
                 @if (requisitosActuales().length > 0) {
                   <div class="table-responsive">
-                    <table class="table table-sm align-middle mb-0">
+                    <table class="table table-sm align-middle mb-0 tabla-cards">
                       <thead class="table-light">
                         <tr>
                           <th>Documento</th>
@@ -110,8 +110,8 @@
                       <tbody>
                         @for (req of requisitosActuales(); track req.documentoId) {
                           <tr>
-                            <td><small>{{ nombreDocumento(req.documentoId) }}</small></td>
-                            <td>
+                            <td data-label="Documento"><small>{{ nombreDocumento(req.documentoId) }}</small></td>
+                            <td data-label="Proveedor">
                               <select
                                 class="form-select form-select-sm"
                                 [value]="req.proveedor"
@@ -121,7 +121,7 @@
                                 <option value="FUNCIONARIO">Funcionario</option>
                               </select>
                             </td>
-                            <td class="text-center">
+                            <td data-label="Obligatorio" class="text-center">
                               <div class="form-check d-inline-block m-0">
                                 <input
                                   type="checkbox"
@@ -131,7 +131,7 @@
                                 />
                               </div>
                             </td>
-                            <td class="text-center">
+                            <td data-label="Acciones" class="text-center">
                               <button
                                 type="button"
                                 class="btn btn-sm btn-outline-danger py-0 px-1"
@@ -177,7 +177,7 @@
     <div class="col-md-7">
       <div class="card shadow-sm border-0">
         <div class="table-responsive">
-          <table class="table table-sm table-hover mb-0 align-middle">
+          <table class="table table-sm table-hover mb-0 align-middle tabla-cards">
             <thead class="table-light">
               <tr>
                 <th>Nombre</th>
@@ -192,13 +192,13 @@
             <tbody>
               @for (actividad of actividades(); track actividad.id) {
                 <tr>
-                  <td>{{ actividad.nombre }}</td>
-                  <td><span class="badge bg-secondary">{{ getNombreDepto(actividad.departamentoId) }}</span></td>
-                  <td>
+                  <td data-label="Nombre">{{ actividad.nombre }}</td>
+                  <td data-label="Dept."><span class="badge bg-secondary">{{ getNombreDepto(actividad.departamentoId) }}</span></td>
+                  <td data-label="Responsable">
                     <small>{{ getNombreFuncionario(actividad.funcionarioResponsableId) }}</small>
                   </td>
-                  <td>{{ actividad.slaHoras }}h</td>
-                  <td>
+                  <td data-label="SLA">{{ actividad.slaHoras }}h</td>
+                  <td data-label="Documentos">
                     @if (actividad.documentoIds && actividad.documentoIds.length > 0) {
                       <div class="d-flex flex-wrap gap-1">
                         @for (docId of actividad.documentoIds; track docId) {
@@ -209,14 +209,14 @@
                       <span class="text-muted">—</span>
                     }
                   </td>
-                  <td>
+                  <td data-label="Reutilizable">
                     @if (actividad.reutilizable) {
                       <span class="text-success">Si</span>
                     } @else {
                       <span class="text-muted">No</span>
                     }
                   </td>
-                  <td>
+                  <td data-label="Acciones">
                     <div class="btn-group btn-group-sm">
                       <button type="button" class="btn btn-outline-secondary" (click)="editar(actividad)">Editar</button>
                       <button

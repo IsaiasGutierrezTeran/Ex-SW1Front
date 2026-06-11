@@ -844,10 +844,21 @@ img, svg, video, canvas, iframe { max-width: 100%; }
     letter-spacing: 0.04em;
     text-align: left;
   }
-  /* La celda de acción (Detalle) → botón Ver a ancho completo, sin etiqueta */
-  .tabla-cards td[data-label="Detalle"] { display: block; padding: 0.7rem 0.9rem !important; }
-  .tabla-cards td[data-label="Detalle"]::before { display: none; }
-  .tabla-cards td[data-label="Detalle"] .btn { width: 100%; }
+  /* Celdas de acción (Detalle/Acciones) → botones a ancho completo, sin etiqueta.
+     Un solo botón ocupa todo el ancho; varios (Editar/Eliminar) se reparten. */
+  .tabla-cards td[data-label="Detalle"],
+  .tabla-cards td[data-label="Acciones"],
+  .tabla-cards td[data-label="Accion"] {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.7rem 0.9rem !important;
+  }
+  .tabla-cards td[data-label="Detalle"]::before,
+  .tabla-cards td[data-label="Acciones"]::before,
+  .tabla-cards td[data-label="Accion"]::before { display: none; }
+  .tabla-cards td[data-label="Detalle"] .btn,
+  .tabla-cards td[data-label="Acciones"] .btn,
+  .tabla-cards td[data-label="Accion"] .btn { flex: 1 1 0; width: auto; }
 }
 
 /* Microanimaciones */

@@ -56,7 +56,7 @@
     <div class="col-md-8">
       <div class="card shadow-sm border-0">
         <div class="table-responsive">
-          <table class="table table-hover mb-0 align-middle">
+          <table class="table table-hover mb-0 align-middle tabla-cards">
             <thead class="table-light">
               <tr>
                 <th>Codigo</th>
@@ -69,10 +69,10 @@
             <tbody>
               @for (departamento of departamentos(); track departamento.id) {
                 <tr>
-                  <td><span class="badge bg-secondary">{{ departamento.codigo }}</span></td>
-                  <td>{{ departamento.nombre }}</td>
-                  <td class="text-muted small">{{ departamento.descripcion }}</td>
-                  <td>
+                  <td data-label="Codigo"><span class="badge bg-secondary">{{ departamento.codigo }}</span></td>
+                  <td data-label="Nombre">{{ departamento.nombre }}</td>
+                  <td data-label="Descripcion" class="text-muted small">{{ departamento.descripcion }}</td>
+                  <td data-label="Estado">
                     <span
                       class="badge"
                       [class.bg-success]="departamento.activo"
@@ -81,7 +81,7 @@
                       {{ departamento.activo ? 'Activo' : 'Inactivo' }}
                     </span>
                   </td>
-                  <td>
+                  <td data-label="Acciones">
                     <div class="btn-group btn-group-sm">
                       <button type="button" class="btn btn-outline-secondary" (click)="editar(departamento)">
                         Editar

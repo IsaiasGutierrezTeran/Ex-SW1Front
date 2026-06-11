@@ -75,7 +75,7 @@ import { mensajeAmigable } from '../../core/utils/error-messages';
           </div>
         } @else {
           <div class="table-responsive">
-            <table class="table table-hover align-middle">
+            <table class="table table-hover align-middle tabla-cards">
               <thead class="table-light">
                 <tr>
                   <th>Diagrama</th>
@@ -89,14 +89,14 @@ import { mensajeAmigable } from '../../core/utils/error-messages';
               <tbody>
                 @for (c of aceptadas(); track c.colaboracionId) {
                   <tr>
-                    <td class="fw-semibold">{{ c.diagramaNombre }}</td>
-                    <td>{{ c.politicaNombre || '—' }}</td>
-                    <td><span class="badge {{ permisoBadge(c.permisos) }}">{{ permisoLabel(c.permisos) }}</span></td>
-                    <td>{{ c.invitadoPor }}</td>
-                    <td class="small text-muted">
+                    <td data-label="Diagrama" class="fw-semibold">{{ c.diagramaNombre }}</td>
+                    <td data-label="Política">{{ c.politicaNombre || '—' }}</td>
+                    <td data-label="Permiso"><span class="badge {{ permisoBadge(c.permisos) }}">{{ permisoLabel(c.permisos) }}</span></td>
+                    <td data-label="Te invitó">{{ c.invitadoPor }}</td>
+                    <td data-label="Desde" class="small text-muted">
                       {{ c.fechaRespuesta ? (c.fechaRespuesta | date: 'short') : '—' }}
                     </td>
-                    <td class="text-end">
+                    <td data-label="Detalle" class="text-end">
                       <a class="btn btn-sm btn-primary" [routerLink]="[baseDiagramas(), c.diagramaId]">
                         Abrir diagrama
                       </a>

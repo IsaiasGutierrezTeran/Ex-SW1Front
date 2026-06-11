@@ -61,7 +61,7 @@
       </div>
     } @else {
       <div class="table-responsive">
-        <table class="table table-hover align-middle">
+        <table class="table table-hover align-middle tabla-cards">
           <thead class="table-dark">
             <tr>
               <th>Código</th>
@@ -76,15 +76,15 @@
           <tbody>
             @for (tramite of tramites(); track tramite.id) {
               <tr [title]="tooltipRiesgo(tramite)">
-                <td><strong>{{ tramite.codigo }}</strong></td>
-                <td>{{ tramite.politicaNombre ?? '—' }}</td>
-                <td>
+                <td data-label="Código"><strong>{{ tramite.codigo }}</strong></td>
+                <td data-label="Política">{{ tramite.politicaNombre ?? '—' }}</td>
+                <td data-label="Estado">
                   <span class="badge bg-warning text-dark">
                     {{ tramite.estadoActual ?? tramite.estado }}
                   </span>
                 </td>
-                <td class="small">{{ formatearFecha(tramite.fechaInicio) }}</td>
-                <td class="text-center">
+                <td data-label="Recibido" class="small">{{ formatearFecha(tramite.fechaInicio) }}</td>
+                <td data-label="Riesgo" class="text-center">
                   @if (riesgoDisponible()) {
                     <app-chip-riesgo
                       [nivel]="tramite.riesgoDemora ?? 'desconocido'"
@@ -94,8 +94,8 @@
                     <span class="text-muted small">—</span>
                   }
                 </td>
-                <td class="text-center">{{ tramite.prioridad ?? '—' }}</td>
-                <td>
+                <td data-label="Prioridad" class="text-center">{{ tramite.prioridad ?? '—' }}</td>
+                <td data-label="Acciones">
                   <button
                     class="btn btn-primary btn-sm"
                     type="button"

@@ -19,7 +19,7 @@
   } @else {
     <div class="card shadow-sm border-0">
       <div class="table-responsive">
-        <table class="table table-hover mb-0 align-middle">
+        <table class="table table-hover mb-0 align-middle tabla-cards">
           <thead class="table-light">
             <tr>
               <th>Nombre</th>
@@ -33,10 +33,10 @@
           <tbody>
             @for (usuario of usuarios(); track usuario.id) {
               <tr>
-                <td>{{ usuario.nombre }} {{ usuario.apellido }}</td>
-                <td>{{ usuario.email }}</td>
-                <td>{{ getNombreRol(usuario.rolId) }}</td>
-                <td>
+                <td data-label="Nombre">{{ usuario.nombre }} {{ usuario.apellido }}</td>
+                <td data-label="Email">{{ usuario.email }}</td>
+                <td data-label="Rol">{{ getNombreRol(usuario.rolId) }}</td>
+                <td data-label="Tipo">
                   <span
                     class="badge"
                     [class.bg-danger]="usuario.tipo === 'administrador'"
@@ -46,12 +46,12 @@
                     {{ usuario.tipo }}
                   </span>
                 </td>
-                <td>
+                <td data-label="Estado">
                   <span class="badge" [class.bg-success]="usuario.activo" [class.bg-secondary]="!usuario.activo">
                     {{ usuario.activo ? 'Activo' : 'Inactivo' }}
                   </span>
                 </td>
-                <td>
+                <td data-label="Acciones">
                   <div class="btn-group btn-group-sm">
                     <a [routerLink]="['/admin/usuarios', usuario.id, 'editar']" class="btn btn-outline-secondary">
                       Editar
