@@ -783,6 +783,31 @@ small, .small { color: inherit; }
   .app-shell-inner { padding: 1rem; }
 }
 
+/* --------------------------------------------------------------------------
+   Endurecimiento responsive (móvil iOS/Android, cualquier navegador)
+   -------------------------------------------------------------------------- */
+/* Nada se desborda horizontalmente; medios e iframes se adaptan al ancho */
+img, svg, video, canvas, iframe { max-width: 100%; }
+/* Scroll táctil suave en tablas y contenedores desplazables */
+.table-responsive, .offcanvas-body, .modal-body { -webkit-overflow-scrolling: touch; }
+/* Evita zoom automático de iOS al enfocar inputs (fuente >= 16px en móvil) */
+@media (max-width: 575.98px) {
+  .form-control, .form-select, .cre-input, input, textarea, select {
+    font-size: 16px;
+  }
+  .table-responsive { border-radius: var(--cre-radius-md); }
+  .app-shell-inner { padding: 0.85rem; }
+  /* Botonera de acciones que no quepa: que envuelva en vez de desbordar */
+  .d-flex.gap-2 { flex-wrap: wrap; }
+}
+/* Respeta el área segura de los notch (iPhone) */
+@supports (padding: max(0px)) {
+  .topnav-inner {
+    padding-left: max(1.5rem, env(safe-area-inset-left));
+    padding-right: max(1.5rem, env(safe-area-inset-right));
+  }
+}
+
 /* Microanimaciones */
 @keyframes cre-fade-in {
   from { opacity: 0; transform: translateY(6px); }
