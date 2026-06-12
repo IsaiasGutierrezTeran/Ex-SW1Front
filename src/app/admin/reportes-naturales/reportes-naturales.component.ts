@@ -103,30 +103,57 @@ export class ReportesNaturalesComponent {
     }
     const rec = new SR();
     rec.lang = 'es-ES';
-    rec.interimResults = false;
+    rec.interimResults = true; // capturamos parciales: más robusto en redes lentas
+    rec.continuous = false;
     rec.maxAlternatives = 1;
+
+    let texto = '';
+    let errCode = '';
     this.dictando.set(true);
     this.error.set('');
+
     rec.onresult = (ev: any) => {
-      const texto = String(ev.results?.[0]?.[0]?.transcript ?? '').trim();
-      this.dictando.set(false);
-      if (!texto) {
-        this.error.set('No se entendió. Intenta de nuevo o escribe la consulta.');
-        return;
+      for (let i = 0; i < ev.results.length; i++) {
+        const r = String(ev.results[i]?.[0]?.transcript ?? '');
+        if (r.trim()) texto = r; // nos quedamos con la transcripción más reciente
       }
-      this.consulta.set(texto);
-      this.ejecutarConFormato(texto);
     };
     rec.onerror = (ev: any) => {
+      errCode = ev?.error || 'desconocido';
+    };
+    rec.onend = () => {
       this.dictando.set(false);
+      const t = texto.trim();
+      if (t) {
+        this.consulta.set(t);
+        this.ejecutarConFormato(t);
+        return;
+      }
+      const msgs: Record<string, string> = {
+        'not-allowed':
+          'Permiso de micrófono denegado. Actívalo en el candado de la barra de direcciones y reintenta.',
+        'service-not-allowed':
+          'El navegador bloqueó el reconocimiento. Usa Chrome o Edge de escritorio.',
+        'no-speech':
+          'No se detectó voz. Habla cerca del micrófono e intenta de nuevo.',
+        'audio-capture':
+          'No se detectó micrófono. Conecta uno y reintenta.',
+        network:
+          'La red bloqueó el reconocimiento de voz (necesita internet sin proxy/VPN). Prueba otra red o escribe la consulta.',
+        aborted: 'Se canceló el reconocimiento. Intenta de nuevo.',
+      };
       this.error.set(
-        ev?.error === 'not-allowed'
-          ? 'Permiso de micrófono denegado.'
-          : 'No se pudo reconocer la voz. Intenta de nuevo.',
+        msgs[errCode] ||
+          `No se pudo reconocer la voz (${errCode || 'sin resultado'}). Intenta de nuevo o escribe la consulta.`,
       );
     };
-    rec.onend = () => this.dictando.set(false);
-    rec.start();
+
+    try {
+      rec.start();
+    } catch {
+      this.dictando.set(false);
+      this.error.set('No se pudo iniciar el micrófono. Intenta de nuevo.');
+    }
   }
 
   /** Detecta el formato pedido por voz, genera el reporte y lo descarga solo. */

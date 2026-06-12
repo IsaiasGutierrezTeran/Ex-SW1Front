@@ -470,3 +470,15 @@ Page reload sent to client(s).
 
 Application bundle generation complete. [0.874 seconds] - 2026-06-12T06:52:40.211Z
 
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m                       [2m | [22m [1mRaw size[22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m                        [2m | [22m[36m122.78 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m   [2m | [22m[1mNames[22m                       [2m | [22m [1mRaw size[22m
+[32mchunk-H7SNNUQM.js[39m  [2m | [22m[2mreportes-naturales-component[22m[2m | [22m [36m34.86 kB[39m[2m | [22m
+
+Application bundle generation complete. [0.596 seconds] - 2026-06-12T06:58:46.686Z
+
+Page reload sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
