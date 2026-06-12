@@ -1,28 +1,24 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReporteNaturalResponse } from '../../core/models/reporte-natural.model';
 import { ReporteNaturalService } from '../../core/services/reporte-natural.service';
-import { TranscripcionService } from '../../core/services/transcripcion.service';
-import { GrabadorVozComponent } from '../../shared/grabador-voz/grabador-voz.component';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
 @Component({
   selector: 'app-reportes-naturales',
-  imports: [FormsModule, GrabadorVozComponent],
+  imports: [FormsModule],
   templateUrl: './reportes-naturales.component.html',
   styleUrl: './reportes-naturales.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReportesNaturalesComponent {
   private readonly svc = inject(ReporteNaturalService);
-  private readonly transcripcionSvc = inject(TranscripcionService);
-  private readonly grabador = viewChild(GrabadorVozComponent);
 
   readonly consulta = signal('');
   readonly resultado = signal<ReporteNaturalResponse | null>(null);
   readonly loading = signal(false);
   readonly error = signal('');
-  readonly transcribiendo = signal(false);
+  readonly dictando = signal(false);
 
   readonly ejemplos = [
     'conteo de tramites por estado',
@@ -90,28 +86,71 @@ export class ReportesNaturalesComponent {
     this.consulta.set(ej);
   }
 
-  onAudioReporte(audio: Blob): void {
-    this.transcribiendo.set(true);
+  /**
+   * Dictado por RECONOCIMIENTO DE VOZ del navegador (Web Speech API, es-ES).
+   * Transcribe de verdad lo que dices (no depende del microservicio) y, si en la
+   * frase mencionas un formato ("en Excel" / "en PDF"), genera el reporte y lo
+   * descarga automáticamente en ese formato.
+   */
+  dictarPorVoz(): void {
+    const SR =
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SR) {
+      this.error.set(
+        'Tu navegador no soporta reconocimiento de voz. Usa Chrome o Edge de escritorio.',
+      );
+      return;
+    }
+    const rec = new SR();
+    rec.lang = 'es-ES';
+    rec.interimResults = false;
+    rec.maxAlternatives = 1;
+    this.dictando.set(true);
     this.error.set('');
-    this.transcripcionSvc.transcribir(audio).subscribe({
+    rec.onresult = (ev: any) => {
+      const texto = String(ev.results?.[0]?.[0]?.transcript ?? '').trim();
+      this.dictando.set(false);
+      if (!texto) {
+        this.error.set('No se entendió. Intenta de nuevo o escribe la consulta.');
+        return;
+      }
+      this.consulta.set(texto);
+      this.ejecutarConFormato(texto);
+    };
+    rec.onerror = (ev: any) => {
+      this.dictando.set(false);
+      this.error.set(
+        ev?.error === 'not-allowed'
+          ? 'Permiso de micrófono denegado.'
+          : 'No se pudo reconocer la voz. Intenta de nuevo.',
+      );
+    };
+    rec.onend = () => this.dictando.set(false);
+    rec.start();
+  }
+
+  /** Detecta el formato pedido por voz, genera el reporte y lo descarga solo. */
+  private ejecutarConFormato(texto: string): void {
+    const t = texto.toLowerCase();
+    const formato: 'xlsx' | 'pdf' | null = /\b(excel|xlsx|hoja de c[aá]lculo)\b/.test(t)
+      ? 'xlsx'
+      : /\bpdf\b/.test(t)
+        ? 'pdf'
+        : null;
+
+    const consulta = texto.trim();
+    this.loading.set(true);
+    this.error.set('');
+    this.resultado.set(null);
+    this.svc.generar({ consulta, formatoExport: 'JSON' }).subscribe({
       next: (resp) => {
-        const texto = (resp.textoTranscrito ?? '').trim();
-        if (texto) {
-          this.consulta.set(texto);
-        } else {
-          this.error.set('No se entendió el audio. Intenta de nuevo o escribe la consulta.');
-        }
-        this.transcribiendo.set(false);
-        this.grabador()?.liberar();
+        this.resultado.set(resp);
+        this.loading.set(false);
+        if (formato) this.exportarArchivo(formato); // descarga automática
       },
       error: (err: any) => {
-        this.error.set(
-          err?.status === 503
-            ? 'El microservicio IA no está disponible para transcribir la voz.'
-            : mensajeAmigable(err),
-        );
-        this.transcribiendo.set(false);
-        this.grabador()?.liberar();
+        this.error.set(mensajeAmigable(err));
+        this.loading.set(false);
       },
     });
   }

@@ -178,3 +178,244 @@ Application bundle generation failed. [0.323 seconds] - 2026-06-12T04:48:00.222Z
         ╵                                      [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
 [39m[22m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+Application bundle generation failed. [0.252 seconds] - 2026-06-12T05:53:52.380Z
+
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '@angular/service-worker' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/app.config.ts:7:37:
+[37m      7 │ import { provideServiceWorker } from [32m'@angular/service-worker'[37m;
+        ╵                                      [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+Application bundle generation failed. [1.555 seconds] - 2026-06-12T06:16:59.199Z
+
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: GrabadorVozComponent is not used within the template of ReportesNaturalesComponent[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/admin/reportes-naturales/reportes-naturales.component.ts:11:25:
+[37m      11 │   imports: [FormsModule, [32mGrabadorVozComponent[37m],
+         ╵                          [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'dictando' does not exist on type 'ReportesNaturalesComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/admin/reportes-naturales/reportes-naturales.component.html:48:30:
+[37m      48 │           [class.btn-danger]="[32mdictando[37m()"
+         ╵                               [32m~~~~~~~~[0m
+
+  Error occurs in the template of component ReportesNaturalesComponent.
+
+    src/app/admin/reportes-naturales/reportes-naturales.component.ts:12:15:
+[37m      12 │   templateUrl: [32m'./reportes-naturales.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'dictando' does not exist on type 'ReportesNaturalesComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/admin/reportes-naturales/reportes-naturales.component.html:49:40:
+[37m      49 │           [class.btn-outline-primary]="![32mdictando[37m()"
+         ╵                                         [32m~~~~~~~~[0m
+
+  Error occurs in the template of component ReportesNaturalesComponent.
+
+    src/app/admin/reportes-naturales/reportes-naturales.component.ts:12:15:
+[37m      12 │   templateUrl: [32m'./reportes-naturales.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'dictarPorVoz' does not exist on type 'ReportesNaturalesComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/admin/reportes-naturales/reportes-naturales.component.html:50:19:
+[37m      50 │           (click)="[32mdictarPorVoz[37m()"
+         ╵                    [32m~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component ReportesNaturalesComponent.
+
+    src/app/admin/reportes-naturales/reportes-naturales.component.ts:12:15:
+[37m      12 │   templateUrl: [32m'./reportes-naturales.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'dictando' does not exist on type 'ReportesNaturalesComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/admin/reportes-naturales/reportes-naturales.component.html:53:15:
+[37m      53 │           @if ([32mdictando[37m()) {
+         ╵                [32m~~~~~~~~[0m
+
+  Error occurs in the template of component ReportesNaturalesComponent.
+
+    src/app/admin/reportes-naturales/reportes-naturales.component.ts:12:15:
+[37m      12 │   templateUrl: [32m'./reportes-naturales.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '@angular/service-worker' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/app.config.ts:7:37:
+[37m      7 │ import { provideServiceWorker } from [32m'@angular/service-worker'[37m;
+        ╵                                      [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+Application bundle generation failed. [0.994 seconds] - 2026-06-12T06:17:05.262Z
+
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8113: GrabadorVozComponent is not used within the template of ReportesNaturalesComponent[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/admin/reportes-naturales/reportes-naturales.component.ts:11:25:
+[37m      11 │   imports: [FormsModule, [32mGrabadorVozComponent[37m],
+         ╵                          [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'dictarPorVoz' does not exist on type 'ReportesNaturalesComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/admin/reportes-naturales/reportes-naturales.component.html:50:19:
+[37m      50 │           (click)="[32mdictarPorVoz[37m()"
+         ╵                    [32m~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component ReportesNaturalesComponent.
+
+    src/app/admin/reportes-naturales/reportes-naturales.component.ts:12:15:
+[37m      12 │   templateUrl: [32m'./reportes-naturales.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+Application bundle generation failed. [0.638 seconds] - 2026-06-12T06:17:30.082Z
+
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'dictarPorVoz' does not exist on type 'ReportesNaturalesComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/admin/reportes-naturales/reportes-naturales.component.html:50:19:
+[37m      50 │           (click)="[32mdictarPorVoz[37m()"
+         ╵                    [32m~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component ReportesNaturalesComponent.
+
+    src/app/admin/reportes-naturales/reportes-naturales.component.ts:10:15:
+[37m      10 │   templateUrl: [32m'./reportes-naturales.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'transcripcionSvc' does not exist on type 'ReportesNaturalesComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/admin/reportes-naturales/reportes-naturales.component.ts:93:9:
+[37m      93 │     this.[32mtranscripcionSvc[37m.transcribir(audio).subscribe({
+         ╵          [32m~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'resp' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/admin/reportes-naturales/reportes-naturales.component.ts:94:13:
+[37m      94 │       next: ([32mresp[37m) => {
+         ╵              [32m~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'grabador' does not exist on type 'ReportesNaturalesComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/admin/reportes-naturales/reportes-naturales.component.ts:102:13:
+[37m      102 │         this.[32mgrabador[37m()?.liberar();
+          ╵              [32m~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2339: Property 'grabador' does not exist on type 'ReportesNaturalesComponent'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/admin/reportes-naturales/reportes-naturales.component.ts:111:13:
+[37m      111 │         this.[32mgrabador[37m()?.liberar();
+          ╵              [32m~~~~~~~~[0m
+
+[39m[22m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m                        [2m | [22m [1mRaw size[22m
+[32mstyles.css[39m         [2m | [22m[2mstyles[22m                       [2m | [22m[36m330.62 kB[39m[2m | [22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m                         [2m | [22m[36m122.78 kB[39m[2m | [22m
+[32mchunk-TZDDJ2EC.js[39m  [2m | [22m[2m-[22m                            [2m | [22m [36m11.07 kB[39m[2m | [22m
+[32mchunk-PEVLVGGD.js[39m  [2m | [22m[2m-[22m                            [2m | [22m  [36m3.28 kB[39m[2m | [22m
+[32mchunk-ONDHXVXJ.js[39m  [2m | [22m[2m-[22m                            [2m | [22m  [36m1.87 kB[39m[2m | [22m
+[32mchunk-VUJOFXKG.js[39m  [2m | [22m[2m-[22m                            [2m | [22m[36m938 bytes[39m[2m | [22m
+[32mchunk-J6K2LOW6.js[39m  [2m | [22m[2m-[22m                            [2m | [22m[36m201 bytes[39m[2m | [22m
+
+[1m [22m                  [2m | [22m[1mInitial total[22m                [2m | [22m[1m470.76 kB[22m
+
+[1mLazy chunk files[22m   [2m | [22m[1mNames[22m                        [2m | [22m [1mRaw size[22m
+[32mchunk-DYSCCP7E.js[39m  [2m | [22m[2mdiagrama-editor-component[22m    [2m | [22m[36m375.96 kB[39m[2m | [22m
+[32mchunk-HWJM4FPP.js[39m  [2m | [22m[2mexpediente-digital-component[22m [2m | [22m[36m208.40 kB[39m[2m | [22m
+[32mchunk-TQ6FINSE.js[39m  [2m | [22m[2mactividades-component[22m        [2m | [22m [36m53.81 kB[39m[2m | [22m
+[32mchunk-ZKCZW2XX.js[39m  [2m | [22m[2mreportes-naturales-component[22m [2m | [22m [36m34.90 kB[39m[2m | [22m
+[32mchunk-355A6QLX.js[39m  [2m | [22m[2mauditoria-documento-component[22m[2m | [22m [36m34.25 kB[39m[2m | [22m
+[32mchunk-VICUXTF4.js[39m  [2m | [22m[2mtramite-detalle-component[22m    [2m | [22m [36m32.71 kB[39m[2m | [22m
+[32mchunk-RKGN3OYW.js[39m  [2m | [22m[2mpoliticas-lista-component[22m    [2m | [22m [36m30.09 kB[39m[2m | [22m
+[32mchunk-3WH2K7H2.js[39m  [2m | [22m[2msugerir-politica-component[22m   [2m | [22m [36m29.74 kB[39m[2m | [22m
+[32mchunk-WSJFNLHW.js[39m  [2m | [22m[2mbandeja-entrada-component[22m    [2m | [22m [36m29.39 kB[39m[2m | [22m
+[32mchunk-Z6GREAXY.js[39m  [2m | [22m[2mlogin-component[22m              [2m | [22m [36m28.09 kB[39m[2m | [22m
+[32mchunk-WSSXEOE3.js[39m  [2m | [22m[2m-[22m                            [2m | [22m [36m27.93 kB[39m[2m | [22m
+[32mchunk-PUEMXHUP.js[39m  [2m | [22m[2mperfil-component[22m             [2m | [22m [36m26.98 kB[39m[2m | [22m
+[32mchunk-J2TBNCGL.js[39m  [2m | [22m[2mhistorial-tramites-component[22m [2m | [22m [36m26.88 kB[39m[2m | [22m
+[32mchunk-WCACFU7B.js[39m  [2m | [22m[2manomalias-component[22m          [2m | [22m [36m25.71 kB[39m[2m | [22m
+[32mchunk-MYIH3YFB.js[39m  [2m | [22m[2mdashboard-metricas-component[22m [2m | [22m [36m22.34 kB[39m[2m | [22m
+[2m...and 24 more lazy chunks files. Use "--verbose" to show all the files.[22m
+
+Application bundle generation complete. [0.616 seconds] - 2026-06-12T06:18:39.168Z
+
+Page reload sent to client(s).
+[2m2:18:41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32m✨ new dependencies optimized: [33m@angular/service-worker[32m[39m
+[2m2:18:41[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32m✨ optimized dependencies changed. reloading[39m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m                       [2m | [22m [1mRaw size[22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m                        [2m | [22m[36m122.78 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m   [2m | [22m[1mNames[22m                       [2m | [22m [1mRaw size[22m
+[32mchunk-FXHAMSNJ.js[39m  [2m | [22m[2mreportes-naturales-component[22m[2m | [22m [36m34.12 kB[39m[2m | [22m
+
+Application bundle generation complete. [0.446 seconds] - 2026-06-12T06:18:53.189Z
+
+Component update sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m                       [2m | [22m [1mRaw size[22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m                        [2m | [22m[36m122.78 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m   [2m | [22m[1mNames[22m                       [2m | [22m [1mRaw size[22m
+[32mchunk-5YB5GYPY.js[39m  [2m | [22m[2mreportes-naturales-component[22m[2m | [22m [36m33.99 kB[39m[2m | [22m
+
+Application bundle generation complete. [0.536 seconds] - 2026-06-12T06:18:58.927Z
+
+Page reload sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m                        [2m | [22m [1mRaw size[22m
+[32mstyles.css[39m         [2m | [22m[2mstyles[22m                       [2m | [22m[36m330.62 kB[39m[2m | [22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m                         [2m | [22m[36m122.78 kB[39m[2m | [22m
+[32mchunk-TZDDJ2EC.js[39m  [2m | [22m[2m-[22m                            [2m | [22m [36m11.07 kB[39m[2m | [22m
+[32mchunk-PEVLVGGD.js[39m  [2m | [22m[2m-[22m                            [2m | [22m  [36m3.28 kB[39m[2m | [22m
+[32mchunk-ONDHXVXJ.js[39m  [2m | [22m[2m-[22m                            [2m | [22m  [36m1.87 kB[39m[2m | [22m
+[32mchunk-VUJOFXKG.js[39m  [2m | [22m[2m-[22m                            [2m | [22m[36m938 bytes[39m[2m | [22m
+[32mchunk-J6K2LOW6.js[39m  [2m | [22m[2m-[22m                            [2m | [22m[36m201 bytes[39m[2m | [22m
+
+[1m [22m                  [2m | [22m[1mInitial total[22m                [2m | [22m[1m470.76 kB[22m
+
+[1mLazy chunk files[22m   [2m | [22m[1mNames[22m                        [2m | [22m [1mRaw size[22m
+[32mchunk-DYSCCP7E.js[39m  [2m | [22m[2mdiagrama-editor-component[22m    [2m | [22m[36m375.96 kB[39m[2m | [22m
+[32mchunk-HWJM4FPP.js[39m  [2m | [22m[2mexpediente-digital-component[22m [2m | [22m[36m208.40 kB[39m[2m | [22m
+[32mchunk-TQ6FINSE.js[39m  [2m | [22m[2mactividades-component[22m        [2m | [22m [36m53.81 kB[39m[2m | [22m
+[32mchunk-355A6QLX.js[39m  [2m | [22m[2mauditoria-documento-component[22m[2m | [22m [36m34.25 kB[39m[2m | [22m
+[32mchunk-5YB5GYPY.js[39m  [2m | [22m[2mreportes-naturales-component[22m [2m | [22m [36m33.99 kB[39m[2m | [22m
+[32mchunk-VICUXTF4.js[39m  [2m | [22m[2mtramite-detalle-component[22m    [2m | [22m [36m32.71 kB[39m[2m | [22m
+[32mchunk-RKGN3OYW.js[39m  [2m | [22m[2mpoliticas-lista-component[22m    [2m | [22m [36m30.09 kB[39m[2m | [22m
+[32mchunk-3WH2K7H2.js[39m  [2m | [22m[2msugerir-politica-component[22m   [2m | [22m [36m29.74 kB[39m[2m | [22m
+[32mchunk-WSJFNLHW.js[39m  [2m | [22m[2mbandeja-entrada-component[22m    [2m | [22m [36m29.39 kB[39m[2m | [22m
+[32mchunk-Z6GREAXY.js[39m  [2m | [22m[2mlogin-component[22m              [2m | [22m [36m28.09 kB[39m[2m | [22m
+[32mchunk-WSSXEOE3.js[39m  [2m | [22m[2m-[22m                            [2m | [22m [36m27.93 kB[39m[2m | [22m
+[32mchunk-PUEMXHUP.js[39m  [2m | [22m[2mperfil-component[22m             [2m | [22m [36m26.98 kB[39m[2m | [22m
+[32mchunk-J2TBNCGL.js[39m  [2m | [22m[2mhistorial-tramites-component[22m [2m | [22m [36m26.88 kB[39m[2m | [22m
+[32mchunk-WCACFU7B.js[39m  [2m | [22m[2manomalias-component[22m          [2m | [22m [36m25.71 kB[39m[2m | [22m
+[32mchunk-MYIH3YFB.js[39m  [2m | [22m[2mdashboard-metricas-component[22m [2m | [22m [36m22.34 kB[39m[2m | [22m
+[2m...and 24 more lazy chunks files. Use "--verbose" to show all the files.[22m
+
+Application bundle generation complete. [0.354 seconds] - 2026-06-12T06:25:08.983Z
+

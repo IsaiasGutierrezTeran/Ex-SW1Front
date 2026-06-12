@@ -42,12 +42,24 @@
 
       <div class="mt-2 d-flex align-items-center gap-2 flex-wrap">
         <span class="small text-muted">o díctala:</span>
-        <app-grabador-voz (audioGrabado)="onAudioReporte($event)" />
-        @if (transcribiendo()) {
-          <span class="small text-muted">
-            <span class="spinner-border spinner-border-sm me-1"></span>Transcribiendo…
-          </span>
-        }
+        <button
+          type="button"
+          class="btn btn-sm"
+          [class.btn-danger]="dictando()"
+          [class.btn-outline-primary]="!dictando()"
+          (click)="dictarPorVoz()"
+          [disabled]="loading()"
+        >
+          @if (dictando()) {
+            <span class="spinner-grow spinner-grow-sm me-1"></span> Escuchando… (habla ahora)
+          } @else {
+            🎤 Dictar consulta
+          }
+        </button>
+      </div>
+      <div class="mt-1 small text-muted">
+        Tip: di el formato y se descarga solo. Ej:
+        <em>"reporte de trámites por estado en Excel"</em> o <em>"… en PDF"</em>.
       </div>
 
       <div class="mt-2 small text-muted">
