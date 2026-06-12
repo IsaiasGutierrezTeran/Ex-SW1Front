@@ -29,6 +29,15 @@ const TIPOS_VISUAL: TipoCampoVisual[] = [
   { value: 'checkbox', label: 'Casilla (sí/no)',   icono: '☑',  descripcion: 'Una casilla marcable',            necesitaOpciones: false, etiquetaDefault: 'Acepto' },
   { value: 'archivo',  label: 'Adjuntar archivo',  icono: '📎', descripcion: 'Subir un documento o imagen',     necesitaOpciones: false, etiquetaDefault: 'Adjuntar archivo' },
   { value: 'calculado', label: 'Calculado',        icono: 'ƒ',  descripcion: 'Derivado de otros campos (fórmula)', necesitaOpciones: false, etiquetaDefault: 'Campo calculado' },
+  { value: 'email',    label: 'Correo',            icono: '@',  descripcion: 'Email con validación de formato',  necesitaOpciones: false, etiquetaDefault: 'Correo electrónico' },
+  { value: 'telefono', label: 'Teléfono',          icono: '☎',  descripcion: 'Número de contacto',               necesitaOpciones: false, etiquetaDefault: 'Teléfono' },
+  { value: 'decimal',  label: 'Decimal / Moneda',  icono: '$',  descripcion: 'Número con decimales (montos)',    necesitaOpciones: false, etiquetaDefault: 'Monto' },
+  { value: 'hora',     label: 'Hora',              icono: '⏰', descripcion: 'Selector de hora',                 necesitaOpciones: false, etiquetaDefault: 'Hora' },
+  { value: 'fechahora', label: 'Fecha y hora',     icono: '🗓', descripcion: 'Fecha con hora',                   necesitaOpciones: false, etiquetaDefault: 'Fecha y hora' },
+  { value: 'url',      label: 'Enlace (URL)',      icono: '🔗', descripcion: 'Dirección web',                    necesitaOpciones: false, etiquetaDefault: 'Enlace' },
+  { value: 'rango',    label: 'Rango',             icono: '▭',  descripcion: 'Deslizador numérico (0–100)',      necesitaOpciones: false, etiquetaDefault: 'Rango' },
+  { value: 'multiselect', label: 'Selección múltiple', icono: '☰', descripcion: 'Elegir varias opciones',       necesitaOpciones: true,  etiquetaDefault: 'Selección múltiple' },
+  { value: 'matriz',   label: 'Matriz / Tabla',    icono: '▦',  descripcion: 'Tabla de filas y columnas',        necesitaOpciones: true,  etiquetaDefault: 'Tabla' },
 ];
 
 function slugify(input: string): string {

@@ -207,6 +207,94 @@
                             placeholder="Se calcula de otros campos"
                           />
                         }
+                        @case ('email') {
+                          <input type="email" class="form-control form-control-sm"
+                            [value]="campo.valor || ''" [readonly]="!editable"
+                            (input)="setCampoValor(campo.id, $event)" placeholder="nombre@dominio.com" />
+                        }
+                        @case ('telefono') {
+                          <input type="tel" class="form-control form-control-sm"
+                            [value]="campo.valor || ''" [readonly]="!editable"
+                            (input)="setCampoValor(campo.id, $event)" placeholder="+591 7xxxxxxx" />
+                        }
+                        @case ('decimal') {
+                          <input type="number" step="any" class="form-control form-control-sm"
+                            [value]="campo.valor || ''" [readonly]="!editable"
+                            (input)="setCampoValor(campo.id, $event)" placeholder="0.00" />
+                        }
+                        @case ('hora') {
+                          <input type="time" class="form-control form-control-sm"
+                            [value]="campo.valor || ''" [readonly]="!editable"
+                            (input)="setCampoValor(campo.id, $event)" />
+                        }
+                        @case ('fechahora') {
+                          <input type="datetime-local" class="form-control form-control-sm"
+                            [value]="campo.valor || ''" [readonly]="!editable"
+                            (input)="setCampoValor(campo.id, $event)" />
+                        }
+                        @case ('url') {
+                          <input type="url" class="form-control form-control-sm"
+                            [value]="campo.valor || ''" [readonly]="!editable"
+                            (input)="setCampoValor(campo.id, $event)" placeholder="https://…" />
+                        }
+                        @case ('rango') {
+                          <div class="d-flex align-items-center gap-2">
+                            <input type="range" min="0" max="100" class="form-range"
+                              [value]="campo.valor || '0'" [disabled]="!editable"
+                              (input)="setCampoValor(campo.id, $event)" />
+                            <span class="small text-muted" style="min-width:2.5rem">{{ valorActual(campo) || '0' }}</span>
+                          </div>
+                        }
+                        @case ('multiselect') {
+                          <div>
+                            @for (op of (campo.opciones || []); track op) {
+                              <div class="form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input"
+                                  [checked]="multiSeleccionado(campo, op)"
+                                  [disabled]="!editable"
+                                  (change)="toggleMulti(campo, op)" />
+                                <label class="form-check-label small">{{ op }}</label>
+                              </div>
+                            }
+                          </div>
+                        }
+                        @case ('matriz') {
+                          <div class="table-responsive">
+                            <table class="table table-sm table-bordered mb-1 align-middle">
+                              <thead>
+                                <tr>
+                                  @for (col of (campo.opciones || []); track $index) {
+                                    <th class="small">{{ col }}</th>
+                                  }
+                                  @if (editable) { <th style="width:1%"></th> }
+                                </tr>
+                              </thead>
+                              <tbody>
+                                @for (fila of matrizFilas(campo); track $index; let fi = $index) {
+                                  <tr>
+                                    @for (col of (campo.opciones || []); track $index; let ci = $index) {
+                                      <td>
+                                        <input type="text" class="form-control form-control-sm"
+                                          [value]="fila[ci] || ''" [readonly]="!editable"
+                                          (change)="matrizSetCelda(campo, fi, ci, $event)" />
+                                      </td>
+                                    }
+                                    @if (editable) {
+                                      <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-outline-danger py-0 px-2"
+                                          (click)="matrizQuitarFila(campo, fi)">×</button>
+                                      </td>
+                                    }
+                                  </tr>
+                                }
+                              </tbody>
+                            </table>
+                            @if (editable) {
+                              <button type="button" class="btn btn-sm btn-outline-secondary"
+                                (click)="matrizAgregarFila(campo)">+ Agregar fila</button>
+                            }
+                          </div>
+                        }
                         @default {
                           <input
                             type="text"

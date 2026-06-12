@@ -7,7 +7,17 @@ export type TipoCampo =
   | 'checkbox'
   | 'radio'
   | 'archivo'
-  | 'calculado';
+  | 'calculado'
+  // ── Tipos adicionales ──
+  | 'email'
+  | 'telefono'
+  | 'decimal'
+  | 'hora'
+  | 'fechahora'
+  | 'url'
+  | 'rango'
+  | 'multiselect'
+  | 'matriz';
 
 export interface FormularioPlantilla {
   id: string;
@@ -58,4 +68,13 @@ export const TIPOS_CAMPO: { value: TipoCampo; label: string; necesitaOpciones: b
   { value: 'checkbox', label: 'Casilla (check)', necesitaOpciones: false },
   { value: 'archivo', label: 'Adjunto', necesitaOpciones: false },
   { value: 'calculado', label: 'Calculado (fórmula)', necesitaOpciones: false },
+  { value: 'email', label: 'Correo electrónico', necesitaOpciones: false },
+  { value: 'telefono', label: 'Teléfono', necesitaOpciones: false },
+  { value: 'decimal', label: 'Decimal / Moneda', necesitaOpciones: false },
+  { value: 'hora', label: 'Hora', necesitaOpciones: false },
+  { value: 'fechahora', label: 'Fecha y hora', necesitaOpciones: false },
+  { value: 'url', label: 'Enlace (URL)', necesitaOpciones: false },
+  { value: 'rango', label: 'Rango (deslizador)', necesitaOpciones: false },
+  { value: 'multiselect', label: 'Selección múltiple', necesitaOpciones: true },
+  { value: 'matriz', label: 'Matriz / Tabla', necesitaOpciones: true },
 ];

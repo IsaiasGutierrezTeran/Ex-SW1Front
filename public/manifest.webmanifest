@@ -1,0 +1,19 @@
+{
+  "name": "MOTOR · Gestión de Trámites",
+  "short_name": "MOTOR",
+  "description": "Sistema de Gestión de Trámites — MOTOR",
+  "theme_color": "#1554c4",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

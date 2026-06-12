@@ -28,6 +28,7 @@
               }
             ],
             "styles": ["src/styles.css"],
+            "serviceWorker": "ngsw-config.json",
             "security": {
               "allowedHosts": []
             }

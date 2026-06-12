@@ -12,42 +12,169 @@
 
 [33m❯[39m Building...
 [32m✔[39m Building...
-[35mBrowser bundles[39m     
-[1mInitial chunk files[22m [2m | [22m[1mNames[22m           [2m | [22m [1mRaw size[22m
-[32mmain.js[39m             [2m | [22m[2mmain[22m            [2m | [22m[36m744.24 kB[39m[2m | [22m
-[32mstyles.css[39m          [2m | [22m[2mstyles[22m          [2m | [22m[36m302.29 kB[39m[2m | [22m
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m                        [2m | [22m [1mRaw size[22m
+[32mstyles.css[39m         [2m | [22m[2mstyles[22m                       [2m | [22m[36m330.62 kB[39m[2m | [22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m                         [2m | [22m[36m115.38 kB[39m[2m | [22m
+[32mchunk-TZDDJ2EC.js[39m  [2m | [22m[2m-[22m                            [2m | [22m [36m11.07 kB[39m[2m | [22m
+[32mchunk-PEVLVGGD.js[39m  [2m | [22m[2m-[22m                            [2m | [22m  [36m3.28 kB[39m[2m | [22m
+[32mchunk-ONDHXVXJ.js[39m  [2m | [22m[2m-[22m                            [2m | [22m  [36m1.87 kB[39m[2m | [22m
+[32mchunk-VUJOFXKG.js[39m  [2m | [22m[2m-[22m                            [2m | [22m[36m938 bytes[39m[2m | [22m
+[32mchunk-J6K2LOW6.js[39m  [2m | [22m[2m-[22m                            [2m | [22m[36m201 bytes[39m[2m | [22m
 
-[1m [22m                   [2m | [22m[1mInitial total[22m   [2m | [22m  [1m1.05 MB[22m
+[1m [22m                  [2m | [22m[1mInitial total[22m                [2m | [22m[1m463.36 kB[22m
 
+[1mLazy chunk files[22m   [2m | [22m[1mNames[22m                        [2m | [22m [1mRaw size[22m
+[32mchunk-DYSCCP7E.js[39m  [2m | [22m[2mdiagrama-editor-component[22m    [2m | [22m[36m375.96 kB[39m[2m | [22m
+[32mchunk-72AATLRI.js[39m  [2m | [22m[2mexpediente-digital-component[22m [2m | [22m[36m197.24 kB[39m[2m | [22m
+[32mchunk-TQ6FINSE.js[39m  [2m | [22m[2mactividades-component[22m        [2m | [22m [36m53.81 kB[39m[2m | [22m
+[32mchunk-355A6QLX.js[39m  [2m | [22m[2mauditoria-documento-component[22m[2m | [22m [36m34.25 kB[39m[2m | [22m
+[32mchunk-AQYLQCLP.js[39m  [2m | [22m[2mreportes-naturales-component[22m [2m | [22m [36m33.14 kB[39m[2m | [22m
+[32mchunk-VICUXTF4.js[39m  [2m | [22m[2mtramite-detalle-component[22m    [2m | [22m [36m32.71 kB[39m[2m | [22m
+[32mchunk-RKGN3OYW.js[39m  [2m | [22m[2mpoliticas-lista-component[22m    [2m | [22m [36m30.09 kB[39m[2m | [22m
+[32mchunk-3WH2K7H2.js[39m  [2m | [22m[2msugerir-politica-component[22m   [2m | [22m [36m29.74 kB[39m[2m | [22m
+[32mchunk-WSJFNLHW.js[39m  [2m | [22m[2mbandeja-entrada-component[22m    [2m | [22m [36m29.39 kB[39m[2m | [22m
+[32mchunk-Z6GREAXY.js[39m  [2m | [22m[2mlogin-component[22m              [2m | [22m [36m28.09 kB[39m[2m | [22m
+[32mchunk-WSSXEOE3.js[39m  [2m | [22m[2m-[22m                            [2m | [22m [36m27.93 kB[39m[2m | [22m
+[32mchunk-PUEMXHUP.js[39m  [2m | [22m[2mperfil-component[22m             [2m | [22m [36m26.98 kB[39m[2m | [22m
+[32mchunk-J2TBNCGL.js[39m  [2m | [22m[2mhistorial-tramites-component[22m [2m | [22m [36m26.88 kB[39m[2m | [22m
+[32mchunk-WCACFU7B.js[39m  [2m | [22m[2manomalias-component[22m          [2m | [22m [36m25.71 kB[39m[2m | [22m
+[32mchunk-MYIH3YFB.js[39m  [2m | [22m[2mdashboard-metricas-component[22m [2m | [22m [36m22.34 kB[39m[2m | [22m
+[2m...and 25 more lazy chunks files. Use "--verbose" to show all the files.[22m
 
-[35mServer bundles[39m      
-[1mInitial chunk files[22m [2m | [22m[1mNames[22m           [2m | [22m [1mRaw size[22m
-[32mmain.server.mjs[39m     [2m | [22m[2mmain.server[22m     [2m | [22m[36m745.64 kB[39m[2m | [22m
-[32mserver.mjs[39m          [2m | [22m[2mserver[22m          [2m | [22m  [36m1.84 kB[39m[2m | [22m
-[32mpolyfills.server.mjs[39m[2m | [22m[2mpolyfills.server[22m[2m | [22m[36m268 bytes[39m[2m | [22m
-
-Application bundle generation complete. [5.059 seconds] - 2026-05-23T18:48:01.310Z
+Application bundle generation complete. [5.446 seconds] - 2026-06-12T04:16:32.464Z
 
 Watch mode enabled. Watching for file changes...
 NOTE: Raw file sizes do not reflect development server per-request transformations.
-[2m2:48:01 p. m.[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m Re-optimizing dependencies because vite config has changed
-[2m2:48:01 p. m.[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m Re-optimizing dependencies because vite config has changed
   [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m4200[22m/[39m
 [33m❯[39m Changes detected. Rebuilding...
 [32m✔[39m Changes detected. Rebuilding...
-[35mBrowser bundles[39m     
-[1mInitial chunk files[22m [2m | [22m[1mNames[22m           [2m | [22m [1mRaw size[22m
-[32mmain.js[39m             [2m | [22m[2mmain[22m            [2m | [22m[36m744.24 kB[39m[2m | [22m
-[32mstyles.css[39m          [2m | [22m[2mstyles[22m          [2m | [22m[36m302.29 kB[39m[2m | [22m
 
-[1m [22m                   [2m | [22m[1mInitial total[22m   [2m | [22m  [1m1.05 MB[22m
+No output file changes.
 
+Application bundle generation complete. [2.529 seconds] - 2026-06-12T04:41:07.246Z
 
-[35mServer bundles[39m      
-[1mInitial chunk files[22m [2m | [22m[1mNames[22m           [2m | [22m [1mRaw size[22m
-[32mmain.server.mjs[39m     [2m | [22m[2mmain.server[22m     [2m | [22m[36m745.64 kB[39m[2m | [22m
-[32mserver.mjs[39m          [2m | [22m[2mserver[22m          [2m | [22m  [36m1.84 kB[39m[2m | [22m
-[32mpolyfills.server.mjs[39m[2m | [22m[2mpolyfills.server[22m[2m | [22m[36m268 bytes[39m[2m | [22m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m[2m | [22m [1mRaw size[22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m [2m | [22m[36m122.25 kB[39m[2m | [22m
 
-Application bundle generation complete. [1.498 seconds] - 2026-05-23T18:59:57.033Z
+Application bundle generation complete. [0.431 seconds] - 2026-06-12T04:41:09.908Z
 
+Page reload sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m[2m | [22m [1mRaw size[22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m [2m | [22m[36m122.49 kB[39m[2m | [22m
+
+Application bundle generation complete. [0.497 seconds] - 2026-06-12T04:41:19.793Z
+
+Page reload sent to client(s).
+[2m0:41:31[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32m✨ new dependencies optimized: [33mrxjs/operators[32m[39m
+[2m0:41:31[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32m✨ optimized dependencies changed. reloading[39m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+
+No output file changes.
+
+Application bundle generation complete. [0.847 seconds] - 2026-06-12T04:42:56.375Z
+
+Page reload sent to client(s).
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m                        [2m | [22m [1mRaw size[22m
+[32mstyles.css[39m         [2m | [22m[2mstyles[22m                       [2m | [22m[36m330.62 kB[39m[2m | [22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m                         [2m | [22m[36m122.49 kB[39m[2m | [22m
+[32mchunk-TZDDJ2EC.js[39m  [2m | [22m[2m-[22m                            [2m | [22m [36m11.07 kB[39m[2m | [22m
+[32mchunk-PEVLVGGD.js[39m  [2m | [22m[2m-[22m                            [2m | [22m  [36m3.28 kB[39m[2m | [22m
+[32mchunk-ONDHXVXJ.js[39m  [2m | [22m[2m-[22m                            [2m | [22m  [36m1.87 kB[39m[2m | [22m
+[32mchunk-VUJOFXKG.js[39m  [2m | [22m[2m-[22m                            [2m | [22m[36m938 bytes[39m[2m | [22m
+[32mchunk-J6K2LOW6.js[39m  [2m | [22m[2m-[22m                            [2m | [22m[36m201 bytes[39m[2m | [22m
+
+[1m [22m                  [2m | [22m[1mInitial total[22m                [2m | [22m[1m470.47 kB[22m
+
+[1mLazy chunk files[22m   [2m | [22m[1mNames[22m                        [2m | [22m [1mRaw size[22m
+[32mchunk-DYSCCP7E.js[39m  [2m | [22m[2mdiagrama-editor-component[22m    [2m | [22m[36m375.96 kB[39m[2m | [22m
+[32mchunk-72AATLRI.js[39m  [2m | [22m[2mexpediente-digital-component[22m [2m | [22m[36m197.24 kB[39m[2m | [22m
+[32mchunk-TQ6FINSE.js[39m  [2m | [22m[2mactividades-component[22m        [2m | [22m [36m53.81 kB[39m[2m | [22m
+[32mchunk-355A6QLX.js[39m  [2m | [22m[2mauditoria-documento-component[22m[2m | [22m [36m34.25 kB[39m[2m | [22m
+[32mchunk-AQYLQCLP.js[39m  [2m | [22m[2mreportes-naturales-component[22m [2m | [22m [36m33.14 kB[39m[2m | [22m
+[32mchunk-VICUXTF4.js[39m  [2m | [22m[2mtramite-detalle-component[22m    [2m | [22m [36m32.71 kB[39m[2m | [22m
+[32mchunk-RKGN3OYW.js[39m  [2m | [22m[2mpoliticas-lista-component[22m    [2m | [22m [36m30.09 kB[39m[2m | [22m
+[32mchunk-3WH2K7H2.js[39m  [2m | [22m[2msugerir-politica-component[22m   [2m | [22m [36m29.74 kB[39m[2m | [22m
+[32mchunk-WSJFNLHW.js[39m  [2m | [22m[2mbandeja-entrada-component[22m    [2m | [22m [36m29.39 kB[39m[2m | [22m
+[32mchunk-Z6GREAXY.js[39m  [2m | [22m[2mlogin-component[22m              [2m | [22m [36m28.09 kB[39m[2m | [22m
+[32mchunk-WSSXEOE3.js[39m  [2m | [22m[2m-[22m                            [2m | [22m [36m27.93 kB[39m[2m | [22m
+[32mchunk-PUEMXHUP.js[39m  [2m | [22m[2mperfil-component[22m             [2m | [22m [36m26.98 kB[39m[2m | [22m
+[32mchunk-J2TBNCGL.js[39m  [2m | [22m[2mhistorial-tramites-component[22m [2m | [22m [36m26.88 kB[39m[2m | [22m
+[32mchunk-WCACFU7B.js[39m  [2m | [22m[2manomalias-component[22m          [2m | [22m [36m25.71 kB[39m[2m | [22m
+[32mchunk-MYIH3YFB.js[39m  [2m | [22m[2mdashboard-metricas-component[22m [2m | [22m [36m22.34 kB[39m[2m | [22m
+[2m...and 25 more lazy chunks files. Use "--verbose" to show all the files.[22m
+
+Application bundle generation complete. [0.868 seconds] - 2026-06-12T04:43:01.782Z
+
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+Application bundle generation failed. [2.891 seconds] - 2026-06-12T04:43:14.597Z
+
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '@angular/service-worker' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/app.config.ts:7:37:
+[37m      7 │ import { provideServiceWorker } from [32m'@angular/service-worker'[37m;
+        ╵                                      [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+Application bundle generation failed. [0.726 seconds] - 2026-06-12T04:47:03.362Z
+
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '@angular/service-worker' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/app.config.ts:7:37:
+[37m      7 │ import { provideServiceWorker } from [32m'@angular/service-worker'[37m;
+        ╵                                      [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+Application bundle generation failed. [0.176 seconds] - 2026-06-12T04:47:03.723Z
+
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '@angular/service-worker' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/app.config.ts:7:37:
+[37m      7 │ import { provideServiceWorker } from [32m'@angular/service-worker'[37m;
+        ╵                                      [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+Application bundle generation failed. [0.393 seconds] - 2026-06-12T04:47:21.449Z
+
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '@angular/service-worker' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/app.config.ts:7:37:
+[37m      7 │ import { provideServiceWorker } from [32m'@angular/service-worker'[37m;
+        ╵                                      [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+Application bundle generation failed. [0.152 seconds] - 2026-06-12T04:47:50.669Z
+
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '@angular/service-worker' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/app.config.ts:7:37:
+[37m      7 │ import { provideServiceWorker } from [32m'@angular/service-worker'[37m;
+        ╵                                      [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+Application bundle generation failed. [0.323 seconds] - 2026-06-12T04:48:00.222Z
+
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '@angular/service-worker' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/app.config.ts:7:37:
+[37m      7 │ import { provideServiceWorker } from [32m'@angular/service-worker'[37m;
+        ╵                                      [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m

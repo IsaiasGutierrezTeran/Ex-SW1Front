@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { FaqOfflineService } from './faq-offline.service';
 
 export interface AgenteAccion {
   label?: string;
@@ -26,6 +28,7 @@ export interface AgenteConsulta {
 @Injectable({ providedIn: 'root' })
 export class AgenteService {
   private readonly http = inject(HttpClient);
+  private readonly faqOffline = inject(FaqOfflineService);
   private readonly url = `${environment.apiUrl}/agente/consultar`;
 
   consultar(payload: AgenteConsulta): Observable<AgenteRespuesta>;
@@ -48,6 +51,15 @@ export class AgenteService {
           }
         : consultaOrPayload;
 
-    return this.http.post<AgenteRespuesta>(this.url, payload);
+    // Si no hay conexión / el backend falla, responde la IA offline (FAQ local).
+    return this.http.post<AgenteRespuesta>(this.url, payload).pipe(
+      catchError(() =>
+        of<AgenteRespuesta>({
+          respuesta: this.faqOffline.responder(payload.consulta),
+          fuente: 'offline',
+          accion: null,
+        }),
+      ),
+    );
   }
 }

@@ -205,6 +205,67 @@ export class ExpedienteDigitalComponent {
     this.valoresEnEdicion.update((curr) => ({ ...curr, [campoId]: opcion }));
   }
 
+  // ── Selección múltiple (valor = JSON array de strings) ──────────────────
+  private parseLista(v: string): string[] {
+    if (!v) return [];
+    try {
+      const a = JSON.parse(v);
+      return Array.isArray(a) ? a.map(String) : [];
+    } catch {
+      return v.split(',').map((s) => s.trim()).filter(Boolean);
+    }
+  }
+
+  multiSeleccionado(campo: any, opcion: string): boolean {
+    return this.parseLista(this.valorActual(campo)).includes(opcion);
+  }
+
+  toggleMulti(campo: any, opcion: string): void {
+    const actual = this.parseLista(this.valorActual(campo));
+    const i = actual.indexOf(opcion);
+    if (i >= 0) actual.splice(i, 1);
+    else actual.push(opcion);
+    this.valoresEnEdicion.update((curr) => ({ ...curr, [campo.id]: JSON.stringify(actual) }));
+  }
+
+  // ── Matriz/tabla (valor = JSON array de filas; fila = array de celdas) ───
+  matrizFilas(campo: any): string[][] {
+    const v = this.valorActual(campo);
+    if (!v) return [];
+    try {
+      const a = JSON.parse(v);
+      return Array.isArray(a) ? a.map((f: any) => (Array.isArray(f) ? f.map(String) : [])) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  private setMatriz(campo: any, filas: string[][]): void {
+    this.valoresEnEdicion.update((curr) => ({ ...curr, [campo.id]: JSON.stringify(filas) }));
+  }
+
+  matrizAgregarFila(campo: any): void {
+    const cols = (campo.opciones?.length || 1) as number;
+    const filas = this.matrizFilas(campo);
+    filas.push(new Array(cols).fill(''));
+    this.setMatriz(campo, filas);
+  }
+
+  matrizQuitarFila(campo: any, fi: number): void {
+    const filas = this.matrizFilas(campo);
+    filas.splice(fi, 1);
+    this.setMatriz(campo, filas);
+  }
+
+  matrizSetCelda(campo: any, fi: number, ci: number, ev: Event): void {
+    const filas = this.matrizFilas(campo);
+    while (filas.length <= fi) filas.push([]);
+    const fila = filas[fi];
+    while (fila.length <= ci) fila.push('');
+    fila[ci] = (ev.target as HTMLInputElement).value;
+    this.setMatriz(campo, filas);
+  }
+
   valorActual(campo: any): string {
     const editado = this.valoresEnEdicion()[campo.id];
     return editado !== undefined ? editado : (campo.valor ?? '');
