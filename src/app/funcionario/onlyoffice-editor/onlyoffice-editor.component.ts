@@ -17,7 +17,7 @@ declare global {
     <div style="position: fixed; inset: 0; z-index: 1080; background: #fff; display: flex; flex-direction: column">
       <div class="d-flex align-items-center gap-2 px-3 py-2 border-bottom bg-light">
         @if (modo === 'view') {
-          <button type="button" class="btn btn-sm btn-outline-secondary" (click)="salir()">← Volver</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary" (click)="salir()"> Volver</button>
         } @else {
           <button
             type="button"
@@ -43,7 +43,7 @@ declare global {
           </span>
         }
         @if (guardadoOk()) {
-          <span class="text-success small ms-2">✓ Guardado</span>
+          <span class="text-success small ms-2"> Guardado</span>
         }
       </div>
       @if (error()) {

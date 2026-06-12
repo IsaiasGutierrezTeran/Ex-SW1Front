@@ -141,7 +141,7 @@ export class ExpedienteDigitalComponent {
     () => this.sinRestriccionSalidas() || this.salidasActividad().includes('observar'),
   );
   readonly textoAvanzar = computed(() => {
-    if (this.mostrarDecision()) return 'Continuar →';
+    if (this.mostrarDecision()) return 'Continuar ';
     return this.salidasActividad().includes('aprobar') ? 'Aprobar' : 'Completar / Avanzar';
   });
 
@@ -562,7 +562,7 @@ export class ExpedienteDigitalComponent {
       setTimeout(() => this.errorDocumentos.set(''), 4000);
       return;
     }
-    // Resolver actividad/nodo: nodo actual → 1ª sección editable → documento ya
+    // Resolver actividad/nodo: nodo actual  1ª sección editable  documento ya
     // existente del trámite (la lista trae actividadId/nodoId). El último respaldo
     // cubre trámites en paralelo o sin nodoActual único, donde /estado no lo expone.
     const docPrev = this.documentos()[0];
@@ -697,13 +697,13 @@ export class ExpedienteDigitalComponent {
 
   iconoTipoDoc(tipo: string): string {
     switch ((tipo || '').toUpperCase()) {
-      case 'PDF':    return '📕';
-      case 'IMAGEN': return '🖼️';
-      case 'WORD':   return '📝';
-      case 'EXCEL':  return '📊';
-      case 'AUDIO':  return '🎵';
-      case 'VIDEO':  return '🎬';
-      default:       return '📄';
+      case 'PDF':    return '';
+      case 'IMAGEN': return '';
+      case 'WORD':   return '';
+      case 'EXCEL':  return '';
+      case 'AUDIO':  return '';
+      case 'VIDEO':  return '';
+      default:       return '';
     }
   }
 

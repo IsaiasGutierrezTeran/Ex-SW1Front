@@ -24,7 +24,7 @@ interface TramiteEnBandeja {
   razonesRiesgo?: string[];
 }
 
-/** Helper rxjs: cualquier error → lista vacía (para no tumbar el forkJoin). */
+/** Helper rxjs: cualquier error  lista vacía (para no tumbar el forkJoin). */
 function catchToEmpty<T>(): OperatorFunction<T[], T[]> {
   return catchError(() => of([] as T[]));
 }

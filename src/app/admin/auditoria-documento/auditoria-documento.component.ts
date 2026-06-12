@@ -133,15 +133,15 @@ export class AuditoriaDocumentoComponent {
 
   iconoAccion(accion: string): string {
     switch (accion as AccionAuditoria) {
-      case 'SUBIDA':           return '⬆️';
-      case 'NUEVA_VERSION':    return '🔄';
-      case 'LECTURA':          return '👁️';
-      case 'DESCARGA':         return '⬇️';
-      case 'EDICION_EN_VIVO':  return '✍️';
-      case 'EDICION_GUARDADA': return '💾';
-      case 'BLOQUEO':          return '🔒';
-      case 'DESBLOQUEO':       return '🔓';
-      case 'BORRADO':          return '🗑️';
+      case 'SUBIDA':           return '';
+      case 'NUEVA_VERSION':    return '';
+      case 'LECTURA':          return '';
+      case 'DESCARGA':         return '';
+      case 'EDICION_EN_VIVO':  return '';
+      case 'EDICION_GUARDADA': return '';
+      case 'BLOQUEO':          return '';
+      case 'DESBLOQUEO':       return '';
+      case 'BORRADO':          return '';
       default:                 return '•';
     }
   }

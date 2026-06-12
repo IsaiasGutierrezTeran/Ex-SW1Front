@@ -121,5 +121,5 @@ export class TramiteDetalleComponent {
   }
 
   // CU-42 (ruta óptima IA) se removió de la vista del funcionario.
-  // El caso de uso pertenece al flujo cliente (móvil → IniciarTramiteIaScreen).
+  // El caso de uso pertenece al flujo cliente (móvil  IniciarTramiteIaScreen).
 }

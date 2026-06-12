@@ -591,7 +591,7 @@ export class DiagramaEditorComponent {
         this.showSuccess('Nodo creado');
         if (creado.tipo === 'decision') {
           this.advertencia.set(
-            '⚠️ Escribe la pregunta del if (ej. "¿El cliente tiene deuda?") en el nombre de esta ' +
+            ' Escribe la pregunta del if (ej. "¿El cliente tiene deuda?") en el nombre de esta ' +
               'decisión y conecta sus dos ramas (Sí y No). Sin eso no podrás activar la política.',
           );
         }
@@ -701,7 +701,7 @@ export class DiagramaEditorComponent {
         this.showSuccess(esDecision ? `Conexión creada (rama "${etiqueta}")` : 'Conexión creada');
         if (origen?.tipo === 'join' && destino?.tipo === 'decision') {
           this.advertencia.set(
-            '⚠️ La pregunta de una decisión justo después de un "join" no se mostrará al funcionario ' +
+            ' La pregunta de una decisión justo después de un "join" no se mostrará al funcionario ' +
               '(el motor tomará "sí" por defecto). Coloca una actividad entre el join y la decisión si necesitas preguntar.',
           );
         }
@@ -930,7 +930,7 @@ export class DiagramaEditorComponent {
         if (actualizado.tipo === 'decision') {
           this.advertencia.set(
             this.preguntaDecisionVacia(actualizado.nombre)
-              ? '⚠️ Esta decisión sigue sin pregunta real (quedó "¿Decisión?"). Escríbela para poder activar la política.'
+              ? ' Esta decisión sigue sin pregunta real (quedó "¿Decisión?"). Escríbela para poder activar la política.'
               : '',
           );
         }

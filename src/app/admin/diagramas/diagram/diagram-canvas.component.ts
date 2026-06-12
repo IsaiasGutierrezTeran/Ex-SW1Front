@@ -456,7 +456,7 @@ export class DiagramCanvasComponent {
               },
               {
                 tagName: 'text',
-                textContent: '✕',
+                textContent: '',
                 selector: 'icon',
                 attrs: { fill: '#ffffff', 'font-size': 11, 'text-anchor': 'middle', 'pointer-events': 'none', dy: '0.35em' },
               },

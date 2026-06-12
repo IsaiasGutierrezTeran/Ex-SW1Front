@@ -101,7 +101,7 @@
                         @if (procesando()) {
                           <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
                         }
-                        {{ procesando() ? 'Procesando...' : (decisionSiguiente() ? 'Continuar →' : 'Completar Nodo') }}
+                        {{ procesando() ? 'Procesando...' : (decisionSiguiente() ? 'Continuar ' : 'Completar Nodo') }}
                       </button>
                     </form>
                   </div>
@@ -118,7 +118,7 @@
         <div class="col-md-7">
           <!-- CU-42 (Ruta óptima IA) removido de la vista del funcionario.
                El flujo correcto es: el cliente describe su problema desde la
-               app móvil (CU-40 → IniciarTramiteIaScreen) y la IA sugiere
+               app móvil (CU-40  IniciarTramiteIaScreen) y la IA sugiere
                qué trámite usar — no se le sugiere ruta al funcionario. -->
 
           <article class="card shadow-sm border-0">
