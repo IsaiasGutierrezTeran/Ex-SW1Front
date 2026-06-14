@@ -90,7 +90,13 @@
       @if (auth.getUsuario(); as u) {
         <div class="topnav-dd topnav-user" [class.open]="openMenu() === 'user'">
           <button type="button" class="topnav-user-btn" (click)="toggleMenu('user', $event)">
-            <span class="user-avatar" aria-hidden="true">{{ u.nombre.charAt(0) }}</span>
+            <span class="user-avatar" aria-hidden="true">
+              @if (usuarioSvc.fotoUrl(); as f) {
+                <img [src]="f" alt="" />
+              } @else {
+                {{ u.nombre.charAt(0) }}
+              }
+            </span>
             <span class="user-meta">
               <span class="user-name">{{ u.nombre }}</span>
               <span class="user-role">{{ u.rol }}</span>

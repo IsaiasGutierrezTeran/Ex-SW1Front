@@ -41,6 +41,7 @@ import {
 import { AuthService } from '../../core/services/auth.service';
 import { NotificacionesService } from '../../core/services/notificaciones.service';
 import { ThemeService } from '../../core/services/theme.service';
+import { UsuarioService } from '../../core/services/usuario.service';
 
 interface NavItem {
   label: string;
@@ -67,11 +68,15 @@ export class SidebarComponent {
   readonly auth = inject(AuthService);
   readonly theme = inject(ThemeService);
   readonly notif = inject(NotificacionesService);
+  readonly usuarioSvc = inject(UsuarioService);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
 
   constructor() {
-    if (this.isBrowser) this.notif.iniciarPolling();
+    if (this.isBrowser) {
+      this.notif.iniciarPolling();
+      if (this.auth.getUsuario()) this.usuarioSvc.cargarFotoPerfil();
+    }
   }
 
   protected readonly icons = {

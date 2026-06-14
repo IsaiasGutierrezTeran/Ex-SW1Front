@@ -138,7 +138,8 @@ export class PerfilComponent {
   private readonly usuarioSvc = inject(UsuarioService);
 
   readonly usuario = signal<any | null>(null);
-  readonly fotoUrl = signal<string | null>(null);
+  /** Compartida con el avatar del navbar: al cambiar la foto, ambos se actualizan. */
+  readonly fotoUrl = this.usuarioSvc.fotoUrl;
   readonly guardando = signal(false);
   readonly cambiandoPass = signal(false);
   readonly subiendoFoto = signal(false);
@@ -190,16 +191,7 @@ export class PerfilComponent {
   }
 
   private cargarFoto(): void {
-    this.usuarioSvc.miFoto().subscribe({
-      next: (blob) => {
-        if (blob && blob.size > 0) {
-          const reader = new FileReader();
-          reader.onload = () => this.fotoUrl.set(reader.result as string);
-          reader.readAsDataURL(blob);
-        }
-      },
-      error: () => {},
-    });
+    this.usuarioSvc.cargarFotoPerfil();
   }
 
   guardarPerfil(): void {
@@ -254,9 +246,7 @@ export class PerfilComponent {
     }
 
     // Vista previa inmediata del archivo elegido (no depende del servidor)
-    const reader = new FileReader();
-    reader.onload = () => this.fotoUrl.set(reader.result as string);
-    reader.readAsDataURL(file);
+    this.usuarioSvc.mostrarFotoLocal(file);
 
     this.subiendoFoto.set(true);
     this.msgFoto.set('');

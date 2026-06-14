@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -60,5 +60,32 @@ export class UsuarioService {
 
   miFoto(): Observable<Blob> {
     return this.http.get(`${this.url}/me/foto`, { responseType: 'blob' });
+  }
+
+  // ── Foto compartida (la usan perfil y el avatar del navbar) ──────────
+  /** Data-URL de la foto del usuario autenticado; null si no tiene. */
+  readonly fotoUrl = signal<string | null>(null);
+
+  /** Descarga la foto actual y la cachea en `fotoUrl` para que el avatar la muestre. */
+  cargarFotoPerfil(): void {
+    this.miFoto().subscribe({
+      next: (blob) => {
+        if (blob && blob.size > 0) {
+          const reader = new FileReader();
+          reader.onload = () => this.fotoUrl.set(reader.result as string);
+          reader.readAsDataURL(blob);
+        } else {
+          this.fotoUrl.set(null);
+        }
+      },
+      error: () => {},
+    });
+  }
+
+  /** Vista previa inmediata desde el archivo elegido (antes de la respuesta del server). */
+  mostrarFotoLocal(file: File): void {
+    const reader = new FileReader();
+    reader.onload = () => this.fotoUrl.set(reader.result as string);
+    reader.readAsDataURL(file);
   }
 }
