@@ -66,7 +66,8 @@
                   Esta sección no tiene formulario asociado al nodo del workflow.
                 </p>
               } @else {
-                @let editable = mostrarAcciones() && esSeccionEditable(seccion.infoSeccion?.estado) && esSeccionDelNodoActual(seccion);
+                @let editable = mostrarAcciones() && esSeccionEditable(seccion.infoSeccion?.estado) && esSeccionDelNodoActual(seccion) && esMiSeccion(seccion);
+                @let activaNoMia = mostrarAcciones() && esSeccionEditable(seccion.infoSeccion?.estado) && esSeccionDelNodoActual(seccion) && !esMiSeccion(seccion);
                 <div class="row g-3">
                   @for (campo of seccion.campos; track (campo.campoPlantillaId || campo.id || $index)) {
                     <div class="col-md-6">
@@ -309,7 +310,14 @@
                   }
                 </div>
 
-                @if (mostrarAcciones() && esSeccionEditable(seccion.infoSeccion?.estado) && esSeccionDelNodoActual(seccion)) {
+                @if (activaNoMia) {
+                  <div class="alert alert-secondary d-flex align-items-start gap-2 mt-3 mb-0 py-2 px-3 small">
+                    <span aria-hidden="true">🔒</span>
+                    <span>Esta sección está asignada a otro funcionario. Solo puedes verla — el dictado por voz y la edición están disponibles para quien la tiene asignada.</span>
+                  </div>
+                }
+
+                @if (editable) {
                   <div class="d-flex justify-content-end mt-3 gap-2">
                     @if (guardadoOkSeccionId() === seccion.infoSeccion.id) {
                       <span class="text-success small align-self-center">
@@ -345,7 +353,7 @@
               }
 
               <!-- CU-39 · Dictado por voz solo para secciones activas y rol funcionario -->
-              @if (mostrarAcciones() && esSeccionEditable(seccion.infoSeccion?.estado) && esSeccionDelNodoActual(seccion) && seccion.infoSeccion?.id) {
+              @if (mostrarAcciones() && esSeccionEditable(seccion.infoSeccion?.estado) && esSeccionDelNodoActual(seccion) && esMiSeccion(seccion) && seccion.infoSeccion?.id) {
                 <div class="mt-3 pt-3 border-top">
                   <app-dictar-seccion
                     [seccionId]="seccion.infoSeccion.id"

@@ -170,6 +170,15 @@ export class ExpedienteDigitalComponent {
     return seccion?.infoSeccion?.nodoId === actual;
   }
 
+  /** True si la sección está asignada al funcionario logueado (o no tiene asignado).
+   *  Refleja la regla del backend: solo el funcionario asignado puede editar/dictar
+   *  su sección (clave en flujos en paralelo, donde cada rama tiene su responsable). */
+  esMiSeccion(seccion: any): boolean {
+    const fid = seccion?.infoSeccion?.funcionarioId;
+    if (!fid) return true; // sin asignar: no bloqueamos en el front (decide el backend)
+    return fid === this.authSvc.getUserId();
+  }
+
   esSeccionCompletada(estado: string | undefined): boolean {
     return ['Derivada', 'completada', 'completado'].includes(estado ?? '');
   }
