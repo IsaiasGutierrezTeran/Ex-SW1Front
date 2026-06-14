@@ -24,7 +24,7 @@ export function swimlaneFromX(x: number, swimlanes: readonly string[]): string |
 }
 
 export function laneFill(idx: number): string {
-  return idx % 2 === 0 ? 'rgba(247, 250, 254, 0.85)' : 'rgba(232, 240, 252, 0.55)';
+  return idx % 2 === 0 ? 'rgba(248, 252, 250, 0.85)' : 'rgba(209, 250, 229, 0.45)';
 }
 
 export function snapToGrid(value: number, grid = GRID_SIZE): number {

@@ -1,17 +1,17 @@
 :host {
-  --agente-primary: #4f46e5;
-  --agente-primary-dark: #4338ca;
+  --agente-primary: #047857;
+  --agente-primary-dark: #065f46;
   --agente-bg: #ffffff;
   --agente-text: #0f172a;
   --agente-muted: #64748b;
-  --agente-bubble-user: #4f46e5;
+  --agente-bubble-user: #047857;
   --agente-bubble-bot: #f1f5f9;
 }
 :host-context([data-theme='dark']) {
-  --agente-bg: #0e1426;
-  --agente-text: #e8edf9;
-  --agente-muted: #9aa8c2;
-  --agente-bubble-bot: #141d34;
+  --agente-bg: #0c1a15;
+  --agente-text: #e6f2ec;
+  --agente-muted: #9bb5a9;
+  --agente-bubble-bot: #11241c;
 }
 
 .agente-fab {

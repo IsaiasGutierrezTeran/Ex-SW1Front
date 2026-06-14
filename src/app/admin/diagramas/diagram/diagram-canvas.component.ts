@@ -275,7 +275,7 @@ export class DiagramCanvasComponent {
       highlighting: {
         magnetAdsorbed: {
           name: 'stroke',
-          args: { attrs: { stroke: '#1f6feb', 'stroke-width': 3 } },
+          args: { attrs: { stroke: '#10b981', 'stroke-width': 3 } },
         },
       },
     }) as unknown as AnyGraph;
@@ -495,7 +495,7 @@ export class DiagramCanvasComponent {
       attrs: {
         body: {
           fill: '#ffffff',
-          stroke: '#475569',
+          stroke: '#9fb3a8',
           strokeWidth: 1.5,
           ...lockedAttrs,
         },
@@ -516,7 +516,7 @@ export class DiagramCanvasComponent {
         attrs: {
           body: {
             fill: laneFill(i),
-            stroke: '#94a3b8',
+            stroke: '#bcd0c7',
             strokeWidth: 1,
             ...lockedAttrs,
           },
@@ -535,14 +535,14 @@ export class DiagramCanvasComponent {
         selectable: false,
         attrs: {
           body: {
-            fill: '#fff7d6',
-            stroke: '#475569',
+            fill: '#d1fae5',
+            stroke: '#9fb3a8',
             strokeWidth: 1,
             ...lockedAttrs,
           },
           label: {
             text: name,
-            fill: '#0f172a',
+            fill: '#064e3b',
             fontSize: 13,
             fontWeight: 700,
             fontFamily: 'Inter Variable, Inter, sans-serif',
@@ -631,7 +631,7 @@ export class DiagramCanvasComponent {
             t.tipo === 'condicional'
               ? { line: { stroke: '#f59e0b', strokeDasharray: '6 4' } }
               : t.tipo === 'paralelo'
-                ? { line: { stroke: '#06b6d4', strokeWidth: 2 } }
+                ? { line: { stroke: '#0d9488', strokeWidth: 2 } }
                 : {},
         }) as { id: string };
 

@@ -151,23 +151,23 @@ interface ChatMensaje {
   styles: [
     `
       :host {
-        --ac-grad: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
-        --ac-brand: #4f46e5;
-        --ac-brand-700: #4338ca;
+        --ac-grad: linear-gradient(135deg, #047857 0%, #0d9488 100%);
+        --ac-brand: #047857;
+        --ac-brand-700: #065f46;
         --ac-surface: #ffffff;
-        --ac-body-bg: #f3f6fc;
+        --ac-body-bg: #eef4f1;
         --ac-bot-bg: #ffffff;
-        --ac-bot-border: #e6ebf5;
-        --ac-text: #0c1424;
-        --ac-muted: #5a6b85;
+        --ac-bot-border: #e0eae5;
+        --ac-text: #0c1a15;
+        --ac-muted: #4d6158;
       }
       :host-context([data-theme='dark']) {
-        --ac-surface: #0e1426;
-        --ac-body-bg: #0b1020;
-        --ac-bot-bg: #141d34;
-        --ac-bot-border: #243152;
-        --ac-text: #e8edf9;
-        --ac-muted: #9aa8c2;
+        --ac-surface: #0c1a15;
+        --ac-body-bg: #06120e;
+        --ac-bot-bg: #11241c;
+        --ac-bot-border: #284a3b;
+        --ac-text: #e6f2ec;
+        --ac-muted: #9bb5a9;
       }
 
       .ac-fab {

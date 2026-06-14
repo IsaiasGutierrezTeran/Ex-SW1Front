@@ -45,7 +45,7 @@
 .palette-title {
   font-size: 0.8125rem;
   font-weight: 700;
-  color: #1e3a8a;
+  color: var(--cre-brand-800);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -91,8 +91,8 @@
   align-items: center;
   gap: 0.7rem;
   padding: 0.55rem 0.7rem;
-  background: linear-gradient(180deg, #ffffff 0%, #f9fcff 100%);
-  border: 1px solid #d6e3f5;
+  background: linear-gradient(180deg, var(--cre-surface) 0%, var(--cre-surface-2) 100%);
+  border: 1px solid var(--cre-border);
   border-radius: var(--cre-radius-md);
   cursor: grab;
   text-align: left;
@@ -100,8 +100,8 @@
   white-space: nowrap;
 }
 .palette-item:hover {
-  border-color: #8db2e2;
-  box-shadow: 0 6px 14px rgb(30 64 175 / 0.12);
+  border-color: var(--cre-brand-400);
+  box-shadow: 0 6px 14px rgb(6 78 59 / 0.12);
 }
 .palette-item:active { cursor: grabbing; transform: scale(0.98); }
 
@@ -120,26 +120,36 @@
 }
 .g-circle {
   width: 22px; height: 22px; border-radius: 50%;
-  background: #ffffff; border: 2px solid #111827;
+  background: #ffffff; border: 2px solid #047857;
 }
+/* Inicio — esmeralda lleno */
+.g-circle.g-success {
+  background: #10b981; border: 2px solid #047857;
+  box-shadow: 0 2px 5px rgb(4 120 87 / 0.35);
+}
+/* Fin — anillo teal profundo */
 .g-circle.g-end {
-  background: #111827; border: 2px solid #111827;
-  box-shadow: inset 0 0 0 3px #fff, inset 0 0 0 5px #111827;
+  background: #064e3b; border: 2px solid #064e3b;
+  box-shadow: inset 0 0 0 3px #fff, inset 0 0 0 5px #064e3b;
   background-clip: padding-box;
 }
+/* Actividad — tarjeta clara con acento esmeralda a la izquierda */
 .g-rect {
   width: 26px; height: 16px;
-  background: #fff8c5; border-radius: 4px;
-  border: 1.5px solid #111827;
+  background: #ffffff; border-radius: 5px;
+  border: 1.5px solid #cbd5cf;
 }
+.g-rect.g-brand { border-left: 4px solid #10b981; }
+/* Decisión — diamante ámbar suave */
 .g-diamond {
   width: 18px; height: 18px;
-  background: #fff8c5; border: 1.5px solid #111827;
+  background: #fef3c7; border: 1.5px solid #d97706;
   transform: rotate(45deg);
 }
+/* Fork / Join — barra teal */
 .g-bar {
   width: 26px; height: 4px;
-  background: #111827; border-radius: 2px;
+  background: #0f766e; border-radius: 2px;
 }
 
 .palette-meta { display: flex; flex-direction: column; min-width: 0; }
@@ -211,12 +221,12 @@
   position: relative;
   flex: 1;
   outline: none;
-  background-color: #fbfdff;
+  background-color: #fbfefc;
   background-image:
-    linear-gradient(to right, rgba(37, 99, 235, 0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(37, 99, 235, 0.08) 1px, transparent 1px),
-    linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+    linear-gradient(to right, rgba(16, 185, 129, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(16, 185, 129, 0.07) 1px, transparent 1px),
+    linear-gradient(to right, rgba(6, 59, 46, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(6, 59, 46, 0.05) 1px, transparent 1px);
   background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
   overflow: hidden;
 }
@@ -263,10 +273,10 @@
   right: 14px;
   width: 200px;
   height: 140px;
-  background: linear-gradient(180deg, #ffffff 0%, #f6faff 100%);
-  border: 1px solid #b7c8e6;
+  background: linear-gradient(180deg, #ffffff 0%, #f4f9f6 100%);
+  border: 1px solid var(--cre-border-strong);
   border-radius: var(--cre-radius-md);
-  box-shadow: 0 8px 16px rgb(15 23 42 / 0.14);
+  box-shadow: 0 8px 16px rgb(6 59 46 / 0.14);
   overflow: hidden;
   z-index: 10;
   pointer-events: auto;

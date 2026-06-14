@@ -42,7 +42,7 @@
 .cre-toast.variant-success .cre-toast-icon { color: var(--cre-success-600); }
 .cre-toast.variant-error   .cre-toast-icon { color: var(--cre-danger-600); }
 .cre-toast.variant-warning .cre-toast-icon { color: #b45309; }
-.cre-toast.variant-info    .cre-toast-icon { color: #0e7490; }
+.cre-toast.variant-info    .cre-toast-icon { color: #0f766e; }
 
 .cre-toast-body {
   flex: 1;

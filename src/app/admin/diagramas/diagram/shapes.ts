@@ -1,17 +1,29 @@
 import type { Graph } from '@antv/x6';
 
+/* Paleta UML 2.5 — identidad corporativa esmeralda + teal.
+   Nodos con superficie clara, acento de color por tipo, sombra suave y
+   tipografía clara para una lectura "premium" del diagrama de actividades. */
 const COLORS = {
-  brand:        '#ffffff',
-  brandDark:    '#111827',
-  text:         '#0f172a',
+  // Actividad: tarjeta clara con acento esmeralda
+  brand:        '#ffffff',   // relleno de la tarjeta de actividad
+  brandDark:    '#cbd5cf',   // borde de la tarjeta
+  brandLane:    '#10b981',   // barra de acento lateral (esmeralda)
+  text:         '#0c1a15',   // texto principal
+  textSoft:     '#4d6158',   // texto secundario
   white:        '#ffffff',
-  success:      '#ffffff',
-  successDark:  '#111827',
-  warning:      '#ffffff',
-  warningDark:  '#111827',
-  warningInk:   '#0f172a',
-  ink:          '#0f172a',
-  border:       '#94a3b8',
+  // Inicio: esmeralda "go"
+  success:      '#10b981',
+  successDark:  '#047857',
+  // Decisión: ámbar suave
+  warning:      '#fef3c7',
+  warningDark:  '#d97706',
+  warningInk:   '#7c4a03',
+  // Fin / barras fork-join: teal profundo
+  ink:          '#0f766e',
+  inkDeep:      '#064e3b',
+  // Conectores
+  edge:         '#5b7065',
+  border:       '#cbd5cf',
 };
 
 
@@ -31,13 +43,14 @@ export function registerCreShapes(graph: typeof Graph): void {
         body: {
           fill: COLORS.success,
           stroke: COLORS.successDark,
-          strokeWidth: 2,
+          strokeWidth: 2.5,
+          filter: 'drop-shadow(0 3px 6px rgba(4,120,87,0.30))',
           magnet: true,
         },
         label: {
-          fill: COLORS.text,
+          fill: COLORS.white,
           fontSize: 11,
-          fontWeight: 600,
+          fontWeight: 700,
           fontFamily: 'Inter Variable, Inter, sans-serif',
           textWrap: { width: 50, height: 50, ellipsis: true, breakWord: true },
         },
@@ -62,16 +75,17 @@ export function registerCreShapes(graph: typeof Graph): void {
           cx: 30,
           cy: 30,
           fill: COLORS.white,
-          stroke: COLORS.ink,
-          strokeWidth: 2,
+          stroke: COLORS.inkDeep,
+          strokeWidth: 2.5,
+          filter: 'drop-shadow(0 3px 6px rgba(6,78,59,0.25))',
           magnet: true,
         },
         inner: {
-          r: 20,
+          r: 19,
           cx: 30,
           cy: 30,
-          fill: COLORS.ink,
-          stroke: COLORS.ink,
+          fill: COLORS.inkDeep,
+          stroke: COLORS.inkDeep,
         },
         label: {
           x: 30,
@@ -102,38 +116,38 @@ export function registerCreShapes(graph: typeof Graph): void {
         body: {
           width: 180,
           height: 64,
-          rx: 6,
-          ry: 6,
+          rx: 12,
+          ry: 12,
           fill: COLORS.brand,
           stroke: COLORS.brandDark,
-          strokeWidth: 1.8,
-          filter: 'drop-shadow(0 1px 2px rgba(15,23,42,0.1))',
+          strokeWidth: 1.5,
+          filter: 'drop-shadow(0 4px 10px rgba(6,59,46,0.12))',
           magnet: true,
         },
         lane: {
           x: 0,
           y: 0,
-          width: 2,
+          width: 6,
           height: 64,
-          rx: 2,
-          ry: 2,
-          fill: '#64748b',
+          rx: 3,
+          ry: 3,
+          fill: COLORS.brandLane,
         },
         label: {
-          x: 90,
-          y: 30,
+          x: 95,
+          y: 28,
           textAnchor: 'middle',
           fill: COLORS.text,
           fontSize: 12,
-          fontWeight: 600,
+          fontWeight: 700,
           fontFamily: 'Inter Variable, Inter, sans-serif',
-          textWrap: { width: 160, height: 28, ellipsis: true, breakWord: true },
+          textWrap: { width: 150, height: 28, ellipsis: true, breakWord: true },
         },
         sublabel: {
-          x: 90,
-          y: 50,
+          x: 95,
+          y: 48,
           textAnchor: 'middle',
-          fill: '#475569',
+          fill: COLORS.textSoft,
           fontSize: 10,
           fontFamily: 'Inter Variable, Inter, sans-serif',
         },
@@ -151,16 +165,16 @@ export function registerCreShapes(graph: typeof Graph): void {
       attrs: {
         body: {
           refPoints: '0,0.5 0.5,0 1,0.5 0.5,1',
-          fill: '#fff8c5',
+          fill: COLORS.warning,
           stroke: COLORS.warningDark,
-          strokeWidth: 1.8,
-          filter: 'drop-shadow(0 1px 2px rgba(15,23,42,0.1))',
+          strokeWidth: 2,
+          filter: 'drop-shadow(0 4px 8px rgba(217,119,6,0.18))',
           magnet: true,
         },
         label: {
           fill: COLORS.warningInk,
           fontSize: 11,
-          fontWeight: 600,
+          fontWeight: 700,
           fontFamily: 'Inter Variable, Inter, sans-serif',
           textWrap: { width: 80, height: 50, ellipsis: true, breakWord: true },
         },
@@ -182,10 +196,11 @@ export function registerCreShapes(graph: typeof Graph): void {
         body: {
           width: 140,
           height: 10,
-          rx: 3,
-          ry: 3,
+          rx: 5,
+          ry: 5,
           fill: COLORS.ink,
           stroke: COLORS.ink,
+          filter: 'drop-shadow(0 2px 4px rgba(15,118,110,0.30))',
           magnet: true,
         },
         label: {
@@ -215,10 +230,11 @@ export function registerCreShapes(graph: typeof Graph): void {
         body: {
           width: 140,
           height: 10,
-          rx: 3,
-          ry: 3,
+          rx: 5,
+          ry: 5,
           fill: COLORS.ink,
           stroke: COLORS.ink,
+          filter: 'drop-shadow(0 2px 4px rgba(15,118,110,0.30))',
           magnet: true,
         },
         label: {
@@ -240,17 +256,17 @@ export function registerCreShapes(graph: typeof Graph): void {
     {
       attrs: {
         line: {
-          stroke: '#64748b',
-          strokeWidth: 1.6,
+          stroke: COLORS.edge,
+          strokeWidth: 1.8,
           targetMarker: {
             name: 'block',
-            width: 9,
-            height: 7,
+            width: 10,
+            height: 8,
           },
         },
       },
       router: { name: 'orth' },
-      connector: { name: 'rounded', args: { radius: 6 } },
+      connector: { name: 'rounded', args: { radius: 10 } },
       defaultLabel: {
         markup: [
           { tagName: 'rect', selector: 'body' },
@@ -271,8 +287,8 @@ export function registerCreShapes(graph: typeof Graph): void {
             fill: COLORS.white,
             stroke: COLORS.border,
             strokeWidth: 1,
-            rx: 6,
-            ry: 6,
+            rx: 8,
+            ry: 8,
             refWidth: '120%',
             refHeight: '140%',
             refX: '-10%',
