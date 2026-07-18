@@ -4,9 +4,11 @@ import { DocumentoService } from '../../core/services/documento.service';
 import { Documento } from '../../core/models/documento.model';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-documentos',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, PageHeaderComponent],
   templateUrl: './documentos.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,10 +1,12 @@
 @if (tramite(); as data) {
   <section class="container py-4">
-    <div class="d-flex align-items-center gap-3 mb-4">
-      <a routerLink="/funcionario/bandeja" class="btn btn-sm btn-outline-secondary">Volver</a>
-      <h1 class="h4 mb-0 page-title">Tramite: <code>{{ data.codigo }}</code></h1>
-      <span [class]="'badge ' + getEstadoBadgeClass(data.estado)">{{ data.estado }}</span>
-    </div>
+    <app-page-header
+      [title]="'Trámite ' + data.codigo"
+      [breadcrumbs]="[{ label: 'Trabajo' }, { label: 'Bandeja', link: '/funcionario/bandeja' }, { label: data.codigo }]"
+    >
+      <span actions [class]="'badge ' + getEstadoBadgeClass(data.estado)">{{ data.estado }}</span>
+      <a actions routerLink="/funcionario/bandeja" class="btn btn-sm btn-outline-secondary">Volver</a>
+    </app-page-header>
 
     @if (exito()) {
       <div class="alert alert-success" role="alert">{{ exito() }}</div>

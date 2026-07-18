@@ -482,3 +482,35 @@ Application bundle generation complete. [0.596 seconds] - 2026-06-12T06:58:46.68
 
 Page reload sent to client(s).
 [33m❯[39m Changes detected. Rebuilding...
+[32m✔[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m                        [2m | [22m [1mRaw size[22m
+[32mstyles.css[39m         [2m | [22m[2mstyles[22m                       [2m | [22m[36m330.62 kB[39m[2m | [22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m                         [2m | [22m[36m122.78 kB[39m[2m | [22m
+[32mchunk-TZDDJ2EC.js[39m  [2m | [22m[2m-[22m                            [2m | [22m [36m11.07 kB[39m[2m | [22m
+[32mchunk-PEVLVGGD.js[39m  [2m | [22m[2m-[22m                            [2m | [22m  [36m3.28 kB[39m[2m | [22m
+[32mchunk-ONDHXVXJ.js[39m  [2m | [22m[2m-[22m                            [2m | [22m  [36m1.87 kB[39m[2m | [22m
+[32mchunk-VUJOFXKG.js[39m  [2m | [22m[2m-[22m                            [2m | [22m[36m938 bytes[39m[2m | [22m
+[32mchunk-J6K2LOW6.js[39m  [2m | [22m[2m-[22m                            [2m | [22m[36m201 bytes[39m[2m | [22m
+
+[1m [22m                  [2m | [22m[1mInitial total[22m                [2m | [22m[1m470.76 kB[22m
+
+[1mLazy chunk files[22m   [2m | [22m[1mNames[22m                        [2m | [22m [1mRaw size[22m
+[32mchunk-PM7ZFC25.js[39m  [2m | [22m[2mdiagrama-editor-component[22m    [2m | [22m[36m375.86 kB[39m[2m | [22m
+[32mchunk-ZEIZ6GE7.js[39m  [2m | [22m[2mexpediente-digital-component[22m [2m | [22m[36m208.31 kB[39m[2m | [22m
+[32mchunk-NUSX6LEE.js[39m  [2m | [22m[2mactividades-component[22m        [2m | [22m [36m53.76 kB[39m[2m | [22m
+[32mchunk-H7SNNUQM.js[39m  [2m | [22m[2mreportes-naturales-component[22m [2m | [22m [36m34.86 kB[39m[2m | [22m
+[32mchunk-NEKWHX5C.js[39m  [2m | [22m[2mauditoria-documento-component[22m[2m | [22m [36m34.15 kB[39m[2m | [22m
+[32mchunk-HLETCJ4W.js[39m  [2m | [22m[2mtramite-detalle-component[22m    [2m | [22m [36m32.69 kB[39m[2m | [22m
+[32mchunk-RKGN3OYW.js[39m  [2m | [22m[2mpoliticas-lista-component[22m    [2m | [22m [36m30.09 kB[39m[2m | [22m
+[32mchunk-3WH2K7H2.js[39m  [2m | [22m[2msugerir-politica-component[22m   [2m | [22m [36m29.74 kB[39m[2m | [22m
+[32mchunk-P76CEKYR.js[39m  [2m | [22m[2mbandeja-entrada-component[22m    [2m | [22m [36m29.39 kB[39m[2m | [22m
+[32mchunk-Z6GREAXY.js[39m  [2m | [22m[2mlogin-component[22m              [2m | [22m [36m28.09 kB[39m[2m | [22m
+[32mchunk-WSSXEOE3.js[39m  [2m | [22m[2m-[22m                            [2m | [22m [36m27.93 kB[39m[2m | [22m
+[32mchunk-PUEMXHUP.js[39m  [2m | [22m[2mperfil-component[22m             [2m | [22m [36m26.98 kB[39m[2m | [22m
+[32mchunk-J2TBNCGL.js[39m  [2m | [22m[2mhistorial-tramites-component[22m [2m | [22m [36m26.88 kB[39m[2m | [22m
+[32mchunk-WCACFU7B.js[39m  [2m | [22m[2manomalias-component[22m          [2m | [22m [36m25.71 kB[39m[2m | [22m
+[32mchunk-MYIH3YFB.js[39m  [2m | [22m[2mdashboard-metricas-component[22m [2m | [22m [36m22.34 kB[39m[2m | [22m
+[2m...and 24 more lazy chunks files. Use "--verbose" to show all the files.[22m
+
+Application bundle generation complete. [1.586 seconds] - 2026-06-12T07:02:59.597Z
+

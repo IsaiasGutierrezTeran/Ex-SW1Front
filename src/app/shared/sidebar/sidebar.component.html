@@ -1,129 +1,126 @@
-<header class="topnav" (click)="$event.stopPropagation()" aria-label="Navegación principal">
-  <div class="topnav-inner">
+<!-- ==========================================================================
+     DASHBOARD SHELL — topbar fina full-width + sidebar único con grupos.
+     El host es display:contents, así que estos elementos fijos se posicionan
+     respecto al viewport. Desktop: topbar arriba + sidebar a la izquierda.
+     Móvil (<992px): topbar con hamburguesa + sidebar como drawer deslizante.
+     ========================================================================== -->
 
-    <a class="topnav-brand" [routerLink]="brandLink()" (click)="onNavigate()">
-      <span class="brand-mark" aria-hidden="true">
-        <lucide-icon [img]="icons.brand" [size]="20"></lucide-icon>
-      </span>
-      <span class="brand-text">
-        <span class="brand-title">MOTOR</span>
-        <span class="brand-subtitle">Gestión de Trámites</span>
-      </span>
-    </a>
+<!-- ===== Topbar global ===== -->
+<header class="dash-topbar" (click)="$event.stopPropagation()">
+  <button
+    type="button"
+    class="dash-burger"
+    [class.open]="mobileOpen()"
+    (click)="toggleMobile()"
+    [attr.aria-expanded]="mobileOpen()"
+    aria-label="Abrir menú de navegación"
+  >
+    <lucide-icon [img]="mobileOpen() ? icons.close : icons.menu" [size]="20"></lucide-icon>
+  </button>
 
-    <button
-      type="button"
-      class="topnav-burger"
-      [class.open]="mobileOpen()"
-      (click)="toggleMobile()"
-      [attr.aria-expanded]="mobileOpen()"
-      aria-label="Abrir menú"
-    >
-      <span></span><span></span><span></span>
-    </button>
+  <a class="dash-brand" [routerLink]="brandLink()" (click)="onNavigate()">
+    <span class="dash-brand-mark" aria-hidden="true">
+      <lucide-icon [img]="icons.brand" [size]="18"></lucide-icon>
+    </span>
+    <span class="dash-brand-title">MOTOR</span>
+  </a>
 
-    <nav class="topnav-menu" [class.open]="mobileOpen()">
+  <div class="dash-topbar-spacer"></div>
 
-      @if (role() === 'admin') {
-        <a routerLink="/admin/dashboard" routerLinkActive="active" class="topnav-link" (click)="onNavigate()">
-          <lucide-icon [img]="icons.dashboard" [size]="17"></lucide-icon>
-          <span>Dashboard</span>
-        </a>
+  <a
+    class="dash-icon-btn"
+    routerLink="/notificaciones"
+    (click)="onNavigate()"
+    aria-label="Notificaciones"
+    title="Notificaciones"
+  >
+    <lucide-icon [img]="icons.campana" [size]="19"></lucide-icon>
+    @if (notif.noLeidas() > 0) {
+      <span class="dash-badge dot">{{ notif.noLeidas() }}</span>
+    }
+  </a>
 
-        @for (m of menuGroups; track m.key) {
-          <div class="topnav-dd" [class.open]="openMenu() === m.key">
-            <button type="button" class="topnav-link topnav-dd-toggle" (click)="toggleMenu(m.key, $event)">
-              <lucide-icon [img]="m.group.icon" [size]="17"></lucide-icon>
-              <span>{{ m.group.label }}</span>
-              <lucide-icon class="caret" [class.rotated]="openMenu() === m.key" [img]="icons.chevronDown" [size]="14"></lucide-icon>
-            </button>
-            <div class="topnav-dd-panel">
-              @for (item of m.group.items; track item.link) {
-                <a [routerLink]="item.link" routerLinkActive="active" class="topnav-dd-item" (click)="onNavigate()">
-                  <lucide-icon [img]="item.icon" [size]="16"></lucide-icon>
-                  <span>{{ item.label }}</span>
-                </a>
-              }
-            </div>
-          </div>
-        }
+  <button
+    type="button"
+    class="dash-icon-btn"
+    (click)="theme.toggle()"
+    [attr.aria-label]="theme.mode() === 'dark' ? 'Modo claro' : 'Modo oscuro'"
+    [title]="theme.mode() === 'dark' ? 'Modo claro' : 'Modo oscuro'"
+  >
+    <lucide-icon [img]="theme.mode() === 'dark' ? icons.sun : icons.moon" [size]="19"></lucide-icon>
+  </button>
 
-        <a routerLink="/notificaciones" routerLinkActive="active" class="topnav-link" (click)="onNavigate()">
-          <lucide-icon [img]="icons.campana" [size]="17"></lucide-icon>
-          <span>Notificaciones</span>
-          @if (notif.noLeidas() > 0) {
-            <span class="topnav-badge">{{ notif.noLeidas() }}</span>
+  @if (auth.getUsuario(); as u) {
+    <div class="dash-user-dd" [class.open]="openMenu() === 'user'">
+      <button type="button" class="dash-user-btn" (click)="toggleUserMenu($event)" [title]="u.nombre" aria-label="Cuenta">
+        <span class="dash-avatar" aria-hidden="true">
+          @if (usuarioSvc.fotoUrl(); as f) {
+            <img [src]="f" alt="" />
+          } @else {
+            {{ u.nombre.charAt(0) }}
           }
-        </a>
-      }
-
-      @if (role() === 'funcionario') {
-        <a routerLink="/funcionario/bandeja" routerLinkActive="active" class="topnav-link" (click)="onNavigate()">
-          <lucide-icon [img]="icons.bandeja" [size]="17"></lucide-icon>
-          <span>Bandeja de Entrada</span>
-        </a>
-        <a routerLink="/notificaciones" routerLinkActive="active" class="topnav-link" (click)="onNavigate()">
-          <lucide-icon [img]="icons.campana" [size]="17"></lucide-icon>
-          <span>Notificaciones</span>
-          @if (notif.noLeidas() > 0) {
-            <span class="topnav-badge">{{ notif.noLeidas() }}</span>
-          }
-        </a>
-        <a routerLink="/funcionario/diagramas/compartidos" routerLinkActive="active" class="topnav-link" (click)="onNavigate()">
-          <lucide-icon [img]="icons.compartidos" [size]="17"></lucide-icon>
-          <span>Compartidos conmigo</span>
-        </a>
-      }
-    </nav>
-
-    <div class="topnav-right">
-      <button
-        type="button"
-        class="topnav-icon-btn"
-        (click)="theme.toggle()"
-        [title]="theme.mode() === 'dark' ? 'Modo claro' : 'Modo oscuro'"
-        aria-label="Cambiar tema"
-      >
-        <lucide-icon [img]="theme.mode() === 'dark' ? icons.sun : icons.moon" [size]="18"></lucide-icon>
+        </span>
+        <span class="dash-user-meta">
+          <span class="dash-user-name">{{ u.nombre }}</span>
+          <span class="dash-user-role">{{ u.rol }}</span>
+        </span>
+        <lucide-icon class="dash-user-caret" [img]="icons.chevronDown" [size]="15"></lucide-icon>
       </button>
-
-      @if (auth.getUsuario(); as u) {
-        <div class="topnav-dd topnav-user" [class.open]="openMenu() === 'user'">
-          <button type="button" class="topnav-user-btn" (click)="toggleMenu('user', $event)">
-            <span class="user-avatar" aria-hidden="true">
-              @if (usuarioSvc.fotoUrl(); as f) {
-                <img [src]="f" alt="" />
-              } @else {
-                {{ u.nombre.charAt(0) }}
-              }
-            </span>
-            <span class="user-meta">
-              <span class="user-name">{{ u.nombre }}</span>
-              <span class="user-role">{{ u.rol }}</span>
-            </span>
-            <lucide-icon class="caret" [class.rotated]="openMenu() === 'user'" [img]="icons.chevronDown" [size]="14"></lucide-icon>
-          </button>
-          <div class="topnav-dd-panel topnav-dd-panel-right">
-            <a routerLink="/perfil" class="topnav-dd-item" (click)="onNavigate()">
-              <lucide-icon [img]="icons.perfil" [size]="16"></lucide-icon>
-              <span>Mi perfil</span>
-            </a>
-            <button type="button" class="topnav-dd-item" (click)="theme.toggle()">
-              <lucide-icon [img]="theme.mode() === 'dark' ? icons.sun : icons.moon" [size]="16"></lucide-icon>
-              <span>{{ theme.mode() === 'dark' ? 'Modo claro' : 'Modo oscuro' }}</span>
-            </button>
-            <a routerLink="/notificaciones" class="topnav-dd-item" (click)="onNavigate()">
-              <lucide-icon [img]="icons.campana" [size]="16"></lucide-icon>
-              <span>Notificaciones</span>
-            </a>
-            <div class="topnav-dd-sep"></div>
-            <button type="button" class="topnav-dd-item danger" (click)="auth.logout()">
-              <lucide-icon [img]="icons.logout" [size]="16"></lucide-icon>
-              <span>Cerrar sesión</span>
-            </button>
-          </div>
+      <div class="dash-user-panel">
+        <div class="dash-user-head">
+          <span class="dash-user-name">{{ u.nombre }}</span>
+          <span class="dash-user-role">{{ u.rol }}</span>
         </div>
-      }
+        <a routerLink="/perfil" class="dash-user-item" (click)="onNavigate()">
+          <lucide-icon [img]="icons.perfil" [size]="16"></lucide-icon>
+          <span>Mi perfil</span>
+        </a>
+        <a routerLink="/notificaciones" class="dash-user-item" (click)="onNavigate()">
+          <lucide-icon [img]="icons.campana" [size]="16"></lucide-icon>
+          <span>Notificaciones</span>
+          @if (notif.noLeidas() > 0) {
+            <span class="dash-badge">{{ notif.noLeidas() }}</span>
+          }
+        </a>
+        <div class="dash-user-sep"></div>
+        <button type="button" class="dash-user-item danger" (click)="auth.logout()">
+          <lucide-icon [img]="icons.logout" [size]="16"></lucide-icon>
+          <span>Cerrar sesión</span>
+        </button>
+      </div>
     </div>
-  </div>
+  }
 </header>
+
+<!-- Backdrop del drawer móvil -->
+<div class="dash-backdrop" [class.show]="mobileOpen()" (click)="toggleMobile()" aria-hidden="true"></div>
+
+<!-- ===== Sidebar de navegación (un solo panel, grupos) ===== -->
+<aside
+  class="dash-side"
+  [class.mobile-open]="mobileOpen()"
+  (click)="$event.stopPropagation()"
+  aria-label="Navegación principal"
+>
+  <nav class="dash-nav">
+    @for (s of sections(); track s.key) {
+      <div class="dash-group">
+        <span class="dash-group-label">{{ s.label }}</span>
+        @for (item of s.items; track item.link) {
+          <a
+            [routerLink]="item.link"
+            routerLinkActive="active"
+            class="dash-navlink"
+            (click)="onNavigate()"
+          >
+            <lucide-icon class="dash-navlink-icon" [img]="item.icon" [size]="18"></lucide-icon>
+            <span class="dash-navlink-label">{{ item.label }}</span>
+            @if (item.badge && notif.noLeidas() > 0) {
+              <span class="dash-badge">{{ notif.noLeidas() }}</span>
+            }
+          </a>
+        }
+      </div>
+    }
+  </nav>
+</aside>

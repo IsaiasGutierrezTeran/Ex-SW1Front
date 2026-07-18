@@ -6,9 +6,11 @@ import { DiagramaWorkflow } from '../../core/models/diagrama.model';
 import { Politica } from '../../core/models/politica.model';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-diagramas-lista',
-  imports: [RouterLink],
+  imports: [RouterLink, PageHeaderComponent],
   templateUrl: './diagramas-lista.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

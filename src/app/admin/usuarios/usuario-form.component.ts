@@ -7,9 +7,11 @@ import { Departamento } from '../../core/models/departamento.model';
 import { UsuarioCreateRequest, UsuarioUpdateRequest } from '../../core/models/usuario.model';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-usuario-form',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, PageHeaderComponent],
   templateUrl: './usuario-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

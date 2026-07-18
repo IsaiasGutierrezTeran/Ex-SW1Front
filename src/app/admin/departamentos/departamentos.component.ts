@@ -4,9 +4,11 @@ import { DepartamentoService } from '../../core/services/departamento.service';
 import { Departamento, DepartamentoRequest } from '../../core/models/departamento.model';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-departamentos',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, PageHeaderComponent],
   templateUrl: './departamentos.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

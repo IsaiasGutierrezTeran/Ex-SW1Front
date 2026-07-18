@@ -3,9 +3,11 @@ import { RouterLink } from '@angular/router';
 import { ReportesService } from '../../core/services/reportes.service';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-historial-tramites',
-  imports: [RouterLink],
+  imports: [RouterLink, PageHeaderComponent],
   templateUrl: './historial-tramites.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

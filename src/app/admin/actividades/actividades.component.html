@@ -1,5 +1,5 @@
 <section class="container-fluid py-4">
-  <h1 class="h4 mb-4 page-title">Actividades del Sistema</h1>
+  <app-page-header title="Actividades del Sistema" [breadcrumbs]="[{ label: 'Gestión' }, { label: 'Actividades' }]"></app-page-header>
 
   @if (exito()) {
     <div class="alert alert-success" role="alert">{{ exito() }}</div>

@@ -14,9 +14,11 @@ import { DictarSeccionComponent } from '../../shared/dictar-seccion/dictar-secci
 import { DictarFormularioResponse } from '../../core/models/dictado-formulario.model';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-expediente-digital',
-  imports: [RouterLink, DatePipe, DictarSeccionComponent],
+  imports: [RouterLink, DatePipe, DictarSeccionComponent, PageHeaderComponent],
   templateUrl: './expediente-digital.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

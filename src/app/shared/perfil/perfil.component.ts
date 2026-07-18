@@ -3,16 +3,18 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsuarioService } from '../../core/services/usuario.service';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
+import { PageHeaderComponent } from '../ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-perfil',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, PageHeaderComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="container-fluid py-4">
-      <div class="mb-4">
-        <h1 class="h4 mb-0 page-title">Mi Perfil</h1>
-        <p class="text-muted small mb-0">Administra tu información personal, foto y contraseña.</p>
-      </div>
+      <app-page-header
+        title="Mi Perfil"
+        subtitle="Administra tu información personal, foto y contraseña."
+      ></app-page-header>
 
       <div class="row g-4">
         <!-- Avatar + identidad -->

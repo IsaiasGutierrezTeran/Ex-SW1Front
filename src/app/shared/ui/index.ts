@@ -2,6 +2,8 @@ export { CardComponent } from './card/card.component';
 export { StatusBadgeComponent } from './status-badge/status-badge.component';
 export type { StatusVariant } from './status-badge/status-badge.component';
 export { EmptyStateComponent } from './empty-state/empty-state.component';
+export { PageHeaderComponent } from './page-header/page-header.component';
+export type { Breadcrumb } from './page-header/page-header.component';
 export { InputComponent } from './input/input.component';
 export { ModalComponent } from './modal/modal.component';
 export { TableComponent } from './table/table.component';

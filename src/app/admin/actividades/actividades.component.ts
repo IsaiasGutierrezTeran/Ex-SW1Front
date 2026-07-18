@@ -17,9 +17,11 @@ interface FuncionarioOption {
   departamentosIds?: string[];
 }
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-actividades',
-  imports: [ReactiveFormsModule, PermisoDocumentalModalComponent],
+  imports: [ReactiveFormsModule, PermisoDocumentalModalComponent, PageHeaderComponent],
   templateUrl: './actividades.component.html',
   styleUrl: './actividades.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

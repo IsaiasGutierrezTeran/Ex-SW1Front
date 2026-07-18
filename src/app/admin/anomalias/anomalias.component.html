@@ -1,34 +1,32 @@
 <section class="container-fluid py-4">
-  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-    <div>
-      <h1 class="h4 mb-0 page-title">Anomalías detectadas por IA</h1>
-      <p class="text-muted small mb-0">
-        Trámites que se desvían del flujo normal según el motor de detección.
-      </p>
-    </div>
-    <div class="d-flex gap-2">
-      <button
-        class="btn btn-sm btn-outline-secondary"
-        type="button"
-        (click)="cargar()"
-        title="Solo recarga la lista de anomalías ya detectadas (no vuelve a analizar)."
-      >
-        Refrescar lista
-      </button>
-      <button
-        class="btn btn-sm btn-primary"
-        type="button"
-        [disabled]="detectando()"
-        (click)="detectar()"
-        title="Ejecuta el motor de detección (IA) sobre los trámites AHORA y agrega las nuevas anomalías que encuentre."
-      >
-        @if (detectando()) {
-          <span class="spinner-border spinner-border-sm me-2"></span>
-        }
-        Detectar ahora
-      </button>
-    </div>
-  </div>
+  <app-page-header
+    title="Anomalías detectadas por IA"
+    subtitle="Trámites que se desvían del flujo normal según el motor de detección."
+    [breadcrumbs]="[{ label: 'Análisis' }, { label: 'Anomalías IA' }]"
+  >
+    <button
+      actions
+      class="btn btn-sm btn-outline-secondary"
+      type="button"
+      (click)="cargar()"
+      title="Solo recarga la lista de anomalías ya detectadas (no vuelve a analizar)."
+    >
+      Refrescar lista
+    </button>
+    <button
+      actions
+      class="btn btn-sm btn-primary"
+      type="button"
+      [disabled]="detectando()"
+      (click)="detectar()"
+      title="Ejecuta el motor de detección (IA) sobre los trámites AHORA y agrega las nuevas anomalías que encuentre."
+    >
+      @if (detectando()) {
+        <span class="spinner-border spinner-border-sm me-2"></span>
+      }
+      Detectar ahora
+    </button>
+  </app-page-header>
   <p class="text-muted small mb-3">
     <strong>Refrescar lista</strong> solo recarga lo ya detectado; <strong>Detectar ahora</strong> vuelve a analizar los trámites con la IA y puede agregar nuevas anomalías.
   </p>

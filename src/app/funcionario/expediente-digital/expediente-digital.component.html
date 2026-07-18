@@ -16,15 +16,14 @@
   <section class="container-fluid py-4">
 
     <!-- Encabezado -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <div>
-        <h1 class="h4 mb-0 page-title">Expediente Digital</h1>
-        <span class="text-muted small">Trámite ID: {{ exp.expediente?.tramiteId ?? tramiteId }}</span>
-      </div>
-      <a [routerLink]="volverUrl()" class="btn btn-sm btn-outline-secondary">
+    <app-page-header
+      title="Expediente Digital"
+      [subtitle]="'Trámite ID: ' + (exp.expediente?.tramiteId ?? tramiteId)"
+    >
+      <a actions [routerLink]="volverUrl()" class="btn btn-sm btn-outline-secondary">
         Volver
       </a>
-    </div>
+    </app-page-header>
 
     @if (error()) {
       <div class="alert alert-danger mb-3">{{ error() }}</div>

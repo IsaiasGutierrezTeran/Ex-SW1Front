@@ -6,9 +6,11 @@ import { WorkflowService } from '../../core/services/workflow.service';
 import { CompletarNodoRequest, TramiteDetalle } from '../../core/models/tramite.model';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-tramite-detalle',
-  imports: [RouterLink, ReactiveFormsModule, DatePipe],
+  imports: [RouterLink, ReactiveFormsModule, DatePipe, PageHeaderComponent],
   templateUrl: './tramite-detalle.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

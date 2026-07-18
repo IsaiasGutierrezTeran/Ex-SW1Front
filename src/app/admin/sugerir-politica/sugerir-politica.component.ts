@@ -7,9 +7,11 @@ import {
 } from '../../core/models/sugerencia-politica.model';
 import { IaService } from '../../core/services/ia.service';
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-sugerir-politica',
-  imports: [DecimalPipe, FormsModule],
+  imports: [DecimalPipe, FormsModule, PageHeaderComponent],
   templateUrl: './sugerir-politica.component.html',
   styleUrl: './sugerir-politica.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

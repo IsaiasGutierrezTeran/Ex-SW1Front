@@ -1,11 +1,11 @@
 <section class="container-fluid py-4">
   <!-- Cabecera con título + contador de riesgo + acciones -->
-  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-    <div>
-      <h1 class="h4 mb-0 page-title">Bandeja de Entrada</h1>
-      <p class="text-muted small mb-0">Trámites pendientes de su revisión según el Workflow.</p>
-    </div>
-    <div class="d-flex align-items-center gap-3 flex-wrap">
+  <app-page-header
+    title="Bandeja de Entrada"
+    subtitle="Trámites pendientes de su revisión según el Workflow."
+    [breadcrumbs]="[{ label: 'Trabajo' }, { label: 'Bandeja' }]"
+  >
+    <div actions class="d-flex align-items-center gap-3 flex-wrap">
       @if (riesgoDisponible() && contadorAltos() > 0) {
         <div class="alert alert-danger py-1 px-3 mb-0 small">
           <strong>{{ contadorAltos() }}</strong>
@@ -41,7 +41,7 @@
         Actualizar
       </button>
     </div>
-  </div>
+  </app-page-header>
 
   @if (avisoIa()) {
     <div class="alert alert-warning small py-2">{{ avisoIa() }}</div>

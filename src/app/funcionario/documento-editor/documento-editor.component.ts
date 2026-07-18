@@ -24,9 +24,11 @@ interface Participante {
   cursorPos?: number;
 }
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-documento-editor',
-  imports: [RouterLink],
+  imports: [RouterLink, PageHeaderComponent],
   templateUrl: './documento-editor.component.html',
   styleUrl: './documento-editor.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

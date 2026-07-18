@@ -1,135 +1,141 @@
 /* ==========================================================================
    NEXUS — Sistema de diseño global  ·  Identidad corporativa
-   - Identidad: Verde esmeralda + Teal (crecimiento / eficiencia / confianza).
+   - Identidad: Editorial cálido / lujo — crema + grafito, ámbar dorado y
+     terracota. Serif de alto contraste (Fraunces) en títulos, Inter en texto.
+     Esquinas casi rectas, sombras suaves difusas. Boutique / editorial.
    - Tailwind v4 (@theme) define las utilidades.
    - CSS variables manejan light/dark mode (data-theme="dark" en <html>).
-   - Minimalista, dinámico, profesional. Solo cambia la CAPA VISUAL:
-     todas las clases (.cre-card, .cre-btn, etc.) y tokens conservan su nombre,
-     así ninguna pantalla/lógica se rompe.
+   - Solo cambia la CAPA VISUAL: todas las clases (.cre-card, .cre-btn, etc.)
+     y tokens conservan su nombre, así ninguna pantalla/lógica se rompe.
    ========================================================================== */
 
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import 'tailwindcss';
 @import '@fontsource-variable/inter/index.css';
-@import '@fontsource-variable/plus-jakarta-sans/index.css';
+@import '@fontsource-variable/fraunces/index.css';
 
 /* --------------------------------------------------------------------------
    Design tokens (light)
    -------------------------------------------------------------------------- */
 :root {
-  /* Brand — verde esmeralda (la "marca" corporativa) */
-  --cre-brand-50: #ecfdf5;
-  --cre-brand-100: #d1fae5;
-  --cre-brand-200: #a7f3d0;
-  --cre-brand-300: #6ee7b7;
-  --cre-brand-400: #34d399;
-  --cre-brand-500: #10b981;
-  --cre-brand-600: #059669;
-  --cre-brand-700: #047857;
-  --cre-brand-800: #065f46;
-  --cre-brand-900: #064e3b;
+  /* Brand — ámbar dorado (la "marca" corporativa) */
+  --cre-brand-50: #fbf3e7;
+  --cre-brand-100: #f5e3c6;
+  --cre-brand-200: #ecc891;
+  --cre-brand-300: #e0a856;
+  --cre-brand-400: #d38d33;
+  --cre-brand-500: #bd7620;
+  --cre-brand-600: #9d5c18;
+  --cre-brand-700: #7e4917;
+  --cre-brand-800: #613917;
+  --cre-brand-900: #472b14;
 
-  /* Acento — teal (conservamos los nombres --cre-energy-* para no tocar
+  /* Acento — terracota (conservamos los nombres --cre-energy-* para no tocar
      componentes que ya los usan). */
-  --cre-energy-50: #f0fdfa;
-  --cre-energy-100: #ccfbf1;
-  --cre-energy-300: #5eead4;
-  --cre-energy-500: #14b8a6;
-  --cre-energy-600: #0d9488;
-  --cre-energy-700: #0f766e;
+  --cre-energy-50: #fbefe9;
+  --cre-energy-100: #f5dccf;
+  --cre-energy-300: #e2a382;
+  --cre-energy-500: #c1512d;
+  --cre-energy-600: #a33f23;
+  --cre-energy-700: #83321d;
 
   /* Alias de compatibilidad: componentes que referencian --cre-primary */
-  --cre-primary: #047857;
+  --cre-primary: #7e4917;
 
   /* Alias semántico del acento (uso libre, additivo) */
-  --cre-accent-400: #2dd4bf;
-  --cre-accent-500: #14b8a6;
-  --cre-accent-600: #0d9488;
+  --cre-accent-400: #d1673c;
+  --cre-accent-500: #c1512d;
+  --cre-accent-600: #a33f23;
 
-  /* Gradiente de marca: esmeralda → teal */
-  --cre-gradient-brand: linear-gradient(135deg, #047857 0%, #0d9488 100%);
-  --cre-gradient-brand-soft: linear-gradient(135deg, #059669 0%, #14b8a6 100%);
+  /* Gradiente de marca: ámbar → terracota */
+  --cre-gradient-brand: linear-gradient(135deg, #9d5c18 0%, #a33f23 100%);
+  --cre-gradient-brand-soft: linear-gradient(135deg, #bd7620 0%, #c1512d 100%);
 
-  /* Semánticos */
-  --cre-success-500: #16a34a;
-  --cre-success-600: #15803d;
-  --cre-warning-500: #f59e0b;
-  --cre-danger-500: #f43f5e;
-  --cre-danger-600: #e11d48;
-  --cre-info-500: #0d9488;
+  /* Semánticos — recalibrados a la paleta cálida */
+  --cre-success-500: #4f8a3d;
+  --cre-success-600: #3d6e2d;
+  --cre-warning-500: #d19a10;
+  --cre-danger-500: #bb2f39;
+  --cre-danger-600: #99232f;
+  --cre-info-500: #3a6f8f;
 
-  /* Superficie y texto — neutros con leve tinte verde */
-  --cre-bg: #eef4f1;
-  --cre-bg-elev: #ffffff;
-  --cre-bg-muted: #e6efea;
-  --cre-surface: #ffffff;
-  --cre-surface-2: #f4f9f6;
-  --cre-border: #e0eae5;
-  --cre-border-strong: #cad9d1;
-  --cre-text: #0c1a15;
-  --cre-text-muted: #4d6158;
-  --cre-text-subtle: #8ba298;
-  --cre-text-inverse: #ffffff;
+  /* Superficie y texto — crema / marfil sobre grafito cálido */
+  --cre-bg: #f5efe4;
+  --cre-bg-elev: #fffdf8;
+  --cre-bg-muted: #ede4d5;
+  --cre-surface: #fffdf8;
+  --cre-surface-2: #f8f1e5;
+  --cre-border: #e7ddca;
+  --cre-border-strong: #d4c6ac;
+  --cre-text: #26201a;
+  --cre-text-muted: #6e604f;
+  --cre-text-subtle: #9d8c76;
+  --cre-text-inverse: #fffdf8;
 
-  /* Sombras — suaves, en capas (tinte verde profundo) */
-  --cre-shadow-sm: 0 1px 2px 0 rgb(6 59 46 / 0.05);
-  --cre-shadow-md: 0 6px 16px -6px rgb(6 59 46 / 0.12), 0 2px 6px -2px rgb(6 59 46 / 0.07);
-  --cre-shadow-lg: 0 18px 40px -12px rgb(6 59 46 / 0.18), 0 6px 14px -6px rgb(6 59 46 / 0.10);
-  --cre-shadow-glow: 0 0 0 4px rgb(16 185 129 / 0.16);
-  --cre-shadow-signal: 0 10px 30px -8px rgb(5 150 105 / 0.45);
+  /* Sombras — suaves, difusas, en capas (tinte marrón cálido) */
+  --cre-shadow-sm: 0 1px 2px 0 rgb(74 48 22 / 0.06);
+  --cre-shadow-md: 0 10px 26px -12px rgb(74 48 22 / 0.15), 0 3px 8px -4px rgb(74 48 22 / 0.08);
+  --cre-shadow-lg: 0 26px 52px -18px rgb(74 48 22 / 0.22), 0 8px 20px -10px rgb(74 48 22 / 0.12);
+  --cre-shadow-glow: 0 0 0 4px rgb(189 118 32 / 0.20);
+  --cre-shadow-signal: 0 14px 34px -12px rgb(157 92 24 / 0.42);
 
-  /* Radio y espaciado — estilo iOS (muy redondeado, suave) */
-  --cre-radius-sm: 10px;
-  --cre-radius-md: 14px;
-  --cre-radius-lg: 20px;
-  --cre-radius-xl: 28px;
+  /* Radio y espaciado — editorial (esquinas casi rectas) */
+  --cre-radius-sm: 4px;
+  --cre-radius-md: 7px;
+  --cre-radius-lg: 11px;
+  --cre-radius-xl: 16px;
 
-  /* Layout */
-  --cre-sidebar-w: 256px;
+  /* Layout — shell dashboard (topbar fina full-width + sidebar único) */
+  --cre-sidebar-w: 250px;
+  --cre-topbar-h: 60px;
+  --cre-content-max: 1360px;
+  /* Compatibilidad: tokens del layout anterior (por si algún estilo los usa) */
   --cre-sidebar-w-collapsed: 76px;
-  --cre-topbar-h: 66px;
+  --cre-rail-w: 68px;
+  --cre-subnav-w: 232px;
 
   /* Bootstrap remap (pantallas aún en Bootstrap: login, inputs del chat) */
-  --bs-primary: #047857;
-  --bs-primary-rgb: 4, 120, 87;
-  --bs-link-color: #047857;
-  --bs-link-color-rgb: 4, 120, 87;
-  --bs-link-hover-color: #065f46;
+  --bs-primary: #7e4917;
+  --bs-primary-rgb: 126, 73, 23;
+  --bs-link-color: #7e4917;
+  --bs-link-color-rgb: 126, 73, 23;
+  --bs-link-hover-color: #613917;
   --bs-body-color: var(--cre-text);
-  --bs-body-color-rgb: 12, 26, 21;
+  --bs-body-color-rgb: 38, 32, 26;
   --bs-emphasis-color: var(--cre-text);
   --bs-secondary-color: var(--cre-text-muted);
-  --bs-border-radius: 14px;
-  --bs-border-radius-sm: 11px;
-  --bs-border-radius-lg: 20px;
-  --bs-border-radius-xl: 26px;
-  --bs-border-radius-2xl: 32px;
+  --bs-border-radius: 7px;
+  --bs-border-radius-sm: 4px;
+  --bs-border-radius-lg: 11px;
+  --bs-border-radius-xl: 14px;
+  --bs-border-radius-2xl: 18px;
 }
 
-/* Dark mode — verde esmeralda nocturno */
+/* Dark mode — editorial nocturno (espresso cálido) */
 :root[data-theme='dark'] {
-  --cre-bg: #06120e;
-  --cre-bg-elev: #0c1a15;
-  --cre-bg-muted: #0a1712;
-  --cre-surface: #0c1a15;
-  --cre-surface-2: #11241c;
-  --cre-border: #1b3329;
-  --cre-border-strong: #284a3b;
-  --cre-text: #e6f2ec;
-  --cre-text-muted: #9bb5a9;
-  --cre-text-subtle: #5f7a6f;
-  --cre-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.45);
-  --cre-shadow-md: 0 6px 16px -6px rgb(0 0 0 / 0.6), 0 2px 6px -2px rgb(0 0 0 / 0.5);
-  --cre-shadow-lg: 0 18px 40px -12px rgb(0 0 0 / 0.65), 0 6px 14px -6px rgb(0 0 0 / 0.5);
-  --cre-shadow-glow: 0 0 0 4px rgb(52 211 153 / 0.22);
-  --cre-shadow-signal: 0 10px 30px -8px rgb(16 185 129 / 0.5);
+  --cre-bg: #16110b;
+  --cre-bg-elev: #201910;
+  --cre-bg-muted: #1c150d;
+  --cre-surface: #201910;
+  --cre-surface-2: #2a2116;
+  --cre-border: #382e1e;
+  --cre-border-strong: #4c3f2a;
+  --cre-text: #f4ecdd;
+  --cre-text-muted: #b8a789;
+  --cre-text-subtle: #84745b;
+  --cre-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+  --cre-shadow-md: 0 10px 26px -12px rgb(0 0 0 / 0.62), 0 3px 8px -4px rgb(0 0 0 / 0.5);
+  --cre-shadow-lg: 0 26px 52px -18px rgb(0 0 0 / 0.68), 0 8px 20px -10px rgb(0 0 0 / 0.52);
+  --cre-shadow-glow: 0 0 0 4px rgb(224 168 86 / 0.24);
+  --cre-shadow-signal: 0 14px 34px -12px rgb(189 118 32 / 0.5);
 }
 
 /* --------------------------------------------------------------------------
    Tailwind v4 theme — expone tokens como utilidades (bg-cre-brand-500, etc.)
    -------------------------------------------------------------------------- */
 @theme {
-  --font-sans: 'Plus Jakarta Sans Variable', 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Fraunces Variable', 'Fraunces', Georgia, 'Times New Roman', serif;
 
   --color-cre-brand-50: var(--cre-brand-50);
   --color-cre-brand-100: var(--cre-brand-100);
@@ -191,8 +197,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Capa de fondo: dos halos (índigo/cian) + retícula muy tenue. Fija y no
-   intercepta clicks. Da el aire "dinámico" sin sobrecargar. */
+/* Capa de fondo: dos halos cálidos (ámbar/terracota) + retícula muy tenue. Fija
+   y no intercepta clicks. Da el aire "editorial" sin sobrecargar. */
 body::before {
   content: '';
   position: fixed;
@@ -200,14 +206,14 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(60rem 60rem at 12% -10%, rgb(16 185 129 / 0.10), transparent 60%),
-    radial-gradient(50rem 50rem at 100% 0%, rgb(13 148 136 / 0.10), transparent 55%),
+    radial-gradient(60rem 60rem at 12% -10%, rgb(189 118 32 / 0.09), transparent 60%),
+    radial-gradient(50rem 50rem at 100% 0%, rgb(193 81 45 / 0.08), transparent 55%),
     linear-gradient(to bottom, transparent, transparent);
 }
 :root[data-theme='dark'] body::before {
   background:
-    radial-gradient(60rem 60rem at 12% -10%, rgb(16 185 129 / 0.16), transparent 60%),
-    radial-gradient(50rem 50rem at 100% 0%, rgb(13 148 136 / 0.14), transparent 55%);
+    radial-gradient(60rem 60rem at 12% -10%, rgb(189 118 32 / 0.15), transparent 60%),
+    radial-gradient(50rem 50rem at 100% 0%, rgb(193 81 45 / 0.12), transparent 55%);
 }
 
 * {
@@ -223,19 +229,19 @@ body::before {
    Bootstrap — afina lo más visible para que combine con la marca
    -------------------------------------------------------------------------- */
 .btn-primary {
-  --bs-btn-bg: #047857;
-  --bs-btn-border-color: #047857;
-  --bs-btn-hover-bg: #065f46;
-  --bs-btn-hover-border-color: #065f46;
-  --bs-btn-active-bg: #064e3b;
-  --bs-btn-active-border-color: #064e3b;
-  --bs-btn-disabled-bg: #047857;
-  --bs-btn-disabled-border-color: #047857;
+  --bs-btn-bg: #7e4917;
+  --bs-btn-border-color: #7e4917;
+  --bs-btn-hover-bg: #613917;
+  --bs-btn-hover-border-color: #613917;
+  --bs-btn-active-bg: #472b14;
+  --bs-btn-active-border-color: #472b14;
+  --bs-btn-disabled-bg: #7e4917;
+  --bs-btn-disabled-border-color: #7e4917;
 }
-.text-primary { color: #047857 !important; }
+.text-primary { color: #7e4917 !important; }
 .btn-outline-primary {
-  --bs-btn-color: #047857; --bs-btn-border-color: #047857;
-  --bs-btn-hover-bg: #047857; --bs-btn-hover-border-color: #047857;
+  --bs-btn-color: #7e4917; --bs-btn-border-color: #7e4917;
+  --bs-btn-hover-bg: #7e4917; --bs-btn-hover-border-color: #7e4917;
 }
 /* Controles de formulario — usan tokens --cre-* para adaptarse a claro/oscuro.
    (La app usa data-theme en <html>, no el data-bs-theme de Bootstrap, por eso
@@ -254,7 +260,7 @@ body::before {
   background-color: var(--cre-surface-2);
   border-color: var(--cre-brand-500);
   color: var(--cre-text);
-  box-shadow: 0 0 0 0.2rem rgb(16 185 129 / 0.18);
+  box-shadow: 0 0 0 0.2rem rgb(189 118 32 / 0.20);
 }
 .form-control:disabled, .form-control[readonly],
 .form-select:disabled, .form-select[readonly] {
@@ -264,7 +270,7 @@ body::before {
 }
 /* Flecha del <select>: clara en modo oscuro para que se vea sobre fondo oscuro */
 :root[data-theme='dark'] .form-select {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%239aa8c2' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23c6b393' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
 }
 /* Ícono del date/time picker: invertido en modo oscuro para que sea visible */
 :root[data-theme='dark'] input[type='date']::-webkit-calendar-picker-indicator,
@@ -283,7 +289,7 @@ body::before {
 }
 .form-check-input:focus {
   border-color: var(--cre-brand-500);
-  box-shadow: 0 0 0 0.2rem rgb(16 185 129 / 0.18);
+  box-shadow: 0 0 0 0.2rem rgb(189 118 32 / 0.20);
 }
 /* Addons de input-group */
 .input-group-text {
@@ -297,17 +303,18 @@ body::before {
 /* ==========================================================================
    PULIDO GLOBAL de Bootstrap — eleva TODOS los módulos (tablas, cards, botones,
    badges de estado, alertas, modales) sin tocar el HTML de cada pantalla.
-   Estética iOS: muy redondeado, suave, colores de acción claros.
+   Estética editorial: esquinas casi rectas, sombras suaves, títulos serif.
    ========================================================================== */
 
-/* Tipografía base de Bootstrap → fuente moderna */
+/* Tipografía base de Bootstrap → cuerpo sans moderno */
 body, .btn, .form-control, .form-select, .card, .table, .dropdown-menu, .modal {
   font-family: var(--font-sans);
 }
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
-  letter-spacing: -0.018em;
-  font-weight: 700;
+  font-family: var(--font-serif);
+  letter-spacing: -0.005em;
+  font-weight: 600;
 }
 
 /* ── Tarjetas ─────────────────────────────────────────────── */
@@ -341,7 +348,7 @@ h1, h2, h3, h4, h5, h6,
 }
 .card-header.bg-warning {
   background: color-mix(in srgb, var(--cre-warning-500) 16%, var(--cre-surface)) !important;
-  color: #b45309 !important;
+  color: #8a6a08 !important;
   border-bottom-color: color-mix(in srgb, var(--cre-warning-500) 32%, transparent) !important;
 }
 .card-header.bg-danger {
@@ -349,9 +356,9 @@ h1, h2, h3, h4, h5, h6,
   color: var(--cre-danger-600) !important;
   border-bottom-color: color-mix(in srgb, var(--cre-danger-500) 30%, transparent) !important;
 }
-:root[data-theme='dark'] .card-header.bg-success { color: #34d399 !important; }
-:root[data-theme='dark'] .card-header.bg-warning { color: #fbbf24 !important; }
-:root[data-theme='dark'] .card-header.bg-danger  { color: #fb7185 !important; }
+:root[data-theme='dark'] .card-header.bg-success { color: #8fce72 !important; }
+:root[data-theme='dark'] .card-header.bg-warning { color: #ecc94b !important; }
+:root[data-theme='dark'] .card-header.bg-danger  { color: #e88b93 !important; }
 
 /* Textos secundarios — Bootstrap los pinta oscuros por defecto y en modo oscuro
    quedaban casi invisibles. Se remapean a tokens que cambian con el tema. */
@@ -424,30 +431,30 @@ small, .small { color: inherit; }
 .alert { border-radius: var(--cre-radius-md); border-width: 1px; }
 .alert-success { background: color-mix(in srgb, var(--cre-success-500) 13%, var(--cre-surface)); border-color: color-mix(in srgb, var(--cre-success-500) 30%, transparent); color: var(--cre-success-600); }
 .alert-danger  { background: color-mix(in srgb, var(--cre-danger-500) 13%, var(--cre-surface));  border-color: color-mix(in srgb, var(--cre-danger-500) 30%, transparent);  color: var(--cre-danger-600); }
-.alert-warning { background: color-mix(in srgb, var(--cre-warning-500) 15%, var(--cre-surface)); border-color: color-mix(in srgb, var(--cre-warning-500) 32%, transparent); color: #b45309; }
-.alert-info    { background: color-mix(in srgb, var(--cre-info-500) 13%, var(--cre-surface));    border-color: color-mix(in srgb, var(--cre-info-500) 30%, transparent);    color: #0f766e; }
+.alert-warning { background: color-mix(in srgb, var(--cre-warning-500) 15%, var(--cre-surface)); border-color: color-mix(in srgb, var(--cre-warning-500) 32%, transparent); color: #8a6a08; }
+.alert-info    { background: color-mix(in srgb, var(--cre-info-500) 13%, var(--cre-surface));    border-color: color-mix(in srgb, var(--cre-info-500) 30%, transparent);    color: #2f5d78; }
 .alert-primary, .alert-secondary { background: var(--cre-bg-muted); border-color: var(--cre-border); color: var(--cre-text); }
-:root[data-theme='dark'] .alert-success { color: #34d399; }
-:root[data-theme='dark'] .alert-danger  { color: #fb7185; }
-:root[data-theme='dark'] .alert-warning { color: #fbbf24; }
-:root[data-theme='dark'] .alert-info    { color: #2dd4bf; }
+:root[data-theme='dark'] .alert-success { color: #8fce72; }
+:root[data-theme='dark'] .alert-danger  { color: #e88b93; }
+:root[data-theme='dark'] .alert-warning { color: #ecc94b; }
+:root[data-theme='dark'] .alert-info    { color: #7fb4d4; }
 
-/* Título de página — estilo profesional MAYÚSCULAS con espaciado entre letras.
+/* Título de página — estilo editorial MAYÚSCULAS con espaciado entre letras.
    Se aplica agregando class="page-title" al encabezado principal de cada pantalla. */
 .page-title {
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 800;
+  letter-spacing: 0.04em;
+  font-weight: 600;
 }
 
 /* Nota/aviso ámbar reutilizable (reemplaza estilos inline #fff3cd hardcodeados) */
 .cre-note-warn {
   background: color-mix(in srgb, var(--cre-warning-500) 15%, var(--cre-surface)) !important;
   border: 1px solid color-mix(in srgb, var(--cre-warning-500) 32%, transparent) !important;
-  color: #b45309 !important;
+  color: #8a6a08 !important;
   border-radius: var(--cre-radius-md);
 }
-:root[data-theme='dark'] .cre-note-warn { color: #fbbf24 !important; }
+:root[data-theme='dark'] .cre-note-warn { color: #ecc94b !important; }
 
 /* Botones dark/outline-dark legibles en modo oscuro (chips de filtro, etc.) */
 :root[data-theme='dark'] .btn-outline-dark {
@@ -508,7 +515,7 @@ small, .small { color: inherit; }
 }
 .table-hover > tbody > tr { transition: background 140ms ease; }
 .table-hover > tbody > tr:hover > * {
-  background: color-mix(in srgb, var(--cre-brand-500) 6%, transparent) !important;
+  background: color-mix(in srgb, var(--cre-brand-500) 7%, transparent) !important;
 }
 .table > tbody > tr:last-child > * { border-bottom: 0; }
 
@@ -521,9 +528,9 @@ small, .small { color: inherit; }
 }
 .badge.bg-success   { background: color-mix(in srgb, var(--cre-success-500) 16%, transparent) !important; color: var(--cre-success-600) !important; }
 .badge.bg-danger    { background: color-mix(in srgb, var(--cre-danger-500) 16%, transparent) !important;  color: var(--cre-danger-600) !important; }
-.badge.bg-warning   { background: color-mix(in srgb, var(--cre-warning-500) 20%, transparent) !important; color: #b45309 !important; }
+.badge.bg-warning   { background: color-mix(in srgb, var(--cre-warning-500) 20%, transparent) !important; color: #8a6a08 !important; }
 .badge.bg-primary   { background: color-mix(in srgb, var(--cre-brand-500) 15%, transparent) !important;   color: var(--cre-brand-700) !important; }
-.badge.bg-info      { background: color-mix(in srgb, var(--cre-info-500) 16%, transparent) !important;    color: #0e7490 !important; }
+.badge.bg-info      { background: color-mix(in srgb, var(--cre-info-500) 16%, transparent) !important;    color: #2f5d78 !important; }
 .badge.bg-secondary { background: var(--cre-bg-muted) !important; color: var(--cre-text-muted) !important; }
 
 /* ── Botones (acciones) ───────────────────────────────────── */
@@ -537,37 +544,37 @@ small, .small { color: inherit; }
 .btn-sm { border-radius: var(--cre-radius-sm); }
 .btn-lg { border-radius: var(--cre-radius-lg); }
 
-/* Editar (ámbar) */
+/* Editar (oro viejo) */
 .btn-warning {
-  --bs-btn-bg: #f59e0b; --bs-btn-border-color: #f59e0b; --bs-btn-color: #3a2a05;
-  --bs-btn-hover-bg: #ea8c08; --bs-btn-hover-border-color: #ea8c08; --bs-btn-hover-color: #3a2a05;
-  --bs-btn-active-bg: #d97c06;
+  --bs-btn-bg: #d19a10; --bs-btn-border-color: #d19a10; --bs-btn-color: #35270a;
+  --bs-btn-hover-bg: #b8850c; --bs-btn-hover-border-color: #b8850c; --bs-btn-hover-color: #35270a;
+  --bs-btn-active-bg: #9a6f0a;
 }
-/* Eliminar / Emergencia (rojo) */
+/* Eliminar / Emergencia (rojo vino) */
 .btn-danger {
-  --bs-btn-bg: #f43f5e; --bs-btn-border-color: #f43f5e;
-  --bs-btn-hover-bg: #e11d48; --bs-btn-hover-border-color: #e11d48;
-  --bs-btn-active-bg: #be123c;
+  --bs-btn-bg: #bb2f39; --bs-btn-border-color: #bb2f39;
+  --bs-btn-hover-bg: #99232f; --bs-btn-hover-border-color: #99232f;
+  --bs-btn-active-bg: #7e1c27;
 }
-/* Éxito / confirmar (verde) */
+/* Éxito / confirmar (verde hoja) */
 .btn-success {
-  --bs-btn-bg: #10b981; --bs-btn-border-color: #10b981;
-  --bs-btn-hover-bg: #059669; --bs-btn-hover-border-color: #059669;
-  --bs-btn-active-bg: #047857;
+  --bs-btn-bg: #4f8a3d; --bs-btn-border-color: #4f8a3d;
+  --bs-btn-hover-bg: #3d6e2d; --bs-btn-hover-border-color: #3d6e2d;
+  --bs-btn-active-bg: #325a25;
 }
 .btn-secondary {
   --bs-btn-bg: var(--cre-surface); --bs-btn-border-color: var(--cre-border-strong); --bs-btn-color: var(--cre-text);
   --bs-btn-hover-bg: var(--cre-bg-muted); --bs-btn-hover-border-color: var(--cre-brand-300); --bs-btn-hover-color: var(--cre-brand-700);
 }
 .btn-info {
-  --bs-btn-bg: #14b8a6; --bs-btn-border-color: #14b8a6; --bs-btn-color: #042f2a;
-  --bs-btn-hover-bg: #0d9488; --bs-btn-hover-border-color: #0d9488; --bs-btn-hover-color: #fff;
+  --bs-btn-bg: #c1512d; --bs-btn-border-color: #c1512d; --bs-btn-color: #fff;
+  --bs-btn-hover-bg: #a33f23; --bs-btn-hover-border-color: #a33f23; --bs-btn-hover-color: #fff;
 }
 /* Outline (acciones secundarias en tablas) */
-.btn-outline-primary { --bs-btn-color:#047857; --bs-btn-border-color:#a7f3d0; --bs-btn-hover-bg:#047857; --bs-btn-hover-border-color:#047857; }
-.btn-outline-danger  { --bs-btn-color:#e11d48; --bs-btn-border-color:#fecdd3; --bs-btn-hover-bg:#f43f5e; --bs-btn-hover-border-color:#f43f5e; }
-.btn-outline-warning { --bs-btn-color:#b45309; --bs-btn-border-color:#fde68a; --bs-btn-hover-bg:#f59e0b; --bs-btn-hover-border-color:#f59e0b; }
-.btn-outline-success { --bs-btn-color:#059669; --bs-btn-border-color:#a7f3d0; --bs-btn-hover-bg:#10b981; --bs-btn-hover-border-color:#10b981; }
+.btn-outline-primary { --bs-btn-color:#7e4917; --bs-btn-border-color:#e0a856; --bs-btn-hover-bg:#7e4917; --bs-btn-hover-border-color:#7e4917; }
+.btn-outline-danger  { --bs-btn-color:#99232f; --bs-btn-border-color:#e8b3b8; --bs-btn-hover-bg:#bb2f39; --bs-btn-hover-border-color:#bb2f39; }
+.btn-outline-warning { --bs-btn-color:#8a6a08; --bs-btn-border-color:#ecd48a; --bs-btn-hover-bg:#d19a10; --bs-btn-hover-border-color:#d19a10; }
+.btn-outline-success { --bs-btn-color:#3d6e2d; --bs-btn-border-color:#bcdcae; --bs-btn-hover-bg:#4f8a3d; --bs-btn-hover-border-color:#4f8a3d; }
 .btn-outline-secondary { --bs-btn-color:var(--cre-text-muted); --bs-btn-border-color:var(--cre-border-strong); --bs-btn-hover-bg:var(--cre-bg-muted); --bs-btn-hover-color:var(--cre-text); --bs-btn-hover-border-color:var(--cre-border-strong); }
 
 /* Grupos de botones: respeta el redondeo en los extremos */
@@ -581,10 +588,10 @@ small, .small { color: inherit; }
   border-left-width: 4px;
   font-weight: 500;
 }
-.alert-success { background: color-mix(in srgb, var(--cre-success-500) 10%, var(--cre-surface)); border-color: color-mix(in srgb, var(--cre-success-500) 35%, transparent); color: #065f46; }
-.alert-danger  { background: color-mix(in srgb, var(--cre-danger-500) 10%, var(--cre-surface));  border-color: color-mix(in srgb, var(--cre-danger-500) 35%, transparent);  color: #9f1239; }
-.alert-warning { background: color-mix(in srgb, var(--cre-warning-500) 12%, var(--cre-surface)); border-color: color-mix(in srgb, var(--cre-warning-500) 35%, transparent); color: #92400e; }
-.alert-info    { background: color-mix(in srgb, var(--cre-info-500) 10%, var(--cre-surface));    border-color: color-mix(in srgb, var(--cre-info-500) 35%, transparent);    color: #0f766e; }
+.alert-success { background: color-mix(in srgb, var(--cre-success-500) 10%, var(--cre-surface)); border-color: color-mix(in srgb, var(--cre-success-500) 35%, transparent); color: #2f5121; }
+.alert-danger  { background: color-mix(in srgb, var(--cre-danger-500) 10%, var(--cre-surface));  border-color: color-mix(in srgb, var(--cre-danger-500) 35%, transparent);  color: #7e1c27; }
+.alert-warning { background: color-mix(in srgb, var(--cre-warning-500) 12%, var(--cre-surface)); border-color: color-mix(in srgb, var(--cre-warning-500) 35%, transparent); color: #7a5807; }
+.alert-info    { background: color-mix(in srgb, var(--cre-info-500) 10%, var(--cre-surface));    border-color: color-mix(in srgb, var(--cre-info-500) 35%, transparent);    color: #2f5d78; }
 
 /* ── Modales / dropdowns / tabs / list-group ──────────────── */
 .modal-content {
@@ -666,7 +673,7 @@ small, .small { color: inherit; }
 .cre-btn-primary {
   background: var(--cre-gradient-brand);
   color: var(--cre-text-inverse);
-  box-shadow: 0 6px 16px -8px rgb(79 70 229 / 0.6);
+  box-shadow: 0 6px 16px -8px rgb(157 92 24 / 0.55);
 }
 .cre-btn-primary:hover:not(:disabled) {
   box-shadow: var(--cre-shadow-signal);
@@ -737,10 +744,10 @@ small, .small { color: inherit; }
   line-height: 1.3;
 }
 .cre-badge-success { background: color-mix(in srgb, var(--cre-success-500) 14%, transparent); color: var(--cre-success-600); border-color: color-mix(in srgb, var(--cre-success-500) 30%, transparent); }
-.cre-badge-warning { background: color-mix(in srgb, var(--cre-warning-500) 14%, transparent); color: #b45309; border-color: color-mix(in srgb, var(--cre-warning-500) 30%, transparent); }
+.cre-badge-warning { background: color-mix(in srgb, var(--cre-warning-500) 14%, transparent); color: #8a6a08; border-color: color-mix(in srgb, var(--cre-warning-500) 30%, transparent); }
 .cre-badge-danger  { background: color-mix(in srgb, var(--cre-danger-500) 14%, transparent);  color: var(--cre-danger-600); border-color: color-mix(in srgb, var(--cre-danger-500) 30%, transparent); }
 .cre-badge-brand   { background: color-mix(in srgb, var(--cre-brand-500) 14%, transparent);   color: var(--cre-brand-700); border-color: color-mix(in srgb, var(--cre-brand-500) 30%, transparent); }
-.cre-badge-info    { background: color-mix(in srgb, var(--cre-info-500) 14%, transparent);    color: #0f766e; border-color: color-mix(in srgb, var(--cre-info-500) 30%, transparent); }
+.cre-badge-info    { background: color-mix(in srgb, var(--cre-info-500) 14%, transparent);    color: #2f5d78; border-color: color-mix(in srgb, var(--cre-info-500) 30%, transparent); }
 
 /* Helpers additivos (uso opcional, no rompen nada) */
 .cre-gradient-text {
@@ -771,16 +778,52 @@ small, .small { color: inherit; }
 .app-shell {
   min-height: 100dvh;
 }
+/* Dashboard: topbar fina arriba (full-width) + sidebar único a la izquierda.
+   El contenido se desplaza por debajo de la topbar y a la derecha del sidebar. */
 .app-shell.with-sidebar {
   padding-top: var(--cre-topbar-h);
+  padding-left: var(--cre-sidebar-w);
 }
 .app-shell-inner {
   padding: 1.75rem 2rem;
-  max-width: 1480px;
+  max-width: var(--cre-content-max);
   margin: 0 auto;
+}
+/* < 992px: el sidebar se vuelve drawer; el contenido usa solo la topbar. */
+@media (max-width: 991.98px) {
+  .app-shell.with-sidebar {
+    padding-left: 0;
+  }
 }
 @media (max-width: 768px) {
   .app-shell-inner { padding: 1rem; }
+}
+
+/* --------------------------------------------------------------------------
+   Rejilla de 12 columnas para componer pantallas tipo dashboard.
+   Uso: <div class="cre-grid"> <div class="cre-col-4">…</div> … </div>
+   En móvil todas las columnas pasan a ancho completo automáticamente.
+   -------------------------------------------------------------------------- */
+.cre-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+.cre-col-1  { grid-column: span 1; }
+.cre-col-2  { grid-column: span 2; }
+.cre-col-3  { grid-column: span 3; }
+.cre-col-4  { grid-column: span 4; }
+.cre-col-5  { grid-column: span 5; }
+.cre-col-6  { grid-column: span 6; }
+.cre-col-7  { grid-column: span 7; }
+.cre-col-8  { grid-column: span 8; }
+.cre-col-9  { grid-column: span 9; }
+.cre-col-10 { grid-column: span 10; }
+.cre-col-11 { grid-column: span 11; }
+.cre-col-12 { grid-column: span 12; }
+@media (max-width: 992px) {
+  .cre-grid { gap: 1rem; }
+  [class*='cre-col-'] { grid-column: 1 / -1; }
 }
 
 /* --------------------------------------------------------------------------

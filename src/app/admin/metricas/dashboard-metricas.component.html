@@ -1,14 +1,14 @@
 <section class="container-fluid py-4">
 
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h1 class="h4 mb-0 page-title">Tablero de Rendimiento</h1>
-      <p class="text-muted small mb-0">Métricas de tiempos y alertas de cuellos de botella del workflow.</p>
-    </div>
-    <button class="btn btn-sm btn-outline-secondary" type="button" (click)="cargarCuellos()">
+  <app-page-header
+    title="Tablero de Rendimiento"
+    subtitle="Métricas de tiempos y alertas de cuellos de botella del workflow."
+    [breadcrumbs]="[{ label: 'Análisis' }, { label: 'Métricas' }]"
+  >
+    <button actions class="btn btn-sm btn-outline-secondary" type="button" (click)="cargarCuellos()">
       Actualizar
     </button>
-  </div>
+  </app-page-header>
 
   @if (error()) {
     <div class="alert alert-danger">{{ error() }}</div>

@@ -1,5 +1,8 @@
 <section class="container py-4" style="max-width: 640px">
-  <h1 class="h4 mb-4 page-title">{{ esEdicion ? 'Editar' : 'Nueva' }} Politica</h1>
+  <app-page-header
+    [title]="(esEdicion ? 'Editar' : 'Nueva') + ' Politica'"
+    [breadcrumbs]="[{ label: 'Gestión' }, { label: 'Políticas', link: '/admin/politicas' }, { label: esEdicion ? 'Editar' : 'Nueva' }]"
+  ></app-page-header>
 
   @if (error()) {
     <div class="alert alert-danger" role="alert">{{ error() }}</div>

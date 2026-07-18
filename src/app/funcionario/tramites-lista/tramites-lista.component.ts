@@ -4,9 +4,11 @@ import { WorkflowService } from '../../core/services/workflow.service';
 import { TramiteResumen } from '../../core/models/tramite.model';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-tramites-lista',
-  imports: [RouterLink],
+  imports: [RouterLink, PageHeaderComponent],
   templateUrl: './tramites-lista.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

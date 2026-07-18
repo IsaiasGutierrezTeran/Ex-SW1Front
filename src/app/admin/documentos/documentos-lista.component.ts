@@ -5,9 +5,11 @@ import { DocumentoService } from '../../core/services/documento.service';
 import { Documento, DocumentoRequest } from '../../core/models/documento.model';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-documentos-lista',
-  imports: [ReactiveFormsModule, DatePipe],
+  imports: [ReactiveFormsModule, DatePipe, PageHeaderComponent],
   templateUrl: './documentos-lista.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

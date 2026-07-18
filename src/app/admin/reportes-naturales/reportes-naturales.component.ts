@@ -4,9 +4,11 @@ import { ReporteNaturalResponse } from '../../core/models/reporte-natural.model'
 import { ReporteNaturalService } from '../../core/services/reporte-natural.service';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-reportes-naturales',
-  imports: [FormsModule],
+  imports: [FormsModule, PageHeaderComponent],
   templateUrl: './reportes-naturales.component.html',
   styleUrl: './reportes-naturales.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

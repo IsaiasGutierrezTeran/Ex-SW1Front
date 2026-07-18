@@ -1,8 +1,10 @@
 <section class="container py-4" style="max-width: 860px">
-  <div class="d-flex align-items-center gap-3 mb-4">
-    <a routerLink="/admin/diagramas" class="btn btn-sm btn-outline-secondary">Volver</a>
-    <h1 class="h4 mb-0 page-title">Generar Diagrama con IA</h1>
-  </div>
+  <app-page-header
+    title="Generar Diagrama con IA"
+    [breadcrumbs]="[{ label: 'Flujos' }, { label: 'Diagramas', link: '/admin/diagramas' }, { label: 'Generar con IA' }]"
+  >
+    <a actions routerLink="/admin/diagramas" class="btn btn-sm btn-outline-secondary">Volver</a>
+  </app-page-header>
 
   @if (error()) {
     <div class="alert alert-danger" role="alert">{{ error() }}</div>

@@ -7,23 +7,22 @@ import {
   NotificacionesService,
 } from '../../core/services/notificaciones.service';
 
+import { PageHeaderComponent } from '../ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-notificaciones',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, PageHeaderComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="container py-4">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <div>
-          <h1 class="h4 mb-0 page-title">Notificaciones</h1>
-          <p class="text-muted small mb-0">
-            Avisos del sistema: trámites que llegan a tu área, SLA, riesgo, documentos.
-          </p>
-        </div>
-        <button class="btn btn-sm btn-outline-secondary" type="button" (click)="svc.refrescar()">
+      <app-page-header
+        title="Notificaciones"
+        subtitle="Avisos del sistema: trámites que llegan a tu área, SLA, riesgo, documentos."
+      >
+        <button actions class="btn btn-sm btn-outline-secondary" type="button" (click)="svc.refrescar()">
           Actualizar
         </button>
-      </div>
+      </app-page-header>
 
       @if (svc.lista().length === 0) {
         <div class="card border-0 shadow-sm">

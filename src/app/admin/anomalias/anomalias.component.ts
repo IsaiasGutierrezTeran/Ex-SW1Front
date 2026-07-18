@@ -5,9 +5,11 @@ import { AlertaAnomaliaService } from '../../core/services/alerta-anomalia.servi
 import { mensajeAmigable } from '../../core/utils/error-messages';
 import { HumanizePipe } from '../../shared/pipes/humanize.pipe';
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-anomalias',
-  imports: [DatePipe, DecimalPipe, HumanizePipe],
+  imports: [DatePipe, DecimalPipe, HumanizePipe, PageHeaderComponent],
   templateUrl: './anomalias.component.html',
   styleUrl: './anomalias.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

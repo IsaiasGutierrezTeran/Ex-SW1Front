@@ -29,9 +29,11 @@ function catchToEmpty<T>(): OperatorFunction<T[], T[]> {
   return catchError(() => of([] as T[]));
 }
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-bandeja-entrada',
-  imports: [ChipRiesgoComponent],
+  imports: [ChipRiesgoComponent, PageHeaderComponent],
   templateUrl: './bandeja-entrada.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

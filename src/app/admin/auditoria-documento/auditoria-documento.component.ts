@@ -11,9 +11,11 @@ import {
 import { AuditoriaDocumentoService } from '../../core/services/auditoria-documento.service';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-auditoria-documento',
-  imports: [DatePipe, FormsModule, JsonPipe, KeyValuePipe, RouterLink],
+  imports: [DatePipe, FormsModule, JsonPipe, KeyValuePipe, RouterLink, PageHeaderComponent],
   templateUrl: './auditoria-documento.component.html',
   styleUrl: './auditoria-documento.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

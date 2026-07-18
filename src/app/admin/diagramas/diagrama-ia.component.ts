@@ -7,9 +7,11 @@ import { Politica } from '../../core/models/politica.model';
 import { PromptFlowResponse } from '../../core/models/diagrama.model';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-diagrama-ia',
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule, PageHeaderComponent],
   templateUrl: './diagrama-ia.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

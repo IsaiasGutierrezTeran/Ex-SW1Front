@@ -7,9 +7,11 @@ import { Departamento } from '../../core/models/departamento.model';
 import { Actividad } from '../../core/models/actividad.model';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-dashboard-metricas',
-  imports: [DatePipe, DecimalPipe],
+  imports: [DatePipe, DecimalPipe, PageHeaderComponent],
   templateUrl: './dashboard-metricas.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

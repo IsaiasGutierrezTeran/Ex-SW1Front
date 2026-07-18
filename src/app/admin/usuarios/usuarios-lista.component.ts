@@ -6,9 +6,11 @@ import { Usuario } from '../../core/models/usuario.model';
 import { Rol } from '../../core/models/rol.model';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-usuarios-lista',
-  imports: [RouterLink],
+  imports: [RouterLink, PageHeaderComponent],
   templateUrl: './usuarios-lista.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

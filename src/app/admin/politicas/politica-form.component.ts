@@ -7,9 +7,11 @@ import { PoliticaRequest } from '../../core/models/politica.model';
 import { DiagramaWorkflow } from '../../core/models/diagrama.model';
 import { mensajeAmigable } from '../../core/utils/error-messages';
 
+import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
+
 @Component({
   selector: 'app-politica-form',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, PageHeaderComponent],
   templateUrl: './politica-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,76 +1,85 @@
-<div class="login-page d-flex align-items-center py-4">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-12 col-sm-10 col-md-6 col-lg-4">
-        <div class="text-center mb-4">
-          <h1 class="h3 fw-bold text-primary mb-2 page-title">MOTOR · Gestion de Tramites</h1>
-          <p class="text-body-secondary mb-0">Portal interno para Administradores y Funcionarios</p>
+<div class="login-page">
+  <!-- ===== Columna izquierda: panel de marca ===== -->
+  <aside class="login-brand">
+    <div class="login-brand-inner">
+      <div class="login-logo" aria-hidden="true">M</div>
+      <h1 class="login-brand-title page-title">MOTOR</h1>
+      <p class="login-brand-sub">Gestion de Tramites</p>
+      <p class="login-brand-tagline">
+        Portal interno para Administradores y Funcionarios. Flujos, expedientes y
+        documentos, en un solo lugar.
+      </p>
+      <ul class="login-brand-points">
+        <li>Expedientes digitales y trazabilidad</li>
+        <li>Metricas y control de anomalias</li>
+        <li>Co-edicion de documentos en vivo</li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- ===== Columna derecha: formulario ===== -->
+  <main class="login-form-col">
+    <div class="login-form-wrap">
+      <h2 class="login-title">Iniciar Sesion</h2>
+      <p class="login-form-hint">Ingresa tus credenciales para continuar</p>
+
+      @if (error()) {
+        <div class="alert alert-danger" role="alert">{{ error() }}</div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo electronico</label>
+          <input
+            id="email"
+            type="email"
+            class="form-control"
+            formControlName="email"
+            [class.is-invalid]="form.controls.email.touched && form.controls.email.invalid"
+          />
+          <div class="invalid-feedback">Email requerido o invalido.</div>
         </div>
 
-        <div class="card shadow-sm border-0">
-          <div class="card-body p-4">
-            <h2 class="login-title">Iniciar Sesion</h2>
-
-            @if (error()) {
-              <div class="alert alert-danger" role="alert">{{ error() }}</div>
-            }
-
-            <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-              <div class="mb-3">
-                <label for="email" class="form-label">Correo electronico</label>
-                <input
-                  id="email"
-                  type="email"
-                  class="form-control"
-                  formControlName="email"
-                  [class.is-invalid]="form.controls.email.touched && form.controls.email.invalid"
-                />
-                <div class="invalid-feedback">Email requerido o invalido.</div>
-              </div>
-
-              <div class="mb-3">
-                <label for="password" class="form-label">Contrasena</label>
-                <input
-                  id="password"
-                  type="password"
-                  class="form-control"
-                  formControlName="password"
-                  [class.is-invalid]="form.controls.password.touched && form.controls.password.invalid"
-                />
-                <div class="invalid-feedback">Contrasena requerida (minimo 6 caracteres).</div>
-              </div>
-
-              <button type="submit" class="btn btn-primary w-100" [disabled]="loading()">
-                @if (loading()) {
-                  <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
-                }
-                {{ loading() ? 'Autenticando...' : 'Ingresar' }}
-              </button>
-            </form>
-          </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Contrasena</label>
+          <input
+            id="password"
+            type="password"
+            class="form-control"
+            formControlName="password"
+            [class.is-invalid]="form.controls.password.touched && form.controls.password.invalid"
+          />
+          <div class="invalid-feedback">Contrasena requerida (minimo 6 caracteres).</div>
         </div>
 
-        <div class="demo-panel mt-4">
-          <div class="demo-head">
-            <span class="demo-title">Acceso rapido</span>
-            <span class="demo-tag">demo</span>
-          </div>
-          <div class="demo-grid">
-            @for (c of cuentasDemo; track c.email) {
-              <button
-                type="button"
-                class="demo-chip demo-chip--{{ c.variant }}"
-                (click)="llenarDemo(c)"
-                [title]="c.email"
-              >
-                <span class="demo-avatar">{{ c.label.charAt(0) }}</span>
-                <span class="demo-label">{{ c.label }}</span>
-              </button>
-            }
-          </div>
-          <p class="demo-foot">Elegi un perfil para autocompletar, luego pulsa Ingresar.</p>
+        <button type="submit" class="btn btn-primary w-100" [disabled]="loading()">
+          @if (loading()) {
+            <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+          }
+          {{ loading() ? 'Autenticando...' : 'Ingresar' }}
+        </button>
+      </form>
+
+      <div class="demo-panel mt-4">
+        <div class="demo-head">
+          <span class="demo-title">Acceso rapido</span>
+          <span class="demo-tag">demo</span>
         </div>
+        <div class="demo-grid">
+          @for (c of cuentasDemo; track c.email) {
+            <button
+              type="button"
+              class="demo-chip demo-chip--{{ c.variant }}"
+              (click)="llenarDemo(c)"
+              [title]="c.email"
+            >
+              <span class="demo-avatar">{{ c.label.charAt(0) }}</span>
+              <span class="demo-label">{{ c.label }}</span>
+            </button>
+          }
+        </div>
+        <p class="demo-foot">Elegi un perfil para autocompletar, luego pulsa Ingresar.</p>
       </div>
     </div>
-  </div>
+  </main>
 </div>

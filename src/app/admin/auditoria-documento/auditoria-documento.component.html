@@ -1,16 +1,10 @@
 <section class="container-fluid py-4">
-  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-    <div>
-      <a routerLink="/admin/politicas" class="small text-decoration-none">Políticas</a>
-      <h1 class="h4 mb-0 mt-1 page-title">
-        Auditoría documental
-        <span class="text-muted fs-6">· documento {{ documentoId.slice(-6) }}</span>
-      </h1>
-      <p class="text-muted small mb-0">
-        Timeline inmutable de accesos, descargas y modificaciones.
-      </p>
-    </div>
-    <div class="d-flex gap-2">
+  <app-page-header
+    title="Auditoría documental"
+    [subtitle]="'Timeline inmutable de accesos, descargas y modificaciones · documento ' + documentoId.slice(-6)"
+    [breadcrumbs]="[{ label: 'Gestión' }, { label: 'Políticas', link: '/admin/politicas' }, { label: 'Auditoría documental' }]"
+  >
+    <div actions class="d-flex gap-2">
       <button
         class="btn btn-sm btn-outline-success"
         type="button"
@@ -23,7 +17,7 @@
         Actualizar
       </button>
     </div>
-  </div>
+  </app-page-header>
 
   <div class="card border-0 shadow-sm mb-3">
     <div class="card-body py-3">
